@@ -249,7 +249,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
         revenue = request.data.get('revenue')
         info_company = request.data.get('info_company')
         info_biz = request.data.get('info_biz')
-        history = request.data.get('history')
+     #   history = request.data.get('history')
         deal = request.data.get('deal')
         category_middle = request.data.get('category_middle')
         possible_set = request.data.get('possible_set')
@@ -304,10 +304,10 @@ class PartnerViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
                 data={'message': '주요사업 값이 없습니다.'})
 
-        if not history:
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST,
-                data={'message': '연혁 값이 없습니다.'})
+     #   if not history:
+     #       return Response(
+     #           status=status.HTTP_400_BAD_REQUEST,
+     #           data={'message': '연혁 값이 없습니다.'})
 
         if not deal:
             return Response(
@@ -329,7 +329,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
             revenue=revenue,
             info_company=info_company,
             info_biz=info_biz,
-            history=history,
+       #     history=history,
             deal=deal,
             coin=coin,
             logo=logo,

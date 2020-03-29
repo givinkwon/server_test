@@ -25,8 +25,8 @@ SECRET_KEY = '-hi2!%*(i6@i7*cw6n!ic-hl9#b71-m9&71j3*tn9)9cxvdxjr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['bolttnut-dev.ap-northeast-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['bolttnut-dev.ap-northeast-2.elasticbeanstalk.com']
 AUTH_USER_MODEL = 'account.User'
 # Application definition
 
