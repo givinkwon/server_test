@@ -2,22 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3aa58339-96c9-4431-bdd4-e91068462e4c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/account/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/account/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/account/viewsets.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/account/viewsets.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/account/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/account/migrations/0002_auto_20200324_1159.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/account/migrations/0003_auto_20200325_2203.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/account/migrations/0004_auto_20200326_0000.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/account/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/account/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/board/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/category/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/category/migrations/0002_develop_coin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/payment/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/project/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/project/migrations/0002_auto_20200323_1648.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/project/migrations/0003_auto_20200324_1630.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
