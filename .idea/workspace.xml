@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3aa58339-96c9-4431-bdd4-e91068462e4c" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="bolttnut" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>bad</find>
+      <find>.exist</find>
+      <find>category</find>
+      <find>isa</find>
+      <find>isAuthen</find>
+      <find>answer</find>
+      <find>find_Request_par</find>
+      <find>rest_fra</find>
+      <find>k</find>
+      <find>user</find>
+      <find>import</find>
+      <find>partner</find>
+      <find>serial</find>
+      <find>find_Request_partner</find>
+      <find>request_partner</find>
+      <find>FIND_rEQ</find>
+      <find>file</find>
+      <find>state</find>
+      <find>first_ac</find>
+      <find>first</find>
+      <find>filefi</find>
+      <find>requ</find>
+      <find>request_part</find>
+      <find>phone</find>
+      <find>in</find>
+      <find>inter</find>
+      <find>inte</find>
+      <find>get</find>
+      <find>value</find>
+      <find>filter</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1901" />
+    <option name="y" value="226" />
+    <option name="width" value="1551" />
+    <option name="height" value="879" />
+  </component>
+  <component name="ProjectId" id="1ZoNzzsJiFBzDrpcxUACcfX0wWg" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../uget-django-master" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\kwongibin.DESKTOP-KIC4V0D\PycharmProjects\bolttnut" />
+      <recent name="C:\Users\kwongibin.DESKTOP-KIC4V0D\PycharmProjects\bolttnut\apps" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\kwongibin.DESKTOP-KIC4V0D\PycharmProjects\bolttnut\apps" />
+      <recent name="C:\Users\kwongibin.DESKTOP-KIC4V0D\PycharmProjects\bolttnut\server" />
+      <recent name="C:\Users\kwongibin.DESKTOP-KIC4V0D\PycharmProjects\bolttnut" />
+      <recent name="C:\Users\kwongibin.DESKTOP-KIC4V0D\PycharmProjects\bolttnut\apps\kakaotalk" />
+      <recent name="C:\Users\kwongibin.DESKTOP-KIC4V0D\PycharmProjects\bolttnut\api\kakaotalk" />
+    </key>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3aa58339-96c9-4431-bdd4-e91068462e4c" name="Default Changelist" comment="" />
+      <created>1582792506712</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1582792506712</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/api/account/viewsets.py</url>
+          <line>21</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/account/models.py</url>
+          <line>170</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/apps/account/models.py</url>
+          <line>37</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
