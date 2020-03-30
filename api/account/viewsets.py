@@ -334,11 +334,13 @@ class PartnerViewSet(viewsets.ModelViewSet):
             coin=coin,
             logo=logo,
             file=file,
+            city=city,
+            region=region,
         )
-        city = City.objects.filter(id=city)
-        region=Region.objects.filter(id=region)
-        partner.city = city.first()
-        partner.region = region.first()
+      #  city = City.objects.filter(id=city)
+      #  region=Region.objects.filter(id=region)
+      #  partner.city = city.first()
+      #  partner.region = region.first()
 
         category_elements = Develop.objects.filter(id__in=category_middle)
         history_elements = Subclass.objects.filter(id__in=history_set)
