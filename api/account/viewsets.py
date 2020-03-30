@@ -467,7 +467,8 @@ class PartnerViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['PATCH', ], url_path='coin', http_method_names=('patch',), permission_classes=(IsAuthenticated,),)
     def update_coin(self, request, *args, **kwargs):  # 코인을 결제했을 때 코인 추가 / 코인 사용 시 코인 감소
         # 결제 성공 시리얼을 받아서 아임포트에 요청.
-        partner_id = request.data.get('partner_id')
+        partner_id = request.user.partner
+        #partner_id = request.data.get('partner_id')
         coin = request.data.get('coin')  # 프론트에서 Partner coin값을 불러와서 더하기 혹은 빼기 수행
 
         # filter로 검색 시 Queryset이 옴, get은 모델을 가져오고 없으면 예외를 발생시킴
