@@ -334,13 +334,11 @@ class PartnerViewSet(viewsets.ModelViewSet):
             coin=coin,
             logo=logo,
             file=file,
-            city=city,
-            region=region,
         )
-      #  city = City.objects.filter(id=city)
-      #  region=Region.objects.filter(id=region)
-      #  partner.city = city.first()
-      #  partner.region = region.first()
+        city = City.objects.filter(id=city)
+        region=Region.objects.filter(id=region)
+        partner.city = city.first()
+        partner.region = region.first()
 
         category_elements = Develop.objects.filter(id__in=category_middle)
         history_elements = Subclass.objects.filter(id__in=history_set)
@@ -348,7 +346,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
         partner.category_middle.add(*category_elements)
         partner.history_set.add(*history_elements)
         partner.possible_set.add(*possible_elements)
-
+        partner.save()
         #form-data는 자동으로 주석 코드를 실행 시켜줌
         #serializer = PartnerSerializer(partner, data=request.data, partial=True)
         #serializer.is_valid(raise_exception=True)
