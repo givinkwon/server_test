@@ -170,7 +170,7 @@ class Partner(models.Model):
     revenue = models.IntegerField('매출(백만원)', default=0, null=True)
     info_company = models.TextField('회사소개', blank=True, null=True)
     info_biz = models.TextField('주요사업', blank=True, null=True)
- #   history = models.TextField('주요이력', blank=True, null=True)
+    history = models.TextField('주요이력', blank=True, null=True)
     deal = models.TextField('주요거래처', blank=True, null=True)
     category_middle = models.ManyToManyField(Develop, verbose_name='의뢰가능분야', related_name='category_middle')
     possible_set = models.ManyToManyField(Subclass, verbose_name='개발가능제품분야', related_name='possible_product')
