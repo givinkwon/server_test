@@ -55,4 +55,4 @@ class ProjectSerializer(serializers.ModelSerializer):
     review_set = ReviewSerializer(many=True)
     class Meta:
         model = Project
-        fields = ['id', 'request_set', 'answer_set', 'review_set']
+        fields = ['id', 'state','request_set', 'answer_set', 'review_set']
