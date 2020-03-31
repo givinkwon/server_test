@@ -6,4 +6,4 @@ from apps.payment.models import *
 
 @admin.register(Paylist)
 class PaylistAdmin(admin.ModelAdmin):
-     list_display = ['id', 'merchant_uid', 'buyer_email','buyer_name','buyer_tel', 'state']
+     list_display = ['id', 'merchant_uid', 'user', 'state']

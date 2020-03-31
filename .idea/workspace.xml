@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3aa58339-96c9-4431-bdd4-e91068462e4c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/category/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/category/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/payment/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/payment/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/payment/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/payment/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -19,40 +24,6 @@
         <option value="HTML File" />
       </list>
     </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>find_Request_par</find>
-      <find>rest_fra</find>
-      <find>k</find>
-      <find>user</find>
-      <find>import</find>
-      <find>partner</find>
-      <find>serial</find>
-      <find>find_Request_partner</find>
-      <find>request_partner</find>
-      <find>FIND_rEQ</find>
-      <find>file</find>
-      <find>state</find>
-      <find>first_ac</find>
-      <find>first</find>
-      <find>filefi</find>
-      <find>requ</find>
-      <find>request_part</find>
-      <find>phone</find>
-      <find>in</find>
-      <find>inter</find>
-      <find>inte</find>
-      <find>get</find>
-      <find>value</find>
-      <find>filter</find>
-      <find>history</find>
-      <find>histroy</find>
-      <find>hist</find>
-      <find>city</find>
-      <find>isauthen</find>
-      <find>coin</find>
-    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />

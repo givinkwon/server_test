@@ -90,7 +90,7 @@ class Maincategory(models.Model):
         verbose_name_plural = '  제품대분류'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.maincategory)
 
 # ------------------------------------------------------------------
 # Model   : Category
@@ -107,7 +107,7 @@ class Category(models.Model):
         verbose_name_plural = '  제품중분류'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.category)
 
 # ------------------------------------------------------------------
 # Model   : Subclass
@@ -125,7 +125,7 @@ class Subclass(models.Model):
         verbose_name_plural = '  제품소분류'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.subclass)
 
 # ------------------------------------------------------------------
 # Model   : City
