@@ -140,7 +140,7 @@ class City(models.Model):
         verbose_name_plural = '시/도'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.city)
 
 
 # ------------------------------------------------------------------
@@ -156,7 +156,7 @@ class Region(models.Model):
         verbose_name_plural = '구'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.region)
 
 # ------------------------------------------------------------------
 # Model   : Developbig
@@ -170,7 +170,7 @@ class Developbig(models.Model):
         verbose_name_plural = '개발분야 대분류'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.maincategory)
 
 # ------------------------------------------------------------------
 # Model   : Develop
@@ -185,4 +185,4 @@ class Develop(models.Model):
         verbose_name_plural = '개발분야 중분류'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.category)
