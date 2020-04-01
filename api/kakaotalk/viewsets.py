@@ -8,6 +8,10 @@ from rest_framework.response import Response
 
 import requests
 import json
+class ResponseCode(enum.Enum):
+
+    SUCCESS = 0
+    FAIL = 1
 
 class KakaoViewSet(viewsets.ModelViewSet):
     """
