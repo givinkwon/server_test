@@ -31,6 +31,10 @@ class KakaoViewSet(viewsets.ModelViewSet):
 
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         response = requests.post(url, data=json.dumps(data), headers=headers)
-        print("Status code: ", response.status_code)
-        print("Printing Entire Post Request")
-        print(response.json())
+        return Response(data={
+            'code': ResponseCode.SUCCESS.value,
+            'message': '발송에 성공하였습니다.',
+            'data': {
+                'status_code': response.status_code,
+                'response': response.json(),
+            }})
