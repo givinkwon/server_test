@@ -6,6 +6,7 @@ from api.board import viewsets as view_board
 from api.category import viewsets as view_category
 from api.payment import viewsets as view_payment
 from api.project import viewsets as view_project
+from api.kakaotalk import viewsets as view_kakaotalk
 from typing import TYPE_CHECKING
 app_name = 'api'
 
@@ -40,6 +41,8 @@ router.register('common', view_project.CommonViewSet)
 router.register('answer', view_project.AnswerViewSet)
 router.register('review', view_project.ReviewViewSet)
 
+#kakaotalk
+router.register('kakaotalk', view_kakaotalk.KakaoViewSet, basename='kakao')
 
 urlpatterns = [
     path('', include(router.urls))
