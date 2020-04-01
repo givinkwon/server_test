@@ -19,11 +19,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="69" column="12" selection-start-line="69" selection-start-column="12" selection-end-line="76" selection-end-column="39" />
-              <folding>
-                <element signature="e#0#68#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="155">
+              <caret line="8" selection-start-line="8" selection-end-line="8" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -31,11 +28,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/kakaotalk/viewsets.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="39" column="15" lean-forward="true" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="15" />
-              <folding>
-                <element signature="e#0#33#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-516">
+              <caret line="5" column="44" selection-start-line="5" selection-start-column="44" selection-end-line="5" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -91,6 +85,7 @@
       <find>json</find>
       <find>swa</find>
       <find>action</find>
+      <find>RESPONSE</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -211,11 +206,11 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24960339" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24960339" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Python Console" />
-      <window_info active="true" anchor="bottom" id="Terminal" visible="true" weight="0.32998884" />
+      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.32998884" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -283,21 +278,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="69" column="12" selection-start-line="69" selection-start-column="12" selection-end-line="76" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#68#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="155">
+          <caret line="8" selection-start-line="8" selection-end-line="8" selection-end-column="44" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api/kakaotalk/viewsets.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="39" column="15" lean-forward="true" selection-start-line="39" selection-start-column="15" selection-end-line="39" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-516">
+          <caret line="5" column="44" selection-start-line="5" selection-start-column="44" selection-end-line="5" selection-end-column="44" />
         </state>
       </provider>
     </entry>
