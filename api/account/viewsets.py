@@ -25,6 +25,7 @@ from drf_yasg.utils import swagger_auto_schema
 from django.contrib.auth import authenticate
 from apps.account.models import *
 from apps.category.models import *
+from apps.kakaotalk.models import *
 from .serializers import *
 
 # 장고 메일 서버
@@ -499,6 +500,14 @@ class PartnerViewSet(viewsets.ModelViewSet):
         partner_phone_list = list(partner_phone_list)
 
         response = kakaotalk.send(partner_phone_list)
+
+        Sendkakao.objects.create(
+            status_code=response.status_code,
+            description=response.json().description,
+            refkey=response.json().refkey,
+            messagekey=response.json().messagekey,
+        )
+
         return Response(data={
                 'code': ResponseCode.SUCCESS.value,
                 'message': '발송에 성공하였습니다.',
