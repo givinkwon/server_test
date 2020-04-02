@@ -500,11 +500,12 @@ class PartnerViewSet(viewsets.ModelViewSet):
         partner_phone_list = list(partner_phone_list)
 
         response = kakaotalk.send(partner_phone_list)
+        a = response.json()
         Sendkakao.objects.create(
             status_code=response.status_code,
-            description=response.json()[description],
-            refkey=response.json()[refkey],
-            messagekey=response.json().messagekey[messagekey],
+            description=response.json()['description'],
+            refkey=response.json()['refkey'],
+            messagekey=response.json().messagekey['messagekey'],
         )
 
         return Response(data={
@@ -513,6 +514,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
                 'data': {
                   'status_code': response.status_code,
                   'response': response.json(),
+                  'zz' : a['description'],
                 }})
 
 class PortfolioViewSet(viewsets.ModelViewSet):
