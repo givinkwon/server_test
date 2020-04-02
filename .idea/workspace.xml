@@ -19,8 +19,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="148">
-              <caret line="507" column="38" lean-forward="true" selection-start-line="507" selection-start-column="38" selection-end-line="507" selection-end-column="38" />
+            <state relative-caret-position="348">
+              <caret line="515" column="46" selection-start-line="515" selection-start-column="46" selection-end-line="515" selection-end-column="46" />
               <folding>
                 <element signature="e#0#68#0" expanded="true" />
               </folding>
@@ -482,8 +482,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="507" column="38" lean-forward="true" selection-start-line="507" selection-start-column="38" selection-end-line="507" selection-end-column="38" />
+        <state relative-caret-position="348">
+          <caret line="515" column="46" selection-start-line="515" selection-start-column="46" selection-end-line="515" selection-end-column="46" />
           <folding>
             <element signature="e#0#68#0" expanded="true" />
           </folding>

@@ -514,7 +514,6 @@ class PartnerViewSet(viewsets.ModelViewSet):
                 'data': {
                   'status_code': response.status_code,
                   'response': response.json(),
-                  'zz' : a['description'],
                 }})
 
 class PortfolioViewSet(viewsets.ModelViewSet):
