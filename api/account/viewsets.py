@@ -497,6 +497,13 @@ class PartnerViewSet(viewsets.ModelViewSet):
         partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
         print(partner_phone_list)
         kakaotalk.send(partner_phone_list)
+        return Response(data={
+                'code': ResponseCode.SUCCESS.value,
+                'message': '발송에 성공하였습니다.',
+                'data': {
+                  'status_code': response.status_code,
+                  'response': response.json(),
+                }})
 
 class PortfolioViewSet(viewsets.ModelViewSet):
     """
