@@ -75,12 +75,13 @@ class RequestViewSet(viewsets.ModelViewSet):
 #                              'data': RequestSerializer(request, many=True).data
 #                              })
 
+
     @swagger_auto_schema(request_body=RequestSerializer)
     @action(detail=False, methods=('POST',), url_path='partner', http_method_names=('post',), permission_classes=(IsAuthenticated,),)
     def find_request_partner(self, request, *args, **kwargs):  # 파트너에게 적합한 문의서 모두 가져오기
         possible_product = request.user.partner.possible_set
         history_prodcut = request.user.partner.history_set
-        print(possible_product)
+        #print(possible_product)
 
         #subclass_qs
         request1_qs = possible_product.all()

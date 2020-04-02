@@ -17,7 +17,7 @@ from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 import enum
-from apps.utils import Util
+from apps.utils import *
 
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -484,6 +484,19 @@ class PartnerViewSet(viewsets.ModelViewSet):
                               }
                         )
 
+    @swagger_auto_schema(request_body=PartnerSerializer)
+    @action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
+    def request_kakaotalk(self, request, *args, **kwargs):  # 의뢰서 등록 시 적합한 파트너에게 카카오톡 알림
+        subclass = request.data.get('subclass')
+      #  print(Partner.objects.all().values_list('possible_set', flat=True))
+      #  print(Partner.objects.filter(possible_set = "5"))
+        partner_qs1 = Partner.objects.filter(possible_set = subclass)
+        partner_qs2 = Partner.objects.filter(history_set = subclass)
+        partner_qs_all = partner_qs1.union(partner_qs2)
+        # query_set value 가져오기
+        partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
+        print(partner_phone_list)
+        kakaotalk.send(partner_phone_list)
 
 class PortfolioViewSet(viewsets.ModelViewSet):
     """

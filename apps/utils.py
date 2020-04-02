@@ -1,10 +1,18 @@
 from django.utils.deconstruct import deconstructible
 
+from rest_framework.response import Response
 import datetime
 import os
 import random
 import string
 import uuid
+import enum
+import requests
+import json
+class ResponseCode(enum.Enum):
+
+    SUCCESS = 0
+    FAIL = 1
 
 
 @deconstructible
@@ -61,3 +69,31 @@ class Util():
         for i in range(length):
             result += random.choice(string.digits + string.ascii_letters)
         return str(result)
+
+class kakaotalk(object):
+
+        def send(phone_list):
+            for phone in phone_list:
+             url = 'https://api.bizppurio.com/v1/message'
+             data = {'account': 'boltnnut_korea', 'refkey': 'bolt123', 'type': 'at', 'from': '01028741248',
+                     'to': phone, 'content': {
+                   'at': {'senderkey': '44e4fdc989b12906c82fc46e428dd91dd99f0d98', 'templatecode': 'request_to_partner',
+                            'message': '파트너님에게 적합한 의뢰서가 도착했습니다.',
+
+                          'button': [
+                                {
+                                 'name': '확인하러 가기',
+                                 'type': 'WL',
+                                 'url_mobile': 'http://www.boltnnut.com',
+                                 'url_pc': 'http://www.boltnnut.com'
+                             }
+                         ]}}}
+             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+             response = requests.post(url, data=json.dumps(data), headers=headers)
+             return Response(data={
+                 'code': ResponseCode.SUCCESS.value,
+                 'message': '발송에 성공하였습니다.',
+                 'data': {
+                  'status_code': response.status_code,
+                  'response': response.json(),
+                 }})
