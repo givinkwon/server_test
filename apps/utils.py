@@ -91,5 +91,5 @@ class kakaotalk(object):
                              }
                          ]}}}
              headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-             response += requests.post(url, data=json.dumps(data), headers=headers)
+             response = requests.post(url, data=json.dumps(data), headers=headers)
             return response
