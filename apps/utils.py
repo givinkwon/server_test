@@ -71,7 +71,7 @@ class Util():
         return str(result)
 
 class kakaotalk(object):
-
+# 빈 전화번호 / 이상한 전화번호는 에러뜹니다.
         def send(phone_list):
            # print(phone_list)
             for phone in phone_list:
@@ -91,5 +91,5 @@ class kakaotalk(object):
                              }
                          ]}}}
              headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-             response = requests.post(url, data=json.dumps(data), headers=headers)
-             return response
+             response += requests.post(url, data=json.dumps(data), headers=headers)
+            return response
