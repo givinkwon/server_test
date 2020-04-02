@@ -505,7 +505,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
             status_code=response.status_code,
             description=response.json()['description'],
             refkey=response.json()['refkey'],
-            messagekey=response.json().messagekey['messagekey'],
+            messagekey=response.json()['messagekey'],
         )
 
         return Response(data={
