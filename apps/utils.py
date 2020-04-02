@@ -73,7 +73,9 @@ class Util():
 class kakaotalk(object):
 
         def send(phone_list):
+           # print(phone_list)
             for phone in phone_list:
+           #  print(phone)
              url = 'https://api.bizppurio.com/v1/message'
              data = {'account': 'boltnnut_korea', 'refkey': 'bolt123', 'type': 'at', 'from': '01028741248',
                      'to': phone, 'content': {

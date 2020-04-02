@@ -495,7 +495,9 @@ class PartnerViewSet(viewsets.ModelViewSet):
         partner_qs_all = partner_qs1.union(partner_qs2)
         # query_set value 가져오기
         partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
-        print(partner_phone_list)
+        #리스트화
+        partner_phone_list = list(partner_phone_list)
+
         response = kakaotalk.send(partner_phone_list)
         return Response(data={
                 'code': ResponseCode.SUCCESS.value,
