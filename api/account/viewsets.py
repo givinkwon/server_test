@@ -496,7 +496,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
         # query_set value 가져오기
         partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
         print(partner_phone_list)
-        kakaotalk.send(partner_phone_list)
+        respone = kakaotalk.send(partner_phone_list)
         return Response(data={
                 'code': ResponseCode.SUCCESS.value,
                 'message': '발송에 성공하였습니다.',
