@@ -72,11 +72,12 @@ class PaylistViewSet(viewsets.ModelViewSet):
     serializer_class = PaylistSerializer
 
     @swagger_auto_schema(request_body=PaylistSerializer)
-    @action(detail=False, methods=('GET',), url_path='merchant', http_method_names=('get',),permission_classes=(IsAuthenticated,),)
-    def save_merchant(self, request, *args, **kwargs):  # merchant_uid를 저장하고 해쉬화
+    @action(detail=False, methods=('POST',), url_path='order', http_method_names=('post',),permission_classes=(IsAuthenticated,),)
+    def order(self, request, *args, **kwargs):  # merchant_uid를 저장하고 해쉬화
         user = request.user
         name = request.data.get('name') # 상품명
         product_price = request.data.get('product_price')
+        coin = request.data.get('coin')
         # merchant_uid hash화
         merchant_hash = generate_muid(user.id)
         paylist = Paylist.objects.create(
@@ -84,6 +85,7 @@ class PaylistViewSet(viewsets.ModelViewSet):
                                  merchant_uid=merchant_hash,
                                  name = name,
                                  product_price = product_price,
+                                 coin = coin,
                              )
         return Response(data={'code': ResponseCode.SUCCESS.value,
                               'message': '결제가 성공적으로 완료되었습니다.',

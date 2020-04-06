@@ -315,6 +315,11 @@ class PartnerViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
                 data={'message': '주요거래처 값이 없습니다.'})
 
+        if User.objects.filter(username=username).exists():
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data={'message': '해당 이메일이 이미 존재합니다.'})
+
         user = User.objects.create_user(
             username=username,
             password=password,
