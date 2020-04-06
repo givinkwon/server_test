@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3aa58339-96c9-4431-bdd4-e91068462e4c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/settings.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/venv/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,7 +33,7 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="242">
@@ -106,11 +105,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1949">
-              <caret line="101" lean-forward="true" selection-start-line="101" selection-end-line="101" />
+            <state relative-caret-position="49">
+              <caret line="184" column="71" selection-start-line="184" selection-start-column="71" selection-end-line="184" selection-end-column="71" />
             </state>
           </provider>
         </entry>
@@ -194,8 +193,8 @@
         <option value="$PROJECT_DIR$/api/payment/serializers.py" />
         <option value="$PROJECT_DIR$/api/payment/viewsets.py" />
         <option value="$PROJECT_DIR$/server/storages.py" />
-        <option value="$PROJECT_DIR$/server/settings.py" />
         <option value="$PROJECT_DIR$/server/urls.py" />
+        <option value="$PROJECT_DIR$/server/settings.py" />
       </list>
     </option>
   </component>
@@ -758,13 +757,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1949">
-          <caret line="101" lean-forward="true" selection-start-line="101" selection-end-line="101" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
@@ -772,6 +764,13 @@
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="49">
+          <caret line="184" column="71" selection-start-line="184" selection-start-column="71" selection-end-line="184" selection-end-column="71" />
         </state>
       </provider>
     </entry>
