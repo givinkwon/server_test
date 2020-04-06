@@ -24,7 +24,7 @@
     if (rsp.success) { // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
       // jQuery로 HTTP 요청
       jQuery.ajax({
-          url: "https://127.0.0.1:8000/paylist/merchant", // 가맹점 서버
+          url: "https://127.0.0.1:8000/paylist/payment", // 가맹점 서버
           method: "POST",
           headers: { "Content-Type": "application/json" },
           data: {

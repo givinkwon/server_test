@@ -164,9 +164,9 @@ class Partner(models.Model):
     #지역
     city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name="시/도", null=True)
     region = models.ForeignKey(Region, on_delete=models.CASCADE, verbose_name="구", null=True)
-    career = models.IntegerField('설립일', default=0, null=True)
-    employee = models.IntegerField('근로자수', default=0, null=True)
-    revenue = models.IntegerField('매출(백만원)', default=0, null=True)
+    career = models.CharField('설립일', max_length=256, null=True)
+    employee = models.CharField('근로자수', max_length=256, null=True)
+    revenue = models.CharField('매출(백만원)', max_length=256, null=True)
     info_company = models.TextField('회사소개', blank=True, null=True)
     info_biz = models.TextField('주요사업', blank=True, null=True)
     history = models.TextField('주요이력', blank=True, null=True)

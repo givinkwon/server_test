@@ -125,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # import
-IAMPORT_KEY = 6645021941119167
+IAMPORT_KEY = '6645021941119167'
 IAMPORT_SECRET = 'XvjvFbFhR6OUlWOP6XZ39ENFvuUAk5fiAzNgLsxCylwUilJojJrsof8TJ2t48JmJi9Z3BxGaTd4byOzR'
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
