@@ -84,13 +84,13 @@ PAYMENTS_STATE = [
     (1, "결제 성공"),
 ]
 class Paylist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     merchant_uid = models.CharField('결제정보', max_length=256)
     #buyer_email = models.CharField('구매자 이메일', max_length=256)
     #buyer_name = models.CharField('구매자 이름', max_length=256)
     #buyer_tel = models.CharField('구매자 전화번호', max_length=256)
     state = models.IntegerField('결제 상태', default=0, choices=PAYMENTS_STATE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    amount = models.IntegerField('비용', default=0)
+    product_price = models.IntegerField('비용', default=0)
     coin = models.IntegerField('코인', default=0)
 
     class Meta:

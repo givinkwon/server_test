@@ -17,6 +17,8 @@ class KakaoViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
+    queryset = Sendkakao.objects.all()
+    serializer_class = SendkakaoSerializer
     @action(detail=False, methods=('POST',), url_path='kakao', http_method_names=('post',))
     def kakao(self, request, *args, **kwargs):
         url = 'https://api.bizppurio.com/v1/message'

@@ -7,6 +7,7 @@ from .serializers import *
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
+from .paginations import *
 class MaincategoryViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
@@ -37,6 +38,7 @@ class CityViewSet(viewsets.ModelViewSet):
     """
     queryset = City.objects.all()
     serializer_class = CitySerializer
+    pagination_class = CityPageNumberPagination
 
 class RegionViewSet(viewsets.ModelViewSet):
     """
@@ -44,7 +46,7 @@ class RegionViewSet(viewsets.ModelViewSet):
     """
     queryset = Region.objects.all()
     serializer_class = RegionSerializer
-
+    pagination_class = RegionPageNumberPagination
 
 class DevelopViewSet(viewsets.ModelViewSet):
     """

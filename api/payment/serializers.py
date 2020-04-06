@@ -5,7 +5,7 @@ from apps.payment.models import *
 class PaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Paylist
-        fields = ['id', 'merchant_uid', 'buyer_email','buyer_name','buyer_tel', 'state']
+        fields = ['id','user', 'merchant_uid', 'state', 'product_price', 'coin']
 
 
 

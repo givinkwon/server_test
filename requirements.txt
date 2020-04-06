@@ -14,6 +14,7 @@ django-utils==0.0.2
 djangorestframework==3.11.0
 drf-yasg==1.17.1
 hashids==1.2.0
+iamport-rest-client==0.8.1
 idna==2.9
 inflection==0.3.1
 itypes==1.1.0

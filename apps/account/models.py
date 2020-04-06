@@ -8,7 +8,6 @@ from django.core.validators import MaxValueValidator
 from django.db.models import Avg
 from hashids import Hashids
 
-
 # Create your models here.
 def get_default_hash_id():
     hashids = Hashids(salt=settings.SECRET_KEY, min_length=6)
