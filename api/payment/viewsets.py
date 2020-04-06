@@ -75,7 +75,7 @@ class PaylistViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=('POST',), url_path='order', http_method_names=('post',),permission_classes=(IsAuthenticated,),)
     def order(self, request, *args, **kwargs):  # merchant_uid를 저장하고 해쉬화
         user = request.user
-        name = request.data.get('name') # 상품명
+        product_name = request.data.get('product_name') # 상품명
         product_price = request.data.get('product_price')
         coin = request.data.get('coin')
         # merchant_uid hash화
@@ -83,19 +83,23 @@ class PaylistViewSet(viewsets.ModelViewSet):
         paylist = Paylist.objects.create(
                                  user=user,
                                  merchant_uid=merchant_hash,
-                                 name = name,
+                                 product_name = product_name,
                                  product_price = product_price,
                                  coin = coin,
+                                 status = 0,
+                                 channel = 0,
+                                 pay_method = 0,
                              )
         return Response(data={'code': ResponseCode.SUCCESS.value,
-                              'message': '결제가 성공적으로 완료되었습니다.',
+                              'message': '결제 리스트입니다.',
                               'data': {
                                     'paylist' : PaylistSerializer(paylist).data,
                                   }})
 
     @swagger_auto_schema(request_body=PaylistSerializer)
-    @action(detail=False, methods=('POST',), url_path='payment', http_method_names=('post',),)
+    @action(detail=False, methods=('POST',), url_path='payment', http_method_names=('post',),permission_classes=(IsAuthenticated,),)
     def payment(self, request, *args, **kwargs):  # 결제 확인
+            user = request.user
             merchant_uid = request.data.get('merchant_uid')
             product_price = response.data.get('product_price')
             # 아임포트 인스턴스 가져오기
@@ -103,11 +107,21 @@ class PaylistViewSet(viewsets.ModelViewSet):
             response = iamport.find(merchant_uid='1')
             if response:
                 if iamport.is_paid(product_price, response=response):
-                    print(response)
-                    print(response['status'])
-                    print(response['channel'])
-                    print(response['paid_at'])
-                    print(response['pay_method'])
+                    paylist = Paylist.object.get(user = user)
+                    paylist.status = response['stauts']
+                    paylist.channel = response['channel']
+                    paylist.pay_method = response['pay_method']
+                    paylist.save()
+
+                    return Response(data={'code': ResponseCode.SUCCESS.value,
+                              'message': '결제가 성공적으로 완료되었습니다.',
+                              'data': {
+                                    'paylist' : PaylistSerializer(paylist).data,
+                                  }})
+
+                return Response(status=status.HTTP_400_BAD_REQUEST,
+                                data={'message': '비정상적인 결제 요청입니다. (결제 금액이 다릅니다.'}
+                                       )
 
             return Response(status=status.HTTP_400_BAD_REQUEST,
                             data={'message': '비정상적인 결제 요청입니다.(결제정보가 없습니다.)'}

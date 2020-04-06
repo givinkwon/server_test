@@ -75,6 +75,20 @@ def subclass_update_filename(instance, filename):
     format = uuid.uuid4().hex + "_subclass" + "." + ext
     return os.path.join(path, format)
 
+def developbig_update_filename(instance, filename):
+    ext = filename.split('.')[-1]
+    now = datetime.datetime.now()
+    path = "developbig/" + str(now.year) + "/" + str(now.month) + "/" + str(now.day)
+    format = uuid.uuid4().hex + "_developbig" + "." + ext
+    return os.path.join(path, format)
+
+def develop_update_filename(instance, filename):
+    ext = filename.split('.')[-1]
+    now = datetime.datetime.now()
+    path = "develop/" + str(now.year) + "/" + str(now.month) + "/" + str(now.day)
+    format = uuid.uuid4().hex + "_develop" + "." + ext
+    return os.path.join(path, format)
+
 
 # ------------------------------------------------------------------
 # Model   : Maincategory
@@ -164,6 +178,7 @@ class Region(models.Model):
 # ------------------------------------------------------------------
 class Developbig(models.Model):
     maincategory = models.CharField('개발대분류', max_length=256)
+    maincategory_img = models.ImageField('개발대분야 이미지', upload_to=developbig_update_filename, null=True)
 
     class Meta:
         verbose_name = '개발분야 대분류'
@@ -179,7 +194,9 @@ class Developbig(models.Model):
 class Develop(models.Model):
     maincategory = models.ForeignKey(Developbig, on_delete=models.CASCADE, verbose_name='개발대분류')
     category = models.CharField('개발중분류', max_length=256)
+  #  category_img = models.ImageField('개발분야 이미지', upload_to=develop_update_filename, null=True)
     coin =models.IntegerField('카테고리당 가격', default=0, null=True)
+
     class Meta:
         verbose_name = '개발분야 중분류'
         verbose_name_plural = '개발분야 중분류'

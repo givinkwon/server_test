@@ -83,10 +83,12 @@ def subclass_update_filename(instance, filename):
 class Paylist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     merchant_uid = models.CharField('결제정보', max_length=256)
-    name = models.CharField('상품명', max_length=256)
+    product_name = models.CharField('상품명', max_length=256)
     #buyer_email = models.CharField('구매자 이메일', max_length=256)
     #buyer_name = models.CharField('구매자 이름', max_length=256)
     #buyer_tel = models.CharField('구매자 전화번호', max_length=256)
+    channel = models.CharField('결제환경(웹/모바일', max_length=256)
+    pay_method = models.CharField('결제 방법(카드/휴대폰 등)', max_length=256)
     status = models.CharField('결제성공여부', max_length=256)
     product_price = models.IntegerField('비용', default=0)
     coin = models.IntegerField('코인', default=0)
