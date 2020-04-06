@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django_filters',
     'corsheaders',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -179,3 +180,18 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'rlqls4112@gmail.com'
 DEFAULT_TO_EMAIL = 'rlqls4112@gmail.com'
 DEFAULT_ADMIN_EMAIL = 'rlqls4112@gmail.com'
+
+#S3
+AWS_STORAGE_BUCKET_NAME = 'boltnnut-s3'
+AWS_ACCESS_KEY_ID = 'AKIAI7RLZ5EV4TL72NKQ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+DEFAULT_FILE_STORAGE = 'server.storages.MediaStorage'
+STATICFILES_STORAGE = 'server.storages.StaticStorage'
+MEDIAFILES_LOCATION = 'media_boltnnut'
+STATICFILES_LOCATION = 'static_boltnnut'
+AWS_DEFAULT_ACL = None

@@ -105,14 +105,17 @@ class PaylistViewSet(viewsets.ModelViewSet):
             # 아임포트 인스턴스 가져오기
             iamport = Iamport(imp_key=settings.IAMPORT_KEY, imp_secret=settings.IAMPORT_SECRET)
             response = iamport.find(merchant_uid='1')
+            print(response)
             if response:
+                print(1)
                 if iamport.is_paid(product_price, response=response):
-                    paylist = Paylist.object.get(user = user)
+                    print(1)
+                    paylist = Paylist.object.get(merchant_uid='1')
                     paylist.status = response['stauts']
                     paylist.channel = response['channel']
                     paylist.pay_method = response['pay_method']
                     paylist.save()
-
+                    print(paylist)
                     return Response(data={'code': ResponseCode.SUCCESS.value,
                               'message': '결제가 성공적으로 완료되었습니다.',
                               'data': {
