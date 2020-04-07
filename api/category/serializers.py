@@ -19,7 +19,7 @@ class MaincategorySerializer(serializers.ModelSerializer):
     category_set = CategorySerializer(many=True)
     class Meta:
         model = Maincategory
-        fields = ['maincategory', 'big_img', 'category_set']
+        fields = ['id', 'maincategory', 'big_img', 'category_set']
 
 class RegionSerializer(serializers.ModelSerializer):
     class Meta:

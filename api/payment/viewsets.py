@@ -101,21 +101,22 @@ class PaylistViewSet(viewsets.ModelViewSet):
     def payment(self, request, *args, **kwargs):  # 결제 확인
             user = request.user
             merchant_uid = request.data.get('merchant_uid')
-            product_price = response.data.get('product_price')
+            product_price = request.data.get('product_price')
             # 아임포트 인스턴스 가져오기
             iamport = Iamport(imp_key=settings.IAMPORT_KEY, imp_secret=settings.IAMPORT_SECRET)
-            response = iamport.find(merchant_uid='1')
+            response = iamport.find(merchant_uid=merchant_uid)
             print(response)
             if response:
-                print(1)
-                if iamport.is_paid(product_price, response=response):
-                    print(1)
-                    paylist = Paylist.object.get(merchant_uid='1')
-                    paylist.status = response['stauts']
+               # print(1)
+                if iamport.is_paid(int(product_price), response=response):
+                   # print(2)
+                    paylist = Paylist.objects.get(merchant_uid=merchant_uid)
+                   # print(paylist)
+                    paylist.status = response['status']
                     paylist.channel = response['channel']
                     paylist.pay_method = response['pay_method']
                     paylist.save()
-                    print(paylist)
+                #    print(paylist)
                     return Response(data={'code': ResponseCode.SUCCESS.value,
                               'message': '결제가 성공적으로 완료되었습니다.',
                               'data': {
@@ -123,7 +124,7 @@ class PaylistViewSet(viewsets.ModelViewSet):
                                   }})
 
                 return Response(status=status.HTTP_400_BAD_REQUEST,
-                                data={'message': '비정상적인 결제 요청입니다. (결제 금액이 다릅니다.'}
+                                data={'message': '비정상적인 결제 요청입니다. (결제 금액이 다릅니다.)'}
                                        )
 
             return Response(status=status.HTTP_400_BAD_REQUEST,
