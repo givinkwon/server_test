@@ -218,9 +218,9 @@ class ReviewViewSet(viewsets.ModelViewSet):
     filterset_fields = ['project__id',  'partner__id']
 
     @swagger_auto_schema(request_body=ReviewSerializer)
-    @action(detail=False, methods=['POST', ], url_path='create', http_method_names=('post',), permission_classes=(IsAuthenticated,),)
+    @action(detail=False, methods=['POST', ], url_path='create', http_method_names=('post',))
     def create_review(self, request, *args, **kwargs):  #리뷰를 만드는 api
-        client = request.user
+        client = 1
         project = request.data.get('project')
         partner = request.data.get('partner')
         price_score = request.data.get('price_score')
