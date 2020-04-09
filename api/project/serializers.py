@@ -45,7 +45,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ['project', 'partner', 'price_score', 'time_score', 'talk_score', 'expert_score', 'result_score', 'content']
+        fields = ['project', 'partner', 'price_score', 'time_score', 'talk_score', 'expert_score', 'result_score', 'content', 'avg_score']
 
 
 class ProjectSerializer(serializers.ModelSerializer):

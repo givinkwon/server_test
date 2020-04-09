@@ -145,7 +145,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
     filterset_fields = ['project__id', 'partner__id']
 
     @swagger_auto_schema(request_body=AnswerSerializer)
-    @action(detail=False, methods=('GET',), url_path='first-active', http_method_names=('get',), permission_classes=(IsAuthenticated,),)
+    @action(detail=False, methods=('POST',), url_path='first-active', http_method_names=('post',), permission_classes=(IsAuthenticated,),)
     def first_active(self, request, *args, **kwargs):  # 제일 평점 높은 파트너 활성화 > 프로젝트마다 되어야함.
             project = request.data.get('project')
             answer_qs = Answer.objects.filter(project = project)

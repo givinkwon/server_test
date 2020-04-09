@@ -106,6 +106,16 @@ DATABASES = {
     }
 }
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'boltnnutplatform',
+#        'USER': 'boltnnutplatform',
+#        'PASSWORD': 'ckddyd505',
+#        'HOST': 'boltnnutplatform.cgo19gfj1xo1.ap-northeast-2.rds.amazonaws.com',
+#        'PORT': '5432',
+#    }
+#}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

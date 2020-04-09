@@ -287,6 +287,10 @@ class Review(models.Model):
     result_score = models.PositiveSmallIntegerField('결과 만족도', default=0, validators=[MaxValueValidator(5), ])
     content = models.CharField('리뷰내용', max_length=256, blank=True, null=True)
 
+    @property
+    def avg_score(self):
+        avg_score = (self.price_score + self.time_score + self.talk_score + self.expert_score + self.result_score)/5
+        return avg_score
 
     class Meta:
         verbose_name = '리뷰별점'

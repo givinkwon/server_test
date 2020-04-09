@@ -121,9 +121,9 @@ USER_TYPE = [
 class User(AbstractUser):
 
     # 공통 부분
-    username = models.CharField('이메일', max_length=50, default=get_default_hash_id, unique=True)
+    username = models.CharField('이메일', max_length=256, default=get_default_hash_id, unique=True)
     type = models.IntegerField('유저타입', default=0, choices=USER_TYPE)
-    password = models.CharField(max_length=50)
+    password = models.CharField(max_length=256)
     phone = models.CharField('휴대폰 번호', max_length=32, blank=True)
 
     class Meta:
