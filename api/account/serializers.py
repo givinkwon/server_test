@@ -37,6 +37,7 @@ class PartnerSerializer(serializers.ModelSerializer):
     product_possible = serializers.SerializerMethodField()
     product_history = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
+    user = PatchUserSerializer()
     answer_set = AnswerSerializer(many=True)
     review_set = ReviewSerializer(many=True)
     class Meta:
