@@ -217,7 +217,36 @@ class ReviewViewSet(viewsets.ModelViewSet):
     # filters.SearchFilter]
     filterset_fields = ['project__id',  'partner__id']
 
-#    @swagger_auto_schema(request_body=ReviewSerializer)
+    @swagger_auto_schema(request_body=ReviewSerializer)
+    @action(detail=False, methods=['POST', ], url_path='create', http_method_names=('post',), permission_classes=(IsAuthenticated,),)
+    def create_review(self, request, *args, **kwargs):  #리뷰를 만드는 api
+        client = request.user
+        project = request.data.get('project')
+        partner = request.data.get('partner')
+        price_score = request.data.get('price_score')
+        time_score = request.data.get('time_score')
+        talk_score = request.data.get('talk_score')
+        expert_score = request.data.get('expert_score')
+        result_score = request.data.get('result_score')
+        content = request.data.get('content')
+
+        review = Review.objects.create(
+            client=client,
+            project=project,
+            partner=partner,
+            price_score=price_score,
+            time_score=time_score,
+            talk_score=talk_score,
+            expert_score=expert_score,
+            result_score=result_score,
+            content=content,
+        )
+
+        return Response(data={'code': ResponseCode.SUCCESS.value,
+                              'data': ReviewSerializer(review).data
+                              })
+
+    #    @swagger_auto_schema(request_body=ReviewSerializer)
 #    @action(detail=False, methods=('POST',), http_method_names=('post',))
 #    def score_avg(self, request, *args, **kwargs):  # 파트너 평점 불러오기 >> Serializer로 옮김
 #
