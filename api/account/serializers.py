@@ -39,7 +39,7 @@ class PartnerSerializer(serializers.ModelSerializer):
     category = serializers.SerializerMethodField()
     answer_set = AnswerSerializer(many=True)
     review_set = ReviewSerializer(many=True)
-    user_set = UserSerializer(many=True)
+    #user_set = UserSerializer(many=True)
     class Meta:
         model = Partner
         fields = ['user','id', 'name', 'logo', 'city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category', 'product_possible', 'product_history', 'coin','avg_score','answer_set','review_set','file']
