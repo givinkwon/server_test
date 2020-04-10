@@ -32,6 +32,31 @@ class ClientSerializer(serializers.ModelSerializer):
         model = Client
         fields = ['user','id','request_set','answer_set','review_set']
 
+class PortfolioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Portfolio
+        fields = ['partner','img_portfolio']
+
+class StructureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Structure
+        fields = ['partner','img_structure']
+
+class MachineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Machine
+        fields = ['partner','img_machine']
+
+class CertificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Certification
+        fields = ['partner','img_certification']
+
+class ProcessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Process
+        fields = ['partner','img_process']
+
 class PartnerSerializer(serializers.ModelSerializer):
     avg_score = serializers.SerializerMethodField()
     product_possible = serializers.SerializerMethodField()
@@ -40,9 +65,15 @@ class PartnerSerializer(serializers.ModelSerializer):
     user = PatchUserSerializer()
     answer_set = AnswerSerializer(many=True)
     review_set = ReviewSerializer(many=True)
+    portfolio_set = PortfolioSerializer(many=True)
+    structure_set = StructureSerializer(many=True)
+    machine_set = MachineSerializer(many=True)
+    certification_set = CertificationSerializer(many=True)
+    process_set = ProcessSerializer(many=True)
     class Meta:
         model = Partner
-        fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category', 'product_possible', 'product_history', 'coin','avg_score','answer_set','review_set','file']
+        fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category', 'product_possible', 'product_history', 'coin','avg_score','answer_set',
+                  'review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set' ]
 
     def get_avg_score(self,obj):
         a = Review.objects.filter(partner=obj.id).aggregate(Avg('price_score'))
@@ -69,27 +100,3 @@ class PartnerSerializer(serializers.ModelSerializer):
         a=obj.category_middle # many to many는 양쪽에 FK로 작용 > obj.possible_set이 데이터베이스 테이블(모델) 및 Queryset
         return DevelopSerializer(a,many=True).data
 
-class PortfolioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Portfolio
-        fields = ['partner','img_portfolio']
-
-class StructureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Structure
-        fields = ['partner','img_structure']
-
-class MachineSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Machine
-        fields = ['partner','img_machine']
-
-class CertificationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Certification
-        fields = ['partner','img_certification']
-
-class ProcessSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Process
-        fields = ['partner','img_process']

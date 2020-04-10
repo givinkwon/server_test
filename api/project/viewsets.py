@@ -147,8 +147,8 @@ class AnswerViewSet(viewsets.ModelViewSet):
     @swagger_auto_schema(request_body=AnswerSerializer)
     @action(detail=False, methods=('POST',), url_path='first-active', http_method_names=('post',), permission_classes=(IsAuthenticated,),)
     def first_active(self, request, *args, **kwargs):  # 제일 평점 높은 파트너 활성화 > 프로젝트마다 되어야함.
-            project = request.data.get('project')
-            answer_qs = Answer.objects.filter(project = project)
+            project__id = request.data.get('project__id')
+            answer_qs = Answer.objects.filter(project = project__id)
             if answer_qs.exists():
                 instance=answer_qs.first()
                 instance.active = True
