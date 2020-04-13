@@ -8,9 +8,16 @@ from datetime import date
 now = timezone.localtime()
 
 class RequestSerializer(serializers.ModelSerializer):
+    count_answer = serializers.SerializerMethodField()
     class Meta:
         model = Request
-        fields = ['active', 'time_out', 'created_at', 'id', 'client', 'project', 'product','category', 'price', 'day', 'content', 'name','request1','request2','request3','request4','request5','request6','request7','request8','file','created_at','apply_count', 'coin']
+        fields = ['count_answer','active', 'time_out', 'created_at', 'id', 'client', 'project', 'product','category', 'price', 'day', 'content', 'name','request1','request2','request3','request4','request5','request6','request7','request8','file','created_at','apply_count', 'coin']
+
+    def get_count_answer(self, obj):
+        answer_qs = Answer.objects.filter(project=obj.id)
+        if answer_qs.exists():
+            return answer_qs.count()
+        return 0
 
 class ContentSerializer(serializers.ModelSerializer):
     class Meta:

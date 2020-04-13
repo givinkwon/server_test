@@ -16,6 +16,8 @@ from .paginations import *
 #django-filter
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
+#count
+from django.db.models import Count
 
 import enum
 
@@ -47,7 +49,6 @@ class RequestViewSet(viewsets.ModelViewSet):
     filter_backends = [RequestFilter,filters.OrderingFilter]
     ordering_fields = '__all__'
     filterset_fields = ['client__id', 'project__id', 'product__id']
-
    # search_fields = []
 # 장고 필터로 대체
 #    @swagger_auto_schema(request_body=RequestSerializer)
@@ -301,8 +302,10 @@ class ProjectViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    queryset = Project.objects.all()
+    queryset = Project.objects.annotate(answer_count = Count('answer')).order_by('answer_count')
     serializer_class = ProjectSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = '__all__'
 
     @swagger_auto_schema(request_body=ProjectSerializer)
     @action(detail=False, methods=['PATCH', ], url_path='state', http_method_names=('patch',))
