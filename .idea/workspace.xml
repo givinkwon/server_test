@@ -104,7 +104,7 @@
         <entry file="file://$PROJECT_DIR$/server/settings.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="206">
-              <caret line="28" column="125" selection-start-line="28" selection-start-column="125" selection-end-line="28" selection-end-column="125" />
+              <caret line="28" column="144" selection-start-line="28" selection-start-column="144" selection-end-line="28" selection-end-column="144" />
             </state>
           </provider>
         </entry>
@@ -411,7 +411,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19827586" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19827586" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -422,7 +422,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32991204" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32991204" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49933687" visible="true" weight="0.3548387" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49933687" visible="true" weight="0.3548387" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5006631" side_tool="true" weight="0.29032257" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32991204" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -829,7 +829,7 @@
     <entry file="file://$PROJECT_DIR$/server/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="206">
-          <caret line="28" column="125" selection-start-line="28" selection-start-column="125" selection-end-line="28" selection-end-column="125" />
+          <caret line="28" column="144" selection-start-line="28" selection-start-column="144" selection-end-line="28" selection-end-column="144" />
         </state>
       </provider>
     </entry>
