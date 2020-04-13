@@ -82,6 +82,19 @@ class UserViewSet(viewsets.GenericViewSet):
             data={'message': '아이디 혹은 비밀번호가 틀렸습니다.'},
         )
 
+    @action(detail=False, methods=('POST',), url_path='data', http_method_names=('post',), permission_classes=(IsAuthenticated,),)
+    def Token_data(self, request, *args, **kawrgs):
+        '''
+        새로고침할 때, 토큰 보내서 데이터 가지고 오기
+        '''
+        user = request.user
+        return Response(data={
+            'code': ResponseCode.SUCCESS.value,
+            'message': '로그인에 성공하였습니다.',
+            'data': {
+                'token': user.auth_token.key,
+                'User': PatchUserSerializer(user).data,
+            }})
 #    @swagger_auto_schema(request_body=openapi.Schema(
 #        type=openapi.TYPE_OBJECT,
 #        properties={
