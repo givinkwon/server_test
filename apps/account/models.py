@@ -183,7 +183,9 @@ class Partner(models.Model):
         verbose_name = '파트너'
         verbose_name_plural = '파트너'
 
-
+    @property
+    def count_meeting(self):
+        self.an
     # str(instance) -> str(id)
     # objcet 객체에 미리 정의됨
     # __len__

@@ -62,6 +62,7 @@ class PartnerSerializer(serializers.ModelSerializer):
     product_possible = serializers.SerializerMethodField()
     product_history = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
+    meeting_count = serializers.SerializerMethodField()
     user = PatchUserSerializer()
     answer_set = AnswerSerializer(many=True)
     review_set = ReviewSerializer(many=True)
@@ -73,7 +74,7 @@ class PartnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Partner
         fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category', 'product_possible', 'product_history', 'coin','avg_score','answer_set',
-                  'review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set' ]
+                  'review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set', 'meeting_count' ]
 
     def get_avg_score(self,obj):
         a = Review.objects.filter(partner=obj.id).aggregate(Avg('price_score'))
@@ -99,4 +100,16 @@ class PartnerSerializer(serializers.ModelSerializer):
     def get_category(self, obj):
         a=obj.category_middle # many to many는 양쪽에 FK로 작용 > obj.possible_set이 데이터베이스 테이블(모델) 및 Queryset
         return DevelopSerializer(a,many=True).data
+
+    def get_meeting_count(self, obj):
+        meeting_count=0
+        answer_qs = Answer.objects.filter(partner=obj.id, state=1)
+        if answer_qs.exists():
+           return len(answer_qs)
+        return 0
+    #    print(list(answer_state))
+    #    for state in list(answer_state):
+    #        if state == '1':
+    #            meeting_count += 1
+    #    return meeting_count
 
