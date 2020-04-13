@@ -181,7 +181,7 @@ class Select(models.Model):
         verbose_name_plural = '     선택질문'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.request)
 
 # ------------------------------------------------------------------
 # Model   : Content
