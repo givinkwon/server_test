@@ -88,12 +88,24 @@ class UserViewSet(viewsets.GenericViewSet):
         새로고침할 때, 토큰 보내서 데이터 가지고 오기
         '''
         user = request.user
+        if user.type == 0:
+            client = Client.objects.filter(user=user)
+            return Response(data={
+                'code': ResponseCode.SUCCESS.value,
+                'message': '클라이언트 데이터를 보내드립니다.',
+                'data': {
+                    'token': user.auth_token.key,
+                    'User': PatchUserSerializer(user).data,
+                    'Client': ClientSerializer(client, many=True).data,
+                }})
+        partner = Partner.objects.filter(user=user)
         return Response(data={
             'code': ResponseCode.SUCCESS.value,
-            'message': '로그인에 성공하였습니다.',
+            'message': '파트너 데이터를 보내드립니다.',
             'data': {
                 'token': user.auth_token.key,
                 'User': PatchUserSerializer(user).data,
+                'Partner': PartnerSerializer(partner, many=True).data,
             }})
 #    @swagger_auto_schema(request_body=openapi.Schema(
 #        type=openapi.TYPE_OBJECT,
