@@ -142,10 +142,10 @@ class Request(models.Model):
 
     @property
     def active(self):
-        active = 86400 - self.time_out.seconds
-        if active >= 0:
-            return True
-        return False
+        active=self.time_out.days
+        if active >= 1:
+            return False
+        return True
 
     @property
     def coin(self):
