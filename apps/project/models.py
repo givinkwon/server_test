@@ -131,7 +131,8 @@ class Request(models.Model):
     file = models.FileField('의뢰파일', upload_to=request_update_filename, blank=True, null=True)
     #등록일자 기록용
     created_at = models.DateTimeField('등록일자', auto_now_add=True)
-
+    #의뢰서 완성되었는 지
+   # complete = models.BooleanField('활성화여부', default=False, null=True)
     @property
     def apply_count(self):
         return Answer.objects.filter(project=self.project).count()
