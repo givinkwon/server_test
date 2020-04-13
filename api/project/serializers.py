@@ -12,7 +12,6 @@ class RequestSerializer(serializers.ModelSerializer):
         model = Request
         fields = ['active', 'time_out', 'created_at', 'id', 'client', 'project', 'product','category', 'price', 'day', 'content', 'name','request1','request2','request3','request4','request5','request6','request7','request8','file','created_at','apply_count', 'coin']
 
-
 class ContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Content
@@ -53,6 +52,20 @@ class ProjectSerializer(serializers.ModelSerializer):
     request_set = RequestSerializer(many=True)
     answer_set = AnswerSerializer(many=True)
     review_set = ReviewSerializer(many=True)
+    count_answer = serializers.SerializerMethodField()
+    count_review = serializers.SerializerMethodField()
     class Meta:
         model = Project
-        fields = ['id', 'request_set', 'answer_set', 'review_set']
+        fields = ['count_answer','count_review','id', 'request_set', 'answer_set', 'review_set']
+
+    def get_count_answer(self, obj):
+        answer_qs = Answer.objects.filter(project=obj.id)
+        if answer_qs.exists():
+            return answer_qs.count()
+        return 0
+
+    def get_count_review(self, obj):
+        review_qs = Review.objects.filter(project=obj.id)
+        if review_qs.exists():
+            return review_qs.count()
+        return 0

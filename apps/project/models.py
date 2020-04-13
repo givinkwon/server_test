@@ -158,6 +158,7 @@ class Request(models.Model):
         price = category_coin_sum
         return price
 
+
     class Meta:
         verbose_name = '     요청된 의뢰'
         verbose_name_plural = '     요청된 의뢰'
