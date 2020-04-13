@@ -26,7 +26,7 @@ SECRET_KEY = '-hi2!%*(i6@i7*cw6n!ic-hl9#b71-m9&71j3*tn9)9cxvdxjr'
 DEBUG = True
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['bolttnut-dev.ap-northeast-2.elasticbeanstalk.com','15.165.181.58','172.31.32.125','127.0.0.1']
+ALLOWED_HOSTS = ['bolttnut-dev.ap-northeast-2.elasticbeanstalk.com','15.165.181.58','172.31.32.125','127.0.0.1','172.31.2.209']
 AUTH_USER_MODEL = 'account.User'
 # Application definition
 
