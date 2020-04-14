@@ -52,7 +52,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         project = Project.objects.create()
-        serializer.save(project=project.id)
+        serializer.save(project=project)
         print(serializer)
 
    # search_fields = []
