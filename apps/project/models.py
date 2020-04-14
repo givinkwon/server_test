@@ -187,7 +187,7 @@ class select_save(models.Model):
 class Select(models.Model):
     # 선택질문
     category = models.ForeignKey(Develop, on_delete=models.CASCADE, verbose_name='개발분야중분류')
-    request = models.CharField('선택질문', max_length=256, blank=True, null=True)
+    request = models.TextField('선택질문', blank=True, null=True)
 
 
     class Meta:

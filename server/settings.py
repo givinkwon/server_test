@@ -109,7 +109,7 @@ AUTHENTICATION_BACKENDS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'boltnnutplatform',
+        'NAME': 'boltnnutplatform2',
         'USER': 'boltnnutplatform',
         'PASSWORD': 'ckddyd505',
         'HOST': 'boltnnutplatform.cgo19gfj1xo1.ap-northeast-2.rds.amazonaws.com',
