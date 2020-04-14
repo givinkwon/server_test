@@ -34,6 +34,10 @@ class ProjectAdmin(admin.ModelAdmin):
 class RequestAdmin(admin.ModelAdmin):
     list_display = ['client', 'created_at', 'id', 'project', 'name', 'price', 'day']
 
+@admin.register(select_save)
+class select_saveAdmin(admin.ModelAdmin):
+    list_display = ['id', 'category', 'request', 'question', 'answer']
+
 @admin.register(Select)
 class SelectAdmin(admin.ModelAdmin):
     list_display = ['id', 'category', 'request']

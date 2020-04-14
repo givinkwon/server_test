@@ -58,6 +58,11 @@ class ProcessSerializer(serializers.ModelSerializer):
         fields = ['partner','img_process']
 
 class PartnerSerializer(serializers.ModelSerializer):
+    avg_price_score = serializers.SerializerMethodField()
+    avg_time_score = serializers.SerializerMethodField()
+    avg_talk_score = serializers.SerializerMethodField()
+    avg_expert_score = serializers.SerializerMethodField()
+    avg_result_score = serializers.SerializerMethodField()
     avg_score = serializers.SerializerMethodField()
     product_possible = serializers.SerializerMethodField()
     product_history = serializers.SerializerMethodField()
@@ -73,8 +78,38 @@ class PartnerSerializer(serializers.ModelSerializer):
     process_set = ProcessSerializer(many=True)
     class Meta:
         model = Partner
-        fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category', 'product_possible', 'product_history', 'coin','avg_score','answer_set',
-                  'review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set', 'meeting_count' ]
+        fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category', 'product_possible', 'product_history', 'coin','avg_score',
+                  'avg_price_score','avg_time_score','avg_talk_score','avg_expert_score','avg_result_score', 'answer_set','review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set', 'meeting_count' ]
+
+    def get_avg_price_score(self,obj):
+        a = Review.objects.filter(partner=obj.id).aggregate(Avg('price_score'))
+        if not a['price_score__avg'] is None: # 리뷰가 있으면
+            return a
+        return 0
+
+    def get_avg_time_score(self,obj):
+        b = Review.objects.filter(partner=obj.id).aggregate(Avg('time_score'))
+        if not b['time_score__avg'] is None: # 리뷰가 있으면
+            return b
+        return 0
+
+    def get_avg_talk_score(self,obj):
+        c = Review.objects.filter(partner=obj.id).aggregate(Avg('talk_score'))
+        if not c['talk_score__avg'] is None: # 리뷰가 있으면
+            return c
+        return 0
+
+    def get_avg_expert_score(self,obj):
+        d = Review.objects.filter(partner=obj.id).aggregate(Avg('expert_score'))
+        if not d['expert_score__avg'] is None: # 리뷰가 있으면
+            return d
+        return 0
+
+    def get_avg_result_score(self,obj):
+        e = Review.objects.filter(partner=obj.id).aggregate(Avg('result_score'))
+        if not e['result_score__avg'] is None: # 리뷰가 있으면
+            return e
+        return 0
 
     def get_avg_score(self,obj):
         a = Review.objects.filter(partner=obj.id).aggregate(Avg('price_score'))

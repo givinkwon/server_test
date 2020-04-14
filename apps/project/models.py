@@ -104,7 +104,6 @@ class Project(models.Model):
     def __str__(self):
         return str(self.id)
 
-
 # ------------------------------------------------------------------
 # Model   : Request
 # Description : 의뢰서 모델
@@ -115,15 +114,7 @@ class Request(models.Model):
     product = models.ForeignKey(Subclass, on_delete=models.CASCADE, verbose_name='의뢰제품')
     # 선택질문
     category = models.ManyToManyField(Develop, verbose_name='의뢰분야')
-    request1 = models.CharField('의뢰필드1', max_length=256, blank=True, null=True)
-    request2 = models.CharField('의뢰필드2', max_length=256, blank=True, null=True)
-    request3 = models.CharField('의뢰필드3', max_length=256, blank=True, null=True)
-    request4 = models.CharField('의뢰필드4', max_length=256, blank=True, null=True)
-    request5 = models.CharField('의뢰필드5', max_length=256, blank=True, null=True)
-    request6 = models.CharField('의뢰필드6', max_length=256, blank=True, null=True)
-    request7 = models.TextField('의뢰필드7', blank=True)
-    request8 = models.TextField('의뢰필드8', blank=True)
-    # 공통질문
+    #공통질문
     name = models.CharField('의뢰제품명', max_length=256, blank=True, null=True)
     price = models.IntegerField('희망비용', default=0)
     day = models.IntegerField('희망프로젝트기간(일)', default=0)
@@ -159,10 +150,32 @@ class Request(models.Model):
         price = category_coin_sum
         return price
 
+    @property
+    def complete(self):
+        if self.name and self.price and self.day and self.content:
+            return True
+        return False
 
     class Meta:
         verbose_name = '     요청된 의뢰'
         verbose_name_plural = '     요청된 의뢰'
+
+    def __str__(self):
+        return str(self.id)
+
+# ------------------------------------------------------------------
+# Model   : Select_save
+# Description : 의로서에 저장되는 선택질문/답변 모델
+# ------------------------------------------------------------------
+class select_save(models.Model):
+    request = models.ForeignKey(Request, on_delete=models.CASCADE, verbose_name='의뢰서')
+    category = models.ForeignKey(Develop, on_delete=models.CASCADE, verbose_name='의뢰서')
+    question = models.CharField('선택질문', max_length=256, blank=True, null=True)
+    answer = models.CharField('선택질문답변', max_length=256, blank=True, null=True)
+
+    class Meta:
+        verbose_name = '     의뢰서에 저장되는 선택질문/답변'
+        verbose_name_plural = '     의뢰서에 저장되는 선택질문/답변'
 
     def __str__(self):
         return str(self.id)
