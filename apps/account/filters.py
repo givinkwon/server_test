@@ -1,3 +1,4 @@
+
 import django_filters
 from rest_framework import filters
 from django.db.models import (
@@ -16,11 +17,14 @@ class PartnerFilter(filters.SearchFilter):
     deal = django_filters.CharFilter(label='주요거래처', field_name='deal', lookup_expr='icontains', )
     possible_set = django_filters.CharFilter(label='개발가능제품분야', field_name='possible_set', lookup_expr='in', )
     history_set = django_filters.CharFilter(label='진행한제품들', field_name='history_set', lookup_expr='in', )
+    category_middle = django_filters.CharFilter(label='개발카테고리', field_name='category_middle', lookup_expr='in', )
     #ordering = django_filters.CharFilter(label='순서', method='filter_ordering')
+    city = django_filters.CharFilter(label='시/도', field_name='city', lookup_expr='icontains', )
+    region = django_filters.CharFilter(label='지역', field_name='region', lookup_expr='icontains', )
 
     class Meta:
         model = Partner
-        fields = ['name', 'info_company', 'info_biz', 'deal', 'possible_set', 'history_set']
+        fields = ['name', 'info_company', 'info_biz', 'deal', 'possible_set', 'history_set','category_middle', 'city', 'region']
                   #'ordering', ]
 
   #  def filter_ordering(self, queryset, name, value):

@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3aa58339-96c9-4431-bdd4-e91068462e4c" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/project/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/project/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/project/viewsets.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/project/viewsets.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/account/filters.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/account/filters.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/venv/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,82 +19,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/category/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="626">
-              <caret line="165" column="7" selection-start-line="165" selection-start-column="4" selection-end-line="165" selection-end-column="7" />
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/project/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="121">
-              <caret line="170" selection-start-line="170" selection-end-line="170" />
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/api/project/serializers.py">
+        <entry file="file://$PROJECT_DIR$/apps/account/filters.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="13" column="151" selection-start-line="13" selection-start-column="151" selection-end-line="13" selection-end-column="151" />
+            <state relative-caret-position="275">
+              <caret line="26" column="126" selection-start-line="26" selection-start-column="126" selection-end-line="26" selection-end-column="126" />
               <folding>
-                <element signature="e#0#38#0" expanded="true" />
+                <element signature="e#0#21#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/project/admin.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="141">
-              <caret line="37" column="7" selection-start-line="37" selection-start-column="7" selection-end-line="37" selection-end-column="7" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/project/migrations/0002_auto_20200414_1152.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/project/migrations/0001_initial.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="101">
-              <caret line="120" column="22" selection-start-line="120" selection-start-column="18" selection-end-line="120" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python37/site-packages/rest_framework/serializers.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="1308" selection-start-line="1308" selection-end-line="1308" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/board/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="15" selection-start-column="15" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -99,20 +34,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/account/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
+            <state relative-caret-position="80">
               <caret line="170" column="15" selection-start-line="170" selection-start-column="15" selection-end-line="170" selection-end-column="62" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="114" column="81" lean-forward="true" selection-start-line="114" selection-start-column="81" selection-end-line="114" selection-end-column="81" />
             </state>
           </provider>
         </entry>
@@ -129,10 +55,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>review</find>
-      <find>par</find>
-      <find>psycopg2-binary</find>
-      <find>psycopg2</find>
       <find>first</find>
       <find>post</find>
       <find>content</find>
@@ -143,7 +65,6 @@
       <find>time_</find>
       <find>.fil</find>
       <find>request</find>
-      <find>Request</find>
       <find>object</find>
       <find>count</find>
       <find>time_out</find>
@@ -158,7 +79,12 @@
       <find>reg</find>
       <find>text</find>
       <find>requ</find>
+      <find>search</find>
+      <find>search_par</find>
       <find>select</find>
+      <find>Project</find>
+      <find>ProjectVi</find>
+      <find>Request</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -193,14 +119,15 @@
         <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/api/payment/viewsets.py" />
         <option value="$PROJECT_DIR$/api/account/viewsets.py" />
-        <option value="$PROJECT_DIR$/api/project/viewsets.py" />
         <option value="$PROJECT_DIR$/apps/account/models.py" />
         <option value="$PROJECT_DIR$/apps/project/migrations/0001_initial.py" />
         <option value="$PROJECT_DIR$/apps/project/admin.py" />
         <option value="$PROJECT_DIR$/api/account/serializers.py" />
         <option value="$PROJECT_DIR$/server/settings.py" />
         <option value="$PROJECT_DIR$/apps/project/models.py" />
+        <option value="$PROJECT_DIR$/api/project/viewsets.py" />
         <option value="$PROJECT_DIR$/api/project/serializers.py" />
+        <option value="$PROJECT_DIR$/apps/account/filters.py" />
       </list>
     </option>
   </component>
@@ -240,6 +167,18 @@
               <item name="bolttnut" type="b2602c69:ProjectViewProjectNode" />
               <item name="bolttnut" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="category" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="bolttnut" type="b2602c69:ProjectViewProjectNode" />
+              <item name="bolttnut" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="kakaotalk" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="bolttnut" type="b2602c69:ProjectViewProjectNode" />
+              <item name="bolttnut" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
               <item name="payment" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -258,13 +197,6 @@
               <item name="bolttnut" type="462c0819:PsiDirectoryNode" />
               <item name="apps" type="462c0819:PsiDirectoryNode" />
               <item name="account" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="bolttnut" type="b2602c69:ProjectViewProjectNode" />
-              <item name="bolttnut" type="462c0819:PsiDirectoryNode" />
-              <item name="apps" type="462c0819:PsiDirectoryNode" />
-              <item name="account" type="462c0819:PsiDirectoryNode" />
-              <item name="migrations" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="bolttnut" type="b2602c69:ProjectViewProjectNode" />
@@ -415,7 +347,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32991204" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32991204" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49933687" visible="true" weight="0.3548387" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49933687" visible="true" weight="0.24633431" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5006631" side_tool="true" weight="0.29032257" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32991204" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -464,9 +396,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/apps/kakaotalk/views.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -708,26 +637,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="260" column="15" selection-start-line="260" selection-start-column="8" selection-end-line="260" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#68#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/project/viewsets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="304" column="15" selection-start-line="304" selection-start-column="15" selection-end-line="304" selection-end-column="96" />
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/account/serializers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="25">
@@ -762,16 +671,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/account/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="170" column="15" selection-start-line="170" selection-start-column="15" selection-end-line="170" selection-end-column="62" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python37/site-packages/rest_framework/serializers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -799,22 +698,62 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1200">
+          <caret line="135" column="17" selection-start-line="135" selection-start-column="17" selection-end-line="135" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#68#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/apps/project/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="170" selection-start-line="170" selection-end-line="170" />
+        <state relative-caret-position="76">
+          <caret line="112" column="87" lean-forward="true" selection-start-line="112" selection-start-column="87" selection-end-line="112" selection-end-column="87" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/api/project/viewsets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="306" column="15" selection-start-line="306" selection-start-column="6" selection-end-line="306" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/api/project/serializers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="13" column="151" selection-start-line="13" selection-start-column="151" selection-end-line="13" selection-end-column="151" />
+        <state relative-caret-position="176">
+          <caret line="14" column="34" lean-forward="true" selection-start-line="14" selection-start-column="34" selection-end-line="14" selection-end-column="34" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/account/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="170" column="15" selection-start-line="170" selection-start-column="15" selection-end-line="170" selection-end-column="62" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/account/filters.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="26" column="126" selection-start-line="26" selection-start-column="126" selection-end-line="26" selection-end-column="126" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>

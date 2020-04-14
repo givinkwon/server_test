@@ -49,6 +49,12 @@ class RequestViewSet(viewsets.ModelViewSet):
     filter_backends = [RequestFilter,filters.OrderingFilter]
     ordering_fields = '__all__'
     filterset_fields = ['client__id', 'project__id', 'product__id']
+
+    def perform_create(self, serializer):
+        project = Project.objects.create()
+        serializer.save(project=project.id)
+        print(serializer)
+
    # search_fields = []
 # 장고 필터로 대체
 #    @swagger_auto_schema(request_body=RequestSerializer)

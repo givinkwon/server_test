@@ -12,6 +12,7 @@ class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Request
         fields = ['count_answer','active', 'time_out', 'created_at', 'id', 'client', 'project', 'product','category', 'price', 'day', 'content', 'name','file','created_at','apply_count', 'coin']
+        read_only_fields = ['project']
 
     def get_count_answer(self, obj):
         answer_qs = Answer.objects.filter(project=obj.id)
@@ -56,14 +57,15 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     # 외래키 참조시 자동으로 모델이름_set 테이블이 만들어지며 모두 소문자로 변경
-    request_set = RequestSerializer(many=True)
-    answer_set = AnswerSerializer(many=True)
-    review_set = ReviewSerializer(many=True)
+    request_set = RequestSerializer(many=True, read_only=True)
+    answer_set = AnswerSerializer(many=True, read_only=True)
+    review_set = ReviewSerializer(many=True, read_only=True)
     count_answer = serializers.SerializerMethodField()
     count_review = serializers.SerializerMethodField()
     class Meta:
         model = Project
         fields = ['count_answer','count_review','id', 'request_set', 'answer_set', 'review_set']
+        read_only_fields = ['request_set', 'answer_set', 'review_set']
 
     def get_count_answer(self, obj):
         answer_qs = Answer.objects.filter(project=obj.id)
