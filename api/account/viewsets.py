@@ -15,6 +15,7 @@ from .paginations import *
 #django-filter
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
+from apps.account.filters import *
 
 import enum
 from apps.utils import *
@@ -252,7 +253,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
     queryset = Partner.objects.all()
     serializer_class = PartnerSerializer
     pagination_class = PartnerPageNumberPagination
-    filter_backends = [filters.SearchFilter,DjangoFilterBackend]
+    filter_backends = [filters.SearchFilter,PartnerFilter]
     filterset_fields = ['possible_set', 'history_set', 'city', 'region', 'category_middle__id','possible_set__id', 'history_set__id']
     search_fields = ['name', 'info_company', 'info_biz', 'deal', 'possible_set__id', 'history_set__id']
 
