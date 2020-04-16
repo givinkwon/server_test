@@ -28,6 +28,7 @@ class ClientSerializer(serializers.ModelSerializer):
     request_set = RequestSerializer(many=True)
     answer_set = AnswerSerializer(many=True)
     review_set = ReviewSerializer(many=True)
+    user = PatchUserSerializer()
     class Meta:
         model = Client
         fields = ['user','id','request_set','answer_set','review_set']
