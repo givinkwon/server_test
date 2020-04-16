@@ -169,7 +169,7 @@ class Request(models.Model):
 # ------------------------------------------------------------------
 class Select_save(models.Model):
     request = models.ForeignKey(Request, on_delete=models.CASCADE, verbose_name='의뢰서')
-    category = models.ForeignKey(Develop, on_delete=models.CASCADE, verbose_name='의뢰서')
+    category = models.ForeignKey(Develop, on_delete=models.CASCADE, verbose_name='개발분야')
     question = models.CharField('선택질문', max_length=256, blank=True, null=True)
     answer = models.CharField('선택질문답변', max_length=256, blank=True, null=True)
 

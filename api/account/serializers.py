@@ -36,27 +36,27 @@ class ClientSerializer(serializers.ModelSerializer):
 class PortfolioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Portfolio
-        fields = ['partner','img_portfolio']
+        fields = ['id','partner','img_portfolio','is_main']
 
 class StructureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Structure
-        fields = ['partner','img_structure']
+        fields = ['id','partner','img_structure','is_main']
 
 class MachineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Machine
-        fields = ['partner','img_machine']
+        fields = ['id','partner','img_machine','is_main']
 
 class CertificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Certification
-        fields = ['partner','img_certification']
+        fields = ['id','partner','img_certification','is_main']
 
 class ProcessSerializer(serializers.ModelSerializer):
     class Meta:
         model = Process
-        fields = ['partner','img_process']
+        fields = ['id','partner','img_process','is_main']
 
 class PartnerSerializer(serializers.ModelSerializer):
     avg_price_score = serializers.SerializerMethodField()

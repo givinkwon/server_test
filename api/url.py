@@ -16,7 +16,10 @@ router.register('users', view_account.UserViewSet)
 router.register('client', view_account.ClientViewSet)
 router.register('partner', view_account.PartnerViewSet)
 router.register('portfolio', view_account.PortfolioViewSet)
-
+router.register('structure', view_account.StructureViewSet)
+router.register('machine', view_account.MachineViewSet)
+router.register('certification', view_account.CertificationViewSet)
+router.register('process', view_account.ProcessViewSet)
 #board
 router.register('notice', view_board.NoticeViewSet)
 router.register('magazine', view_board.MagazineViewSet)
