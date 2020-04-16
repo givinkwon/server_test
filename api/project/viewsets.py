@@ -134,6 +134,13 @@ class SelectViewSet(viewsets.ModelViewSet):
                               'data': DevelopSerializer(develop_instances, many=True).data
                               })
 
+class Select_saveViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Select_save.objects.all()
+    serializer_class = Select_saveSerializer
+
 class CommonViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.

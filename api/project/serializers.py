@@ -31,6 +31,11 @@ class SelectSerializer(serializers.ModelSerializer):
         model = Select
         fields = ['id', 'category', 'content_set']
 
+class Select_saveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Select_save
+        fields = ['id', 'category', 'request', 'question', 'answer']
+
 class CommonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Common

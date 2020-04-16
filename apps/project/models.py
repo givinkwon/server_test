@@ -167,7 +167,7 @@ class Request(models.Model):
 # Model   : Select_save
 # Description : 의로서에 저장되는 선택질문/답변 모델
 # ------------------------------------------------------------------
-class select_save(models.Model):
+class Select_save(models.Model):
     request = models.ForeignKey(Request, on_delete=models.CASCADE, verbose_name='의뢰서')
     category = models.ForeignKey(Develop, on_delete=models.CASCADE, verbose_name='의뢰서')
     question = models.CharField('선택질문', max_length=256, blank=True, null=True)
