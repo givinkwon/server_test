@@ -79,7 +79,7 @@ class PartnerSerializer(serializers.ModelSerializer):
     process_set = ProcessSerializer(many=True)
     class Meta:
         model = Partner
-        fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category', 'product_possible', 'product_history', 'coin','avg_score',
+        fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category_middle','category', 'possible_set','product_possible', 'history_set', 'product_history', 'coin','avg_score',
                   'avg_price_score','avg_time_score','avg_talk_score','avg_expert_score','avg_result_score', 'answer_set','review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set', 'meeting_count' ]
 
     def get_avg_price_score(self,obj):
