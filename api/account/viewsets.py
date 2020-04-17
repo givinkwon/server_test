@@ -553,6 +553,8 @@ class PortfolioViewSet(viewsets.ModelViewSet):
     """
     queryset = Portfolio.objects.all()
     serializer_class = PortfolioSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'is_main', 'partner']
 
 class StructureViewSet(viewsets.ModelViewSet):
     """
@@ -560,6 +562,8 @@ class StructureViewSet(viewsets.ModelViewSet):
     """
     queryset = Structure.objects.all()
     serializer_class = StructureSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'is_main', 'partner']
 
 class MachineViewSet(viewsets.ModelViewSet):
     """
@@ -567,6 +571,8 @@ class MachineViewSet(viewsets.ModelViewSet):
     """
     queryset = Machine.objects.all()
     serializer_class = MachineSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'is_main', 'partner']
 
 class CertificationViewSet(viewsets.ModelViewSet):
     """
@@ -574,6 +580,8 @@ class CertificationViewSet(viewsets.ModelViewSet):
     """
     queryset = Certification.objects.all()
     serializer_class = CertificationSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'is_main', 'partner']
 
 class ProcessViewSet(viewsets.ModelViewSet):
     """
@@ -581,9 +589,5 @@ class ProcessViewSet(viewsets.ModelViewSet):
     """
     queryset = Process.objects.all()
     serializer_class = ProcessSerializer
-#class GroupViewSet(viewsets.ModelViewSet):
-#    """
-#    API endpoint that allows groups to be viewed or edited.
-#    """
-#    queryset = Group.objects.all()
-#    serializer_class = GroupSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'is_main', 'partner']
