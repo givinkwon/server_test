@@ -140,6 +140,9 @@ class Select_saveViewSet(viewsets.ModelViewSet):
     """
     queryset = Select_save.objects.all()
     serializer_class = Select_saveSerializer
+    filter_backends = [DjangoFilterBackend]
+    # filters.SearchFilter]
+    filterset_fields = ['request','category']
 
 class CommonViewSet(viewsets.ModelViewSet):
     """
