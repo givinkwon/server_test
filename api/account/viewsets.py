@@ -531,7 +531,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
         partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
         #리스트화
         partner_phone_list = list(partner_phone_list)
-        print(len(partner_phone_list))
+        #print(len(partner_phone_list))
 
         if len(partner_phone_list) == 0:
             partner_qs1 = Partner.objects.filter()
@@ -541,6 +541,9 @@ class PartnerViewSet(viewsets.ModelViewSet):
             partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
             # 리스트화
             partner_phone_list = list(partner_phone_list)
+        #공백제거
+        partner_phone_list = list(filter(None, partner_phone_list))
+        #print(partner_phone_list)
 
         response = kakaotalk.send(partner_phone_list)
         a = response.json()
