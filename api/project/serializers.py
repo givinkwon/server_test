@@ -21,6 +21,7 @@ class RequestSerializer(serializers.ModelSerializer):
         return 0
 
 class ContentSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Content
         fields = ['id', 'request', 'content1', 'content2', 'content3', 'content4']
@@ -29,7 +30,7 @@ class SelectSerializer(serializers.ModelSerializer):
     content_set = ContentSerializer(many=True)
     class Meta:
         model = Select
-        fields = ['id', 'category', 'content_set']
+        fields = ['id', 'category', 'request', 'content_set']
 
 class Select_saveSerializer(serializers.ModelSerializer):
     class Meta:

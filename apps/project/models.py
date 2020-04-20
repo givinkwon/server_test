@@ -214,7 +214,7 @@ class Content(models.Model):
         verbose_name_plural = '     선택질문컨텐츠'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.request)
 
 # ------------------------------------------------------------------
 # Model   : Common
