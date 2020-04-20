@@ -116,8 +116,8 @@ class Request(models.Model):
     category = models.ManyToManyField(Develop, verbose_name='의뢰분야')
     #공통질문
     name = models.CharField('의뢰제품명', max_length=256, blank=True, null=True)
-    price = models.IntegerField('희망비용', default=0)
-    day = models.IntegerField('희망프로젝트기간(일)', default=0)
+    price = models.CharField('희망비용', max_length=256, blank=True, null=True)
+    day = models.CharField('희망프로젝트기간(일)', max_length=256, blank=True, null=True)
     content = RichTextUploadingField('의뢰내용', null=True)
     file = models.FileField('의뢰파일', upload_to=request_update_filename, blank=True, null=True)
     #등록일자 기록용
@@ -223,8 +223,8 @@ class Content(models.Model):
 class Common(models.Model):
     # 공통질문
     product = models.CharField('의뢰제품명', max_length=256, blank=True, null=True)
-    price = models.IntegerField('희망비용', default=0)
-    day = models.IntegerField('희망프로젝트기간(일)', default=0)
+    price = models.CharField('희망비용', max_length=256, blank=True, null=True)
+    day = models.CharField('희망프로젝트기간(일)', max_length=256, blank=True, null=True)
     content = RichTextUploadingField('의뢰내용')
     file = models.FileField('의뢰파일', upload_to=request_update_filename, blank=True, null=True)
 
