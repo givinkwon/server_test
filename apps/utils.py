@@ -9,6 +9,7 @@ import uuid
 import enum
 import requests
 import json
+import time
 class ResponseCode(enum.Enum):
 
     SUCCESS = 0
@@ -73,9 +74,9 @@ class Util():
 class kakaotalk(object):
 # 빈 전화번호 / 이상한 전화번호는 에러뜹니다.
         def send(phone_list):
-           # print(phone_list)
+            # print(phone_list)
             for phone in phone_list:
-           #  print(phone)
+             #print(phone)
              url = 'https://api.bizppurio.com/v1/message'
              data = {'account': 'boltnnut_korea', 'refkey': 'bolt123', 'type': 'at', 'from': '01028741248',
                      'to': phone, 'content': {
