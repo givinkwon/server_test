@@ -191,7 +191,6 @@ class Partner(models.Model):
     # __len__
     #
 
-    #
 
     def __str__(self):
         return str(self.id)
