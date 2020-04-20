@@ -189,7 +189,9 @@ class Partner(models.Model):
     # str(instance) -> str(id)
     # objcet 객체에 미리 정의됨
     # __len__
-    # __lt__
+    #
+
+    #
 
     def __str__(self):
         return str(self.id)
