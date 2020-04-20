@@ -118,7 +118,7 @@ class Request(models.Model):
     name = models.CharField('의뢰제품명', max_length=256, blank=True, null=True)
     price = models.IntegerField('희망비용', default=0)
     day = models.IntegerField('희망프로젝트기간(일)', default=0)
-    content = RichTextUploadingField('의뢰내용')
+    content = RichTextUploadingField('의뢰내용', null=True)
     file = models.FileField('의뢰파일', upload_to=request_update_filename, blank=True, null=True)
     #등록일자 기록용
     created_at = models.DateTimeField('등록일자', auto_now_add=True)
