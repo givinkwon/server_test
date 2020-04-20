@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3aa58339-96c9-4431-bdd4-e91068462e4c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/apps/account/filters.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/account/filters.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/account/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/account/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/account/viewsets.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/account/viewsets.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/venv/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,8 +20,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/project/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="119" column="79" selection-start-line="119" selection-start-column="79" selection-end-line="119" selection-end-column="79" />
+            <state relative-caret-position="182">
+              <caret line="118" column="9" selection-start-line="118" selection-start-column="4" selection-end-line="118" selection-end-column="9" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -30,12 +30,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/project/admin.py">
+        <entry file="file://$PROJECT_DIR$/apps/project/migrations/0010_auto_20200420_1256.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="46" column="34" lean-forward="true" selection-start-line="46" selection-start-column="34" selection-end-line="46" selection-end-column="34" />
+            <state relative-caret-position="-225" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/kakaotalk/viewsets.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="250">
+              <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
               <folding>
-                <element signature="e#0#32#0" expanded="true" />
+                <element signature="e#0#33#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -56,7 +63,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/account/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="743">
+            <state relative-caret-position="893">
               <caret line="192" selection-start-line="192" selection-end-line="192" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
@@ -74,11 +81,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="256" column="112" selection-start-line="256" selection-start-column="112" selection-end-line="256" selection-end-column="112" />
+            <state relative-caret-position="200">
+              <caret line="543" column="10" selection-start-line="543" selection-start-column="10" selection-end-line="543" selection-end-column="10" />
               <folding>
                 <element signature="e#0#68#0" expanded="true" />
               </folding>
@@ -86,7 +93,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/account/filters.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="206">
@@ -105,18 +112,6 @@
               <caret line="83" selection-start-line="83" selection-end-line="83" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/category/viewsets.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="39">
-              <caret line="44" column="59" selection-start-line="44" selection-start-column="59" selection-end-line="44" selection-end-column="59" />
-              <folding>
-                <element signature="e#46#80#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -146,7 +141,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>comm</find>
       <find>_qs</find>
       <find>Re</find>
       <find>py</find>
@@ -176,6 +170,7 @@
       <find>anno</find>
       <find>Request</find>
       <find>select</find>
+      <find>price</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -188,7 +183,6 @@
         <option value="$PROJECT_DIR$/apps/kakaotalk/models.py" />
         <option value="$PROJECT_DIR$/api/kakaotalk/serializers.py" />
         <option value="$PROJECT_DIR$/apps/kakaotalk/admin.py" />
-        <option value="$PROJECT_DIR$/api/kakaotalk/viewsets.py" />
         <option value="$PROJECT_DIR$/apps/payment/import.py" />
         <option value="$PROJECT_DIR$/apps/payment/iamport.py" />
         <option value="$PROJECT_DIR$/templates/cart/cart.detail.html" />
@@ -211,7 +205,6 @@
         <option value="$PROJECT_DIR$/apps/project/migrations/0001_initial.py" />
         <option value="$PROJECT_DIR$/server/settings.py" />
         <option value="$PROJECT_DIR$/api/url.py" />
-        <option value="$PROJECT_DIR$/api/account/viewsets.py" />
         <option value="$PROJECT_DIR$/api/account/serializers.py" />
         <option value="$PROJECT_DIR$/apps/project/admin.py" />
         <option value="$PROJECT_DIR$/api/project/serializers.py" />
@@ -219,6 +212,8 @@
         <option value="$PROJECT_DIR$/apps/project/models.py" />
         <option value="$PROJECT_DIR$/apps/account/models.py" />
         <option value="$PROJECT_DIR$/apps/account/filters.py" />
+        <option value="$PROJECT_DIR$/api/kakaotalk/viewsets.py" />
+        <option value="$PROJECT_DIR$/api/account/viewsets.py" />
       </list>
     </option>
   </component>
@@ -453,7 +448,7 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1571618" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1571618" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -464,7 +459,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32991204" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32991204" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49933687" visible="true" weight="0.3431085" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49933687" visible="true" weight="0.3431085" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5006631" side_tool="true" weight="0.29032257" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32991204" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -494,17 +489,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/apps/payment/iamport.py" />
-    <entry file="file://$PROJECT_DIR$/api/kakaotalk/viewsets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="20" column="32" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/payment.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1125">
@@ -815,16 +799,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/project/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="119" column="79" selection-start-line="119" selection-start-column="79" selection-end-line="119" selection-end-column="79" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/account/serializers.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="268">
@@ -835,9 +809,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/apps/account/filters.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="38" column="47" lean-forward="true" selection-start-line="38" selection-start-column="47" selection-end-line="38" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/apps/account/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="743">
+        <state relative-caret-position="893">
           <caret line="192" selection-start-line="192" selection-end-line="192" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
@@ -845,22 +829,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
+    <entry file="file://$PROJECT_DIR$/apps/project/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="256" column="112" selection-start-line="256" selection-start-column="112" selection-end-line="256" selection-end-column="112" />
+        <state relative-caret-position="182">
+          <caret line="118" column="9" selection-start-line="118" selection-start-column="4" selection-end-line="118" selection-end-column="9" />
           <folding>
-            <element signature="e#0#68#0" expanded="true" />
+            <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/account/filters.py">
+    <entry file="file://$PROJECT_DIR$/apps/project/migrations/0010_auto_20200420_1256.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="38" column="47" lean-forward="true" selection-start-line="38" selection-start-column="47" selection-end-line="38" selection-end-column="47" />
+        <state relative-caret-position="-225" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/kakaotalk/viewsets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
           <folding>
-            <element signature="e#0#21#0" expanded="true" />
+            <element signature="e#0#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="543" column="10" selection-start-line="543" selection-start-column="10" selection-end-line="543" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#68#0" expanded="true" />
           </folding>
         </state>
       </provider>
