@@ -545,6 +545,9 @@ class PartnerViewSet(viewsets.ModelViewSet):
         partner_phone_list = list(filter(None, partner_phone_list))
         #print(partner_phone_list)
 
+        for list in partner_phone_list:
+            kakaotalk.send(list)
+
         response = kakaotalk.send(partner_phone_list)
         a = response.json()
         Sendkakao.objects.create(
