@@ -43,4 +43,4 @@ class DevelopbigSerializer(serializers.ModelSerializer):
     develop_set = DevelopSerializer(many=True)
     class Meta:
         model = Developbig
-        fields = ['id','maincategory', 'develop_set']
+        fields = ['id','maincategory', 'maincategory_img', 'develop_set']
