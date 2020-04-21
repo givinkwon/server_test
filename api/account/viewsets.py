@@ -108,6 +108,24 @@ class UserViewSet(viewsets.GenericViewSet):
                 'User': PatchUserSerializer(user).data,
                 'Partner': PartnerSerializer(partner, many=True).data,
             }})
+
+
+    @action(detail=False, methods=('PATCH',), url_path='deactivate', http_method_names=('patch',),  permission_classes=[IsAuthenticated], )
+    def deactivate(self, request, *args, **kwargs):
+        """
+        회원 탈퇴
+        """
+        user = request.user
+        password = request.data.get('password')
+        if not authenticate(username=user.username, password=password):
+            return Response(
+                        status=status.HTTP_400_BAD_REQUEST,
+                        data={'message': '비밀번호가 맞지 않습니다.'},
+                    )
+        user.is_active = False
+        user.save()
+
+        return Response()
 #    @swagger_auto_schema(request_body=openapi.Schema(
 #        type=openapi.TYPE_OBJECT,
 #        properties={
@@ -189,7 +207,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Client.objects.all()
+    queryset = Client.objects.filter(user__is_active=True)
         #.order_by('-date_joined')
     serializer_class = ClientSerializer
     pagination_class = ClientPageNumberPagination
@@ -250,7 +268,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    queryset = Partner.objects.all()
+    queryset = Partner.objects.filter(user__is_active=True)
     serializer_class = PartnerSerializer
     pagination_class = PartnerPageNumberPagination
     filter_backends = [filters.SearchFilter,PartnerFilter]
