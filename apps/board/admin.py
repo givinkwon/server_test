@@ -10,4 +10,4 @@ class NoticeAdmin(admin.ModelAdmin):
 
 @admin.register(Magazine)
 class MagazineAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'content', 'is_top', 'created_at', 'link']
+    list_display = ['id', 'title', 'image', 'is_top', 'created_at', 'link']

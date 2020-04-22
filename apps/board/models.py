@@ -74,6 +74,13 @@ def subclass_update_filename(instance, filename):
     format = uuid.uuid4().hex + "_subclass" + "." + ext
     return os.path.join(path, format)
 
+def magazine_update_filename(instance, filename):
+    ext = filename.split('.')[-1]
+    now = datetime.datetime.now()
+    path = "magazine/" + str(now.year) + "/" + str(now.month) + "/" + str(now.day)
+    format = uuid.uuid4().hex + "_magazine" + "." + ext
+    return os.path.join(path, format)
+
 
 # ------------------------------------------------------------------
 # Model   : Notice
@@ -101,7 +108,7 @@ class Notice(models.Model):
 class Magazine(models.Model):
 
     title = models.CharField('제목', max_length=40)
-    content = RichTextUploadingField('내용')
+    image = models.ImageField('매거진 이미지', upload_to=magazine_update_filename, null=True)
     is_top = models.BooleanField('상단고정여부', default=False)
     created_at = models.DateTimeField('등록일자', auto_now_add=True)
     link = models.CharField('링크', max_length=300)
