@@ -241,7 +241,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
         # 공백제거
         client_phone_list = list(filter(None, client_phone_list))
         print(client_phone_list)
-        response = kakaotalk.send(client_phone_list)
+   #     response = kakaotalk.send(client_phone_list)
 
         Sendkakao.objects.create(
             status_code=response.status_code,
