@@ -179,18 +179,14 @@ class Partner(models.Model):
     #회원가입 시 파일
     file = models.FileField('회사소개 및 포토폴리오파일', upload_to=partner_update_filename, blank=True, null=True)
     avg_score = models.DecimalField('평균점수', default=0, max_digits=5, decimal_places=2, null=True)
+    # 미팅 전환율 - 매칭 알고리즘
+    success = models.IntegerField('미팅 성공', default=0, null=True)
+    fail = models.IntegerField('미팅 실패', default=0, null=True)
+    meeting = models.FloatField('미팅 전환율', default=0, null=True)
+
     class Meta:
         verbose_name = '파트너'
         verbose_name_plural = '파트너'
-
-    @property
-    def count_meeting(self):
-        self.an
-    # str(instance) -> str(id)
-    # objcet 객체에 미리 정의됨
-    # __len__
-    #
-
 
     def __str__(self):
         return str(self.id)

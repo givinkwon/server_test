@@ -157,7 +157,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    orderbyList = ['-partner__avg_score', 'id']
+    orderbyList = ['-partner__avg_score', '-partner__meeting','id']
     queryset = Answer.objects.all().order_by(*orderbyList)
     serializer_class = AnswerSerializer
     pagination_class = AnswerPageNumberPagination

@@ -16,10 +16,10 @@ class RequestFilter(filters.BaseFilterBackend): # 파라미터 여러 개 보내
 
           if  'product__id' in data_dict:
                 data = data['product__id'].split(',')
-                return queryset.filter(product__in=data)
+                return queryset.filter(product__in=data).distinct('id')
 
           elif 'client__id' in data_dict:
                    data = data['client__id'].split(',')
-                   return queryset.filter(client__in=data)
+                   return queryset.filter(client__in=data).distinct('id')
 
           return queryset.filter()

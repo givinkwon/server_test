@@ -69,6 +69,7 @@ class PartnerSerializer(serializers.ModelSerializer):
     product_history = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
     meeting_count = serializers.SerializerMethodField()
+    meeting = serializers.SerializerMethodField()
     user = PatchUserSerializer()
     answer_set = AnswerSerializer(many=True)
     review_set = ReviewSerializer(many=True)
@@ -80,7 +81,7 @@ class PartnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Partner
         fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category_middle','category', 'possible_set','product_possible', 'history_set', 'product_history', 'coin','avg_score',
-                  'avg_price_score','avg_time_score','avg_talk_score','avg_expert_score','avg_result_score', 'answer_set','review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set', 'meeting_count' ]
+                  'avg_price_score','avg_time_score','avg_talk_score','avg_expert_score','avg_result_score', 'answer_set','review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set', 'success', 'fail', 'meeting_count', 'meeting']
 
     def get_avg_price_score(self,obj):
         a = Review.objects.filter(partner=obj.id).aggregate(Avg('price_score'))
@@ -149,3 +150,19 @@ class PartnerSerializer(serializers.ModelSerializer):
     #            meeting_count += 1
     #    return meeting_count
 
+    def get_meeting(self, obj):
+        meeting_count = (obj.success + obj.fail)
+        # Serializer의 처음 파라미터에는 model(row)이 와야함.
+        if meeting_count == 0:
+            if not obj.success == 0:  # 미팅 성공이 1회 이상인 경우
+                obj.meeting = 100
+            else:  # 미팅 성공이 0회인 경우
+                obj.meeting = 0
+        else:
+            obj.meeting = obj.success / meeting_count
+
+        meeting_percent = obj.meeting
+        print(obj.meeting)
+        obj.save()
+
+        return meeting_percent

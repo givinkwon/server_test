@@ -609,6 +609,59 @@ class PartnerViewSet(viewsets.ModelViewSet):
                     'response': response.json(),
                 }})
 
+    @swagger_auto_schema(request_body=PartnerSerializer)
+    @action(detail=False, methods=('PATCH',), url_path='success', http_method_names=('patch',))
+    def meeting_success(self, request, *args, **kwargs):
+        partner_id = request.data.get('partner_id')
+        partner_data = Partner.objects.get(id=partner_id)
+        # Serializer의 처음 파라미터에는 model(row)이 와야함.
+        partner_data.success += 1
+        partner_data.save()
+
+        return Response(data={'code': ResponseCode.SUCCESS.value,
+                              'message': '파트너 미팅 성공 횟수가 추가되었습니다.',
+                              'data': PartnerSerializer(partner_data).data,
+                              }
+                        )
+
+    @swagger_auto_schema(request_body=PartnerSerializer)
+    @action(detail=False, methods=('PATCH',), url_path='fail', http_method_names=('patch',))
+    def meeting_fail(self, request, *args, **kwargs):
+        partner_id = request.data.get('partner_id')
+        partner_data = Partner.objects.get(id=partner_id)
+        # Serializer의 처음 파라미터에는 model(row)이 와야함.
+        partner_data.fail += 1
+        partner_data.save()
+
+        return Response(data={'code': ResponseCode.SUCCESS.value,
+                              'message': '파트너 미팅 실패 횟수가 추가되었습니다.',
+                              'data': PartnerSerializer(partner_data).data,
+                              }
+                        )
+
+    @swagger_auto_schema(request_body=PartnerSerializer)
+    @action(detail=False, methods=('GET',), url_path='meeting', http_method_names=('get',))
+    def meeting_percent(self, request, *args, **kwargs):
+        partner_id = request.data.get('partner_id')
+        partner_data = Partner.objects.get(id=partner_id)
+        meeting_count = (partner_data.success + partner_data.fail)
+        # Serializer의 처음 파라미터에는 model(row)이 와야함.
+        if meeting_count == 0:
+           if not partner_data.success == 0: # 미팅 성공이 1회 이상인 경우
+                partner_data.meeting = 100
+           else:                            # 미팅 성공이 0회인 경우
+                partner_data.meeting = 0
+        else:
+            partner_data.meeting = partner_data.success / meeting_count
+
+        partner_data.save()
+
+        return Response(data={'code': ResponseCode.SUCCESS.value,
+                              'message': '파트너의 미팅 전환 성공율 입니다.',
+                              'data': PartnerSerializer(partner_data).data,
+                              }
+                        )
+
 class PortfolioViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.

@@ -16,15 +16,15 @@ class PartnerFilter(filters.BaseFilterBackend): # 파라미터 여러 개 보내
 
           if  'region' in data_dict:
                 data = data['region'].split(',')
-                return queryset.filter(region__in=data)
+                return queryset.filter(region__in=data).distinct('id')
 
           elif 'city' in data_dict:
                    data = data['city'].split(',')
-                   return queryset.filter(city__in=data)
+                   return queryset.filter(city__in=data).distinct('id')
 
           elif 'category_middle__id' in data_dict:
                    data = data['category_middle__id'].split(',')
-                   return queryset.filter(category_middle__in=data)
+                   return queryset.filter(category_middle__in=data).distinct('id')
 
         #  elif 'possible_set' in data_dict:
         #           data = data['possible_set'].split(',')
@@ -32,7 +32,7 @@ class PartnerFilter(filters.BaseFilterBackend): # 파라미터 여러 개 보내
 
           elif 'possible_set__id' in data_dict:
                    data = data['possible_set__id'].split(',')
-                   return queryset.filter(possible_set__in=data)
+                   return queryset.filter(possible_set__in=data).distinct('id')
 
         #  elif 'history_set' in data_dict:
         #           data = data['history_set'].split(',')
@@ -40,6 +40,6 @@ class PartnerFilter(filters.BaseFilterBackend): # 파라미터 여러 개 보내
 
           elif 'history_set__id' in data_dict:
                    data = data['history_set__id'].split(',')
-                   return queryset.filter(history_set__in=data)
+                   return queryset.filter(history_set__in=data).distinct('id')
 
           return queryset.filter()
