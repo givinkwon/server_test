@@ -2,6 +2,10 @@
 from apps.board.models import *
 from rest_framework import viewsets
 from .serializers import *
+#django-filter
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
+from apps.account.filters import *
 
 class NoticeViewSet(viewsets.ModelViewSet):
     """
@@ -9,6 +13,8 @@ class NoticeViewSet(viewsets.ModelViewSet):
     """
     queryset = Notice.objects.all()
     serializer_class = NoticeSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['is_top']
 
 class MagazineViewSet(viewsets.ModelViewSet):
     """
@@ -16,3 +22,5 @@ class MagazineViewSet(viewsets.ModelViewSet):
     """
     queryset = Magazine.objects.all()
     serializer_class = MagazineSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['is_top']

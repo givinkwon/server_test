@@ -226,6 +226,15 @@ class AnswerViewSet(viewsets.ModelViewSet):
 #                              'data': AnswerSerializer(answer, many=True).data
 #                              })
 
+   # @swagger_auto_schema(request_body=AnswerSerializer)
+   # @action(detail=False, methods=('POST',), url_path='kakao', http_method_names=('post',),)
+   # def kakao_client(self, request, *args, **kwargs):  # 클라이언트한테 제안서 등록될 때 카카오톡 보내기
+   #     client = request.data.get('client')
+   #     client_qs = Client.objects.filter(client = client)
+   #     client_phone_list = client_qs_all.values_list('user__phone', flat=True)
+   #     print(client_qs)
+   #     print(client_phone_list)
+
 class ReviewViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
