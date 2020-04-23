@@ -15,6 +15,8 @@ class NoticeViewSet(viewsets.ModelViewSet):
     serializer_class = NoticeSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['is_top']
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = '__all__'
 
 class MagazineViewSet(viewsets.ModelViewSet):
     """
@@ -24,3 +26,5 @@ class MagazineViewSet(viewsets.ModelViewSet):
     serializer_class = MagazineSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['is_top']
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = '__all__'
