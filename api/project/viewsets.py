@@ -228,7 +228,6 @@ class AnswerViewSet(viewsets.ModelViewSet):
 #                              'data': AnswerSerializer(answer, many=True).data
 #                              })
 
-    @swagger_auto_schema(request_body=AnswerSerializer)
     @action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
     def kakao_client(self, request, *args, **kwargs):  # 클라이언트한테 제안서 등록될 때 카카오톡 보내기
         client = request.data.get('client')
@@ -258,50 +257,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
                 'response': response.json(),
             }})
 
-    @swagger_auto_schema(request_body=AnswerSerializer)
-    @action(detail=False, methods=('POST',), url_path='kakaotalk2', http_method_names=('post',), )
-    def request_kakaotalk(self, request, *args, **kwargs):  # 의뢰서 등록 시 적합한 파트너에게 카카오톡 알림
-        #  subclass = "5"
-        subclass = request.data.get('subclass')
-        #  print(subclass)
-        #  print(Partner.objects.all().values_list('possible_set', flat=True))
-        #  print(Partner.objects.filter(possible_set = "5"))
-        partner_qs1 = Partner.objects.filter(possible_set=subclass)
-        partner_qs2 = Partner.objects.filter(history_set=subclass)
-        partner_qs_all = partner_qs1.union(partner_qs2)
-        # query_set value 가져오기
-        partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
-        # 리스트화
-        partner_phone_list = list(partner_phone_list)
-        # print(len(partner_phone_list))
 
-        if len(partner_phone_list) == 0:
-            partner_qs1 = Partner.objects.filter()
-            partner_qs2 = Partner.objects.filter()
-            partner_qs_all = partner_qs1.union(partner_qs2)
-            # query_set value 가져오기
-            partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
-            # 리스트화
-            partner_phone_list = list(partner_phone_list)
-        # 공백제거
-        partner_phone_list = list(filter(None, partner_phone_list))
-        print(partner_phone_list)
-        response = kakaotalk.send(partner_phone_list)
-        a = response.json()
-        Sendkakao.objects.create(
-            status_code=response.status_code,
-            description=response.json()['description'],
-            refkey=response.json()['refkey'],
-            messagekey=response.json()['messagekey'],
-        )
-
-        return Response(data={
-            'code': ResponseCode.SUCCESS.value,
-            'message': '발송에 성공하였습니다.',
-            'data': {
-                'status_code': response.status_code,
-                'response': response.json(),
-            }})
 class ReviewViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
