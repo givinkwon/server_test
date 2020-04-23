@@ -107,8 +107,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/project/viewsets.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="107">
-              <caret line="231" column="102" selection-start-line="231" selection-start-column="102" selection-end-line="231" selection-end-column="102" />
+            <state relative-caret-position="182">
+              <caret line="231" column="84" selection-start-line="231" selection-start-column="84" selection-end-line="231" selection-end-column="84" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
               </folding>
@@ -865,8 +865,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/project/viewsets.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
-          <caret line="231" column="102" selection-start-line="231" selection-start-column="102" selection-end-line="231" selection-end-column="102" />
+        <state relative-caret-position="182">
+          <caret line="231" column="84" selection-start-line="231" selection-start-column="84" selection-end-line="231" selection-end-column="84" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
