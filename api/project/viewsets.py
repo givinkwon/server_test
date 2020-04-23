@@ -228,36 +228,6 @@ class AnswerViewSet(viewsets.ModelViewSet):
 #                              'data': AnswerSerializer(answer, many=True).data
 #                              })
 
-    @action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
-    def kakao_client(self, request, *args, **kwargs):  # 클라이언트한테 제안서 등록될 때 카카오톡 보내기
-        client = request.data.get('client')
-        client_qs = Client.objects.filter(id = client)
-        client_phone_list = client_qs.values_list('user__phone', flat=True)
-        #print(client_qs)
-        #print(client_phone_list)
-        # 리스트화
-        client_phone_list = list(client_phone_list)
-        # 공백제거
-        client_phone_list = list(filter(None, client_phone_list))
-        print(client_phone_list)
-        response = kakaotalk.send(client_phone_list)
-
-        Sendkakao.objects.create(
-            status_code=response.status_code,
-            description=response.json()['description'],
-            refkey=response.json()['refkey'],
-            messagekey=response.json()['messagekey'],
-        )
-
-        return Response(data={
-            'code': ResponseCode.SUCCESS.value,
-            'message': '발송에 성공하였습니다.',
-            'data': {
-                'status_code': response.status_code,
-                'response': response.json(),
-            }})
-
-
 class ReviewViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
