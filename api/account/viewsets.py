@@ -277,7 +277,7 @@ class ClientViewSet(viewsets.ModelViewSet):
         client_phone_list = list(filter(None, client_phone_list))
         #print(client_phone_list)
         response = kakaotalk_request.send(client_phone_list)
-
+        print(response)
         Sendkakao.objects.create(
             status_code=response.status_code,
             description=response.json()['description'],

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3aa58339-96c9-4431-bdd4-e91068462e4c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/account/viewsets.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/account/viewsets.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apps/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/utils.py" afterDir="false" />
     </list>
@@ -21,8 +20,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="277" column="9" selection-start-line="277" selection-start-column="9" selection-end-line="277" selection-end-column="9" />
+            <state relative-caret-position="445">
+              <caret line="279" column="22" selection-start-line="279" selection-start-column="22" selection-end-line="279" selection-end-column="22" />
               <folding>
                 <element signature="e#0#68#0" expanded="true" />
               </folding>
@@ -45,8 +44,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/apps/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1300">
-              <caret line="94" column="26" selection-start-line="94" selection-start-column="26" selection-end-line="94" selection-end-column="26" />
+            <state relative-caret-position="528">
+              <caret line="120" column="25" selection-start-line="120" selection-start-column="25" selection-end-line="120" selection-end-column="25" />
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
               </folding>
@@ -446,7 +445,7 @@
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.124801695" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.124801695" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -457,7 +456,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32991204" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32991204" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49933687" visible="true" weight="0.19732441" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49933687" visible="true" weight="0.19732441" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5006631" side_tool="true" weight="0.29032257" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32991204" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -860,8 +859,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="277" column="9" selection-start-line="277" selection-start-column="9" selection-end-line="277" selection-end-column="9" />
+        <state relative-caret-position="445">
+          <caret line="279" column="22" selection-start-line="279" selection-start-column="22" selection-end-line="279" selection-end-column="22" />
           <folding>
             <element signature="e#0#68#0" expanded="true" />
           </folding>
@@ -870,8 +869,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1300">
-          <caret line="94" column="26" selection-start-line="94" selection-start-column="26" selection-end-line="94" selection-end-column="26" />
+        <state relative-caret-position="528">
+          <caret line="120" column="25" selection-start-line="120" selection-start-column="25" selection-end-line="120" selection-end-column="25" />
           <folding>
             <element signature="e#0#52#0" expanded="true" />
           </folding>
