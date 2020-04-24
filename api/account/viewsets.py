@@ -543,6 +543,23 @@ class PartnerViewSet(viewsets.ModelViewSet):
    #                           }
    #                     )
 
+
+    @swagger_auto_schema(request_body=PartnerSerializer)
+    @action(detail=False, methods=('GET',), url_path='request-partner', http_method_names=('get',),)
+    def find_partner(self, request, *args, **kwargs):  # 의뢰서 완성 시에 적합한 파트너 리스트 추천
+        subclass = request.data.get('subclass')
+        #partner_qs
+        partner1_qs = Partner.objects.filter(possible_set = subclass)
+        partner2_qs = Partner.objects.filter(history_set = subclass)
+        #query_set 합치기
+        partner_qs = partner1_qs.union(partner2_qs)
+
+        return Response(data={'code': ResponseCode.SUCCESS.value,
+                              'message': '해당 의뢰서에 적합한 파트너 리스트입니다.',
+                              'data': PartnerSerializer(partner_qs, many=True).data
+                              }
+                        )
+
     @swagger_auto_schema(request_body=PartnerSerializer)
     @action(detail=False, methods=['PATCH', ], url_path='coin', http_method_names=('patch',), permission_classes=(IsAuthenticated,),)
     def update_coin(self, request, *args, **kwargs):  # 코인을 결제했을 때 코인 추가
