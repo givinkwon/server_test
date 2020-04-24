@@ -92,6 +92,7 @@ class kakaotalk(object):
                              }
                          ]}}}
              headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+             time.sleep(5)
              response = requests.post(url, data=json.dumps(data), headers=headers)
             return response
 
@@ -117,5 +118,6 @@ class kakaotalk_request(object):
                              }
                          ]}}}
              headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+             time.sleep(5)
              response = requests.post(url, data=json.dumps(data), headers=headers)
             return response

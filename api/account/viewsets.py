@@ -275,7 +275,7 @@ class ClientViewSet(viewsets.ModelViewSet):
         client_phone_list = list(client_phone_list)
         # 공백제거
         client_phone_list = list(filter(None, client_phone_list))
-        print(client_phone_list)
+        #print(client_phone_list)
         response = kakaotalk_request.send(client_phone_list)
 
         Sendkakao.objects.create(
