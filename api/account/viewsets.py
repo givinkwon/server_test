@@ -549,8 +549,8 @@ class PartnerViewSet(viewsets.ModelViewSet):
     def find_partner(self, request, *args, **kwargs):  # 의뢰서 완성 시에 적합한 파트너 리스트 추천
         subclass = request.data.get('subclass')
         #partner_qs
-        partner1_qs = Partner.objects.filter(possible_set = subclass)
-        partner2_qs = Partner.objects.filter(history_set = subclass)
+        partner1_qs = Partner.objects.filter(possible_set__id = subclass)
+        partner2_qs = Partner.objects.filter(history_set__id = subclass)
         #query_set 합치기
         partner_qs = partner1_qs.union(partner2_qs)
 
