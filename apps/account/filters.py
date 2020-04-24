@@ -15,31 +15,23 @@ class PartnerFilter(filters.BaseFilterBackend): # 파라미터 여러 개 보내
           data_dict = data.dict() # dictionary 화
 
           if  'region' in data_dict:
-                data = data['region'].split(',')
-                return queryset.filter(region__in=data).distinct('id')
+                data2 = data['region'].split(',')
+                queryset = queryset.filter(region__in=data2).distinct('id')
 
-          elif 'city' in data_dict:
-                   data = data['city'].split(',')
-                   return queryset.filter(city__in=data).distinct('id')
+          if 'city' in data_dict:
+                data2 = data['city'].split(',')
+                queryset = queryset.filter(city__in=data2).distinct('id')
 
-          elif 'category_middle__id' in data_dict:
-                   data = data['category_middle__id'].split(',')
-                   return queryset.filter(category_middle__in=data).distinct('id')
+          if 'category_middle__id' in data_dict:
+                data2 = data['category_middle__id'].split(',')
+                queryset = queryset.filter(category_middle__in=data2).distinct('id')
 
-        #  elif 'possible_set' in data_dict:
-        #           data = data['possible_set'].split(',')
-        #           return queryset.filter(category_middle__in=data)
+          if 'possible_set__id' in data_dict:
+                data2 = data['possible_set__id'].split(',')
+                queryset = queryset.filter(possible_set__in=data2).distinct('id')
 
-          elif 'possible_set__id' in data_dict:
-                   data = data['possible_set__id'].split(',')
-                   return queryset.filter(possible_set__in=data).distinct('id')
+          if 'history_set__id' in data_dict:
+                data2 = data['history_set__id'].split(',')
+                queryset = queryset.filter(history_set__in=data2).distinct('id')
 
-        #  elif 'history_set' in data_dict:
-        #           data = data['history_set'].split(',')
-        #           return queryset.filter(category_middle__in=data)
-
-          elif 'history_set__id' in data_dict:
-                   data = data['history_set__id'].split(',')
-                   return queryset.filter(history_set__in=data).distinct('id')
-
-          return queryset.filter()
+          return queryset
