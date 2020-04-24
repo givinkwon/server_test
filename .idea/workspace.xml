@@ -19,8 +19,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="547" column="95" selection-start-line="547" selection-start-column="95" selection-end-line="547" selection-end-column="95" />
+            <state relative-caret-position="137">
+              <caret line="549" column="35" selection-start-line="549" selection-start-column="35" selection-end-line="549" selection-end-column="35" />
               <folding>
                 <element signature="e#0#68#0" expanded="true" />
               </folding>
@@ -442,7 +442,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15649867" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -868,8 +867,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="547" column="95" selection-start-line="547" selection-start-column="95" selection-end-line="547" selection-end-column="95" />
+        <state relative-caret-position="137">
+          <caret line="549" column="35" selection-start-line="549" selection-start-column="35" selection-end-line="549" selection-end-column="35" />
           <folding>
             <element signature="e#0#68#0" expanded="true" />
           </folding>
