@@ -266,7 +266,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     @swagger_auto_schema(request_body=ClientSerializer)
     @action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
     def kakao_client(self, request, *args, **kwargs):  # 클라이언트한테 제안서 등록될 때 카카오톡 보내기
-        client = request.GET['client']
+        client = request.data.get('client')
         client_qs = Client.objects.filter(id=client)
         client_phone_list = client_qs.values_list('user__phone', flat=True)
         # print(client_qs)
