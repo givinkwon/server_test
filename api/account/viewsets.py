@@ -545,12 +545,15 @@ class PartnerViewSet(viewsets.ModelViewSet):
 
 
     @swagger_auto_schema(request_body=PartnerSerializer)
-    @action(detail=False, methods=('GET',), url_path='request-partner', http_method_names=('get',),)
+    @action(detail=False, methods=('POST',), url_path='request-partner', http_method_names=('post',),)
     def find_partner(self, request, *args, **kwargs):  # 의뢰서 완성 시에 적합한 파트너 리스트 추천
         subclass = request.data.get('subclass')
         #partner_qs
+       # print(subclass)
         partner1_qs = Partner.objects.filter(possible_set__id = subclass)
+       # print(partner1_qs)
         partner2_qs = Partner.objects.filter(history_set__id = subclass)
+       # print(partner2_qs)
         #query_set 합치기
         partner_qs = partner1_qs.union(partner2_qs)
 
