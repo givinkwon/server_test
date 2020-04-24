@@ -545,7 +545,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=('GET',), url_path='request', http_method_names=('get',))
     def find_partner(self, request, *args, **kwargs):  # 의뢰서 완성 시에 적합한 파트너 리스트 추천
-        subclass = request.data.GET['subclass']
+        subclass = request.GET['subclass']
 
         partner1_qs = Partner.objects.filter(possible_set__id = subclass)
        # print(partner1_qs)
