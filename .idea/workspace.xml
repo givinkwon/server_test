@@ -43,8 +43,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/apps/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="107" column="118" lean-forward="true" selection-start-line="107" selection-start-column="118" selection-end-line="107" selection-end-column="118" />
+            <state relative-caret-position="375">
+              <caret line="107" column="120" selection-start-line="107" selection-start-column="120" selection-end-line="107" selection-end-column="120" />
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
               </folding>
@@ -868,8 +868,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="107" column="118" lean-forward="true" selection-start-line="107" selection-start-column="118" selection-end-line="107" selection-end-column="118" />
+        <state relative-caret-position="375">
+          <caret line="107" column="120" selection-start-line="107" selection-start-column="120" selection-end-line="107" selection-end-column="120" />
           <folding>
             <element signature="e#0#52#0" expanded="true" />
           </folding>
