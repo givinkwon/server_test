@@ -106,7 +106,7 @@ class kakaotalk_request(object):
              data = {'account': 'boltnnut_korea', 'refkey': 'bolt123', 'type': 'at', 'from': '01028741248',
                      'to': phone, 'content': {
                    'at': {'senderkey': '44e4fdc989b12906c82fc46e428dd91dd99f0d98', 'templatecode': 'answer_to_client',
-                            'message': '고객님의 의뢰에 대한 전문가의 제안서가 도착하였습니다.',
+                            'message': '고객님의 의뢰에 대한 전문가의 제안서가 도착하였습니다.\n\n* 해당 메시지는 고객님께서 요청하신 의뢰에 대한 제안이 있을 경우 발송됩니다'
 
                           'button': [
                                 {
