@@ -183,13 +183,13 @@ REST_FRAMEWORK = {
 
 #장고 이메일 서버
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'rlqls4112@gmail.com'
-EMAIL_HOST_PASSWORD = 'ddkiuebjigyymwkr' #ajumsee12
+EMAIL_HOST_USER = 'boltnnut@boltnnut.com'
+EMAIL_HOST_PASSWORD = '@bolt123' #ajumsee12
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'rlqls4112@gmail.com'
-DEFAULT_TO_EMAIL = 'rlqls4112@gmail.com'
-DEFAULT_ADMIN_EMAIL = 'rlqls4112@gmail.com'
+DEFAULT_FROM_EMAIL = 'boltnnut@boltnnut.com'
+DEFAULT_TO_EMAIL = 'boltnnut@boltnnut.com'
+DEFAULT_ADMIN_EMAIL = 'boltnnut@boltnnut.com'
 
 #S3
 AWS_STORAGE_BUCKET_NAME = 'boltnnut-platform'
