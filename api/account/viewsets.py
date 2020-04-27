@@ -303,7 +303,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
     pagination_class = PartnerPageNumberPagination
     filter_backends = [filters.SearchFilter,PartnerFilter]
     filterset_fields = ['possible_set', 'history_set', 'city', 'region', 'category_middle__id','possible_set__id', 'history_set__id']
-    search_fields = ['name', 'info_company', 'info_biz', 'deal', 'possible_set__subclass', 'history_set__subclass']
+    search_fields = ['name', 'info_company', 'info_biz', 'deal', 'possible_set__subclass', 'history_set__subclass','category_middle__category']
 
     @swagger_auto_schema(request_body=PartnerSerializer)
     @action(detail=False, methods=('POST',), url_path='signup',http_method_names=('post',))
