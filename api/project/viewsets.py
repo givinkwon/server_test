@@ -236,7 +236,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     filter_backends = [DjangoFilterBackend]
     # filters.SearchFilter]
-    filterset_fields = ['project__id',  'partner__id']
+    filterset_fields = ['project__id',  'partner__id', 'id']
 
     @swagger_auto_schema(request_body=ReviewSerializer)
     @action(detail=False, methods=['POST', ], url_path='create', http_method_names=('post',),)
