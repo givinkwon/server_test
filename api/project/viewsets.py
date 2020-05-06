@@ -161,7 +161,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all().order_by(*orderbyList)
     serializer_class = AnswerSerializer
     pagination_class = AnswerPageNumberPagination
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     # filters.SearchFilter]
     filterset_fields = ['project__id', 'partner__id', 'state']
     ordering_fields = '__all__'
