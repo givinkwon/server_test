@@ -556,7 +556,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
 
         return Response(data={'code': ResponseCode.SUCCESS.value,
                               'message': '해당 의뢰서에 적합한 파트너 리스트입니다.',
-                              'data': PartnerSerializer(partner_qs, many=True).data
+                              'data': PartnerSerializer(partner_qs[:5], many=True).data
                               }
                         )
 
