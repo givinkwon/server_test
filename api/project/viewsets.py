@@ -164,6 +164,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     # filters.SearchFilter]
     filterset_fields = ['project__id', 'partner__id', 'state']
+    ordering_fields = '__all__'
 
     @swagger_auto_schema(request_body=AnswerSerializer)
     @action(detail=False, methods=('POST',), url_path='first-active', http_method_names=('post',), permission_classes=(IsAuthenticated,),)
