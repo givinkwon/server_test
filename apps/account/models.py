@@ -153,6 +153,25 @@ class Client(models.Model):
         return str(self.id)
 
 # ------------------------------------------------------------------
+# Model   : Clientclass
+# Description : 결제에 따른 클라이언트의 Class
+# ------------------------------------------------------------------
+
+class Clientclass(models.Model):
+    client = models.OneToOneField(Client, on_delete=models.CASCADE, verbose_name='클라이언트')
+    client_class = models.IntegerField('클라이언트 클래스', default=0, null=True)
+    created_at = models.DateTimeField('등록일자', auto_now_add=True)
+    payment = models.IntegerField('클래스 유지 일자', default=0, null=True)
+
+    class Meta:
+        verbose_name = '클라이언트 클래스'
+        verbose_name_plural = '클라이언트 클래스'
+
+    def __str__(self):
+        return str(self.id)
+
+
+# ------------------------------------------------------------------
 # Model   : Partner
 # Description : 파트너 모델
 # ------------------------------------------------------------------
