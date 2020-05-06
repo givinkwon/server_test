@@ -15,7 +15,6 @@ class MaincategoryViewSet(viewsets.ModelViewSet):
     queryset = Maincategory.objects.all()
     serializer_class = MaincategorySerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
-    #filterset_fields = []
     search_fields = ['maincategory', 'category__category', 'subclass__subclass'] # 자동으로 FK 테이블 관련 데이터를 가져올 수 있음
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -24,6 +23,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ['category']  # 자동으로 FK 테이블 관련 데이터를 가져올 수 있음
 
 class SubclassViewSet(viewsets.ModelViewSet):
     """
@@ -31,6 +32,8 @@ class SubclassViewSet(viewsets.ModelViewSet):
     """
     queryset = Subclass.objects.all()
     serializer_class = SubclassSerializer
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ['subclass']  # 자동으로 FK 테이블 관련 데이터를 가져올 수 있음
 
 class CityViewSet(viewsets.ModelViewSet):
     """
