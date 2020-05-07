@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3aa58339-96c9-4431-bdd4-e91068462e4c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/project/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/project/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apps/project/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/project/models.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/venv/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,15 +29,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/kakaotalk/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/project/viewsets.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="234">
@@ -50,11 +40,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/apps/project/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6025">
-              <caret line="256" column="4" selection-start-line="256" selection-start-column="4" selection-end-line="256" selection-end-column="64" />
+            <state relative-caret-position="159">
+              <caret line="301" column="61" selection-start-line="301" selection-start-column="61" selection-end-line="301" selection-end-column="61" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -115,13 +105,25 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/project/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="209">
               <caret line="60" column="24" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apps/payment/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="237">
+              <caret line="90" column="67" selection-start-line="90" selection-start-column="67" selection-end-line="90" selection-end-column="67" />
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -213,10 +215,10 @@
         <option value="$PROJECT_DIR$/server/settings.py" />
         <option value="$PROJECT_DIR$/api/category/viewsets.py" />
         <option value="$PROJECT_DIR$/api/account/viewsets.py" />
-        <option value="$PROJECT_DIR$/apps/project/models.py" />
         <option value="$PROJECT_DIR$/apps/account/models.py" />
         <option value="$PROJECT_DIR$/api/project/viewsets.py" />
         <option value="$PROJECT_DIR$/api/project/serializers.py" />
+        <option value="$PROJECT_DIR$/apps/project/models.py" />
       </list>
     </option>
   </component>
@@ -383,7 +385,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../stock" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -584,16 +586,6 @@
     <entry file="file://$PROJECT_DIR$/apps/account/migrations/0002_loginlog.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/payment/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="90" column="67" selection-start-line="90" selection-start-column="67" selection-end-line="90" selection-end-column="67" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/url.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
@@ -780,16 +772,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/project/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6025">
-          <caret line="256" column="4" selection-start-line="256" selection-start-column="4" selection-end-line="256" selection-end-column="64" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/account/viewsets.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="13150">
@@ -859,6 +841,26 @@
           <caret line="60" column="24" selection-start-line="60" selection-start-column="24" selection-end-line="60" selection-end-column="24" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/payment/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="237">
+          <caret line="90" column="67" selection-start-line="90" selection-start-column="67" selection-end-line="90" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/project/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="301" column="61" selection-start-line="301" selection-start-column="61" selection-end-line="301" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>

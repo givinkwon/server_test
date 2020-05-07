@@ -296,11 +296,12 @@ class Review(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name="프로젝트")
     partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="파트너")
     price_score = models.PositiveSmallIntegerField('가격 만족도', default=0, validators=[MaxValueValidator(5), ])
-    time_score = models.PositiveSmallIntegerField('일정 준수', default=0, validators=[MaxValueValidator(5), ])
+    time_score = models.PositiveSmallIntegerField('업무속도 및 납기', default=0, validators=[MaxValueValidator(5), ])
     talk_score = models.PositiveSmallIntegerField('의사소통', default=0, validators=[MaxValueValidator(5), ])
     expert_score = models.PositiveSmallIntegerField('전문성', default=0, validators=[MaxValueValidator(5), ])
-    result_score = models.PositiveSmallIntegerField('결과 만족도', default=0, validators=[MaxValueValidator(5), ])
-    content = models.CharField('리뷰내용', max_length=256, blank=True, null=True)
+    result_score = models.PositiveSmallIntegerField('결과물 및 품질', default=0, validators=[MaxValueValidator(5), ])
+    content_good = models.TextField('좋았던 점', blank=True, null=True)
+    content_bad = models.TextField('아쉬웠던 점', blank=True, null=True)
 
     @property
     def avg_score(self):
