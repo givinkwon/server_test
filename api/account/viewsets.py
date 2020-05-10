@@ -604,7 +604,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
     @swagger_auto_schema(request_body=PartnerSerializer)
     @action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
     def request_kakaotalk(self, request, *args, **kwargs):  # 의뢰서 등록 시 적합한 파트너에게 카카오톡 알림
-      #  subclass = "5"
+        subject = request.data.get('subject')
         subclass = request.data.get('subclass')
       #  print(subclass)
       #  print(Partner.objects.all().values_list('possible_set', flat=True))

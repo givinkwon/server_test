@@ -161,7 +161,7 @@ class Clientclass(models.Model):
     client = models.OneToOneField(Client, on_delete=models.CASCADE, verbose_name='클라이언트')
     client_class = models.IntegerField('클라이언트 클래스', default=0, null=True)
     created_at = models.DateTimeField('등록일자', auto_now_add=True)
-    payment = models.IntegerField('클래스 유지 일자', default=0, null=True)
+    payment = models.IntegerField('클래스 종료 일자', default=0, null=True)
 
     class Meta:
         verbose_name = '클라이언트 클래스'

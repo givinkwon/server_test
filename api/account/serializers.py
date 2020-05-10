@@ -29,9 +29,17 @@ class ClientSerializer(serializers.ModelSerializer):
     answer_set = AnswerSerializer(many=True)
     review_set = ReviewSerializer(many=True)
     user = PatchUserSerializer()
+    clientclass = serializers.SerializerMethodField()
     class Meta:
         model = Client
-        fields = ['user','id','request_set','answer_set','review_set']
+        fields = ['user','id','request_set','answer_set','review_set','clientclass']
+
+
+    def get_clientclass(self,obj):
+        a = Clientclass.objects.filter(client=obj.id)
+        if not a['client'] is None: # row가 있으면
+            return True
+        return False
 
 class PortfolioSerializer(serializers.ModelSerializer):
     class Meta:

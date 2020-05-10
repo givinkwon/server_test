@@ -73,7 +73,7 @@ class Util():
 
 class kakaotalk(object):
 # 빈 전화번호 / 이상한 전화번호는 에러뜹니다.
-        def send(phone_list):
+        def send(phone_list, subject):
             print(phone_list)
             for phone in phone_list:
              print(phone)
@@ -81,7 +81,7 @@ class kakaotalk(object):
              data = {'account': 'boltnnut_korea', 'refkey': 'bolt123', 'type': 'at', 'from': '01028741248',
                      'to': phone, 'content': {
                    'at': {'senderkey': '44e4fdc989b12906c82fc46e428dd91dd99f0d98', 'templatecode': 'request_to_partner',
-                            'message': '파트너님에게 적합한 의뢰서가 도착했습니다.',
+                            'message': '파트너님에게 적합한 의뢰서가 도착했습니다.\n의뢰서명 : ' + subject,
 
                           'button': [
                                 {

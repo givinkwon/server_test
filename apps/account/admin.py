@@ -46,6 +46,10 @@ class UserAdmin(admin.ModelAdmin):
 class ClientAdmin(admin.ModelAdmin):
     list_display = ['id']
 
+@admin.register(Clientclass)
+class ClientAdmin(admin.ModelAdmin):
+    list_display = ['id', 'client']
+
 @admin.register(Partner)
 class PartnerAdmin(admin.ModelAdmin):
     inlines = [PortfolioInline, StructureInline, MachineInline, CertificationInline, ProcessInline]
