@@ -99,7 +99,7 @@ class PaylistViewSet(viewsets.ModelViewSet):
     @swagger_auto_schema(request_body=PaylistSerializer)
     @action(detail=False, methods=('POST',), url_path='payment', http_method_names=('post',),permission_classes=(IsAuthenticated,),)
     def payment(self, request, *args, **kwargs):  # 결제 확인
-            date = request.data.get('date', None)
+            date = request.data.get('date')
             user = request.user
             merchant_uid = request.data.get('merchant_uid')
             #print(-1)
