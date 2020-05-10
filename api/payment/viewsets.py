@@ -123,7 +123,7 @@ class PaylistViewSet(viewsets.ModelViewSet):
                     paylist.save()
                 #    print(paylist)
                     if date:
-                        a = Clientclass.objects.get_or_create(
+                        a , _ = Clientclass.objects.get_or_create(
                             client = user.client
                         )
                         a.end_time = date
