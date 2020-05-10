@@ -25,19 +25,18 @@ class PatchUserSerializer(serializers.ModelSerializer):
  #       return PartnerSerializer(b,many=True).data
 
 class ClientSerializer(serializers.ModelSerializer):
+    client_class = serializers.SerializerMethodField()
     request_set = RequestSerializer(many=True)
     answer_set = AnswerSerializer(many=True)
     review_set = ReviewSerializer(many=True)
     user = PatchUserSerializer()
-    clientclass = serializers.SerializerMethodField()
     class Meta:
         model = Client
-        fields = ['user','id','request_set','answer_set','review_set','clientclass']
+        fields = ['user','id','request_set','answer_set','review_set', 'client_class']
 
-
-    def get_clientclass(self,obj):
-        a = Clientclass.objects.filter(client=obj.id)
-        if not a['client'] is None: # row가 있으면
+    def get_client_class(self,obj):
+        a = Clientclass.objects.filter(client = obj.id)
+        if a.exists():
             return True
         return False
 
