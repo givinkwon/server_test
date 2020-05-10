@@ -99,6 +99,7 @@ class PaylistViewSet(viewsets.ModelViewSet):
     @swagger_auto_schema(request_body=PaylistSerializer)
     @action(detail=False, methods=('POST',), url_path='payment', http_method_names=('post',),permission_classes=(IsAuthenticated,),)
     def payment(self, request, *args, **kwargs):  # 결제 확인
+            date = request.data.get('date', None)
             user = request.user
             merchant_uid = request.data.get('merchant_uid')
             #print(-1)
@@ -121,6 +122,14 @@ class PaylistViewSet(viewsets.ModelViewSet):
                     paylist.pay_method = response['pay_method']
                     paylist.save()
                 #    print(paylist)
+                    if date:
+                        a = Clientclass.objects.get_or_create(
+                            client = user.client
+                        )
+                        a.end_time = date
+                        a.client_class = 1
+                        a.save()
+
                     return Response(data={'code': ResponseCode.SUCCESS.value,
                               'message': '결제가 성공적으로 완료되었습니다.',
                               'data': {
