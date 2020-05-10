@@ -35,7 +35,8 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = ['user','id','request_set','answer_set','review_set', 'client_class']
 
     def get_client_class(self,obj):
-        a = Clientclass.objects.filter(client = obj.id)
+        now = timezone.now()
+        a = Clientclass.objects.filter(client = obj.id, end_time__gt = now)
         if a.exists():
             return True
         return False
