@@ -629,7 +629,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
         #공백제거
         partner_phone_list = list(filter(None, partner_phone_list))
         print(partner_phone_list)
-        response = kakaotalk.send(partner_phone_list)
+        response = kakaotalk.send(partner_phone_list,subject)
         a = response.json()
         Sendkakao.objects.create(
             status_code=response.status_code,
