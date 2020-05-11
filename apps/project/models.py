@@ -123,7 +123,7 @@ class Request(models.Model):
     #등록일자 기록용
     created_at = models.DateTimeField('등록일자', auto_now_add=True)
     #의뢰서 완성되었는 지
-   # complete = models.BooleanField('활성화여부', default=False, null=True)
+    add_meeting = models.BooleanField('추가로 미팅하기 여부', default=False, null=True)
     @property
     def apply_count(self):
         return Answer.objects.filter(project=self.project).count()
