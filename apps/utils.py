@@ -80,7 +80,7 @@ class kakaotalk(object):
              url = 'https://api.bizppurio.com/v1/message'
              data = {'account': 'boltnnut_korea', 'refkey': 'bolt123', 'type': 'at', 'from': '01028741248',
                      'to': phone, 'content': {
-                   'at': {'senderkey': '44e4fdc989b12906c82fc46e428dd91dd99f0d98', 'templatecode': 'request_to_partner',
+                   'at': {'senderkey': '44e4fdc989b12906c82fc46e428dd91dd99f0d98', 'templatecode': 'request_to_partner2',
                             'message': '파트너님에게 적합한 의뢰서가 도착했습니다.\n의뢰서명 : ' + subject,
 
                           'button': [
