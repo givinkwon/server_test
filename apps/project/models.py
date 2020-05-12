@@ -130,10 +130,12 @@ class Request(models.Model):
 
     @property
     def time_out(self):
+        now = timezone.now()
         return (now - self.created_at)
 
     @property
     def active(self):
+        print(self.time_out.days)
         active=self.time_out.days
         if active >= 1:
             return False
