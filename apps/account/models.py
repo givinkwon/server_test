@@ -194,7 +194,7 @@ class Partner(models.Model):
     possible_set = models.ManyToManyField(Subclass, verbose_name='개발가능제품분야', related_name='possible_product')
     history_set = models.ManyToManyField(Subclass, verbose_name='진행한제품들', related_name='history_product')
     #결제
-    coin = models.IntegerField('코인', default=0, null=True)
+    coin = models.IntegerField('코인', default=2000, null=True)
     #회원가입 시 파일
     file = models.FileField('회사소개 및 포토폴리오파일', upload_to=partner_update_filename, blank=True, null=True)
     avg_score = models.DecimalField('평균점수', default=0, max_digits=5, decimal_places=2, null=True)
