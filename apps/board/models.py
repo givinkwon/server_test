@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 import os, datetime, uuid
 
 from django.contrib.auth.models import AbstractUser
@@ -84,38 +85,39 @@ def magazine_update_filename(instance, filename):
 
 # ------------------------------------------------------------------
 # Model   : Notice
-# Description : ê³µì§€ì‚¬í•­ ëª¨ë¸
+# Description : °øÁö»çÇ× ¸ğµ¨
 # ------------------------------------------------------------------
 class Notice(models.Model):
 
-    title = models.CharField('ì œëª©', max_length=40)
-    content = RichTextUploadingField('ë‚´ìš©')
-    is_top = models.BooleanField('ìƒë‹¨ê³ ì •ì—¬ë¶€', default=False)
-    created_at = models.DateTimeField('ë“±ë¡ì¼ì', auto_now_add=True)
+    title = models.CharField('Á¦¸ñ', max_length=40)
+    content = RichTextUploadingField(blank=True, null=True)
+    is_top = models.BooleanField('»ó´Ü°íÁ¤¿©ºÎ', default=False)
+    created_at = models.DateTimeField('µî·ÏÀÏÀÚ', auto_now_add=True)
 
     class Meta:
-        verbose_name = '   ê²Œì‹œê¸€'
-        verbose_name_plural = '   ê²Œì‹œê¸€'
+        verbose_name = '   °Ô½Ã±Û'
+        verbose_name_plural = '   °Ô½Ã±Û'
 
     def __str__(self):
-        return str(self.star) + " : ê²Œì‹œê¸€"
+        return str(self.title) + " : °Ô½Ã±Û"
 
 
 # ------------------------------------------------------------------
 # Model   : Magazine
-# Description : ë§¤ê±°ì§„ ëª¨ë¸
+# Description : ¸Å°ÅÁø ¸ğµ¨
 # ------------------------------------------------------------------
 class Magazine(models.Model):
 
-    title = models.CharField('ì œëª©', max_length=40)
-    image = models.ImageField('ë§¤ê±°ì§„ ì´ë¯¸ì§€', upload_to=magazine_update_filename, null=True)
-    is_top = models.BooleanField('ìƒë‹¨ê³ ì •ì—¬ë¶€', default=False)
-    created_at = models.DateTimeField('ë“±ë¡ì¼ì', auto_now_add=True)
-    link = models.CharField('ë§í¬', max_length=300)
+    title = models.CharField('Á¦¸ñ', max_length=40)
+    content = RichTextUploadingField(blank=True, null=True)
+    image = models.ImageField('¸Å°ÅÁø ÀÌ¹ÌÁö', upload_to=magazine_update_filename, null=True)
+    is_top = models.BooleanField('»ó´Ü°íÁ¤¿©ºÎ', default=False)
+    created_at = models.DateTimeField('µî·ÏÀÏÀÚ', auto_now_add=True)
+    #link = models.CharField('¸µÅ©', max_length=300)
 
     class Meta:
-        verbose_name = '   ë§¤ê±°ì§„'
-        verbose_name_plural = '   ë§¤ê±°ì§„'
+        verbose_name = '   ¸Å°ÅÁø'
+        verbose_name_plural = '   ¸Å°ÅÁø'
 
     def __str__(self):
-        return str(self.title) + " : ë§¤ê±°ì§„"
+        return str(self.title) + " : ¸Å°ÅÁø"

@@ -10,4 +10,4 @@ class NoticeSerializer(serializers.ModelSerializer):
 class MagazineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Magazine
-        fields = ['id', 'title', 'image', 'is_top', 'created_at', 'link']
+        fields = ['id', 'title', 'content', 'image', 'is_top', 'created_at']

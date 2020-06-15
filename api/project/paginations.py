@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 from rest_framework.pagination import PageNumberPagination
 
 class RequestPageNumberPagination(PageNumberPagination):

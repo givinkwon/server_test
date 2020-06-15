@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 import os, datetime, uuid
 
 from django.contrib.auth.models import AbstractUser
@@ -112,7 +113,7 @@ def subclass_update_filename(instance, filename):
 
 # ------------------------------------------------------------------
 # Model   : User
-# Description : íšŒì› ëª¨ë¸
+# Description : È¸¿ø ¸ğµ¨
 # ------------------------------------------------------------------
 USER_TYPE = [
     (0, "CLIENT"),
@@ -120,16 +121,17 @@ USER_TYPE = [
 ]
 class User(AbstractUser):
 
-    # ê³µí†µ ë¶€ë¶„
-    username = models.CharField('ì´ë©”ì¼', max_length=256, default=get_default_hash_id, unique=True)
-    type = models.IntegerField('ìœ ì €íƒ€ì…', default=0, choices=USER_TYPE)
+    # °øÅë ºÎºĞ
+    username = models.CharField('ÀÌ¸ŞÀÏ', max_length=256, default=get_default_hash_id, unique=True)
+    type = models.IntegerField('À¯ÀúÅ¸ÀÔ', default=0, choices=USER_TYPE)
     password = models.CharField(max_length=256)
-    phone = models.CharField('íœ´ëŒ€í° ë²ˆí˜¸', max_length=32, blank=True)
+    phone = models.CharField('ÈŞ´ëÆù ¹øÈ£', max_length=32, blank=True)
+    marketing = models.BooleanField('¸¶ÄÉÆÃµ¿ÀÇ¿©ºÎ', default=True, null=True)
 
     class Meta:
-        verbose_name = 'ê°€ì…ì'
-        verbose_name_plural = 'ê°€ì…ì'
-
+        verbose_name = '°¡ÀÔÀÚ'
+        verbose_name_plural = '°¡ÀÔÀÚ'
+        
     @property
     def is_update(self):
         if self.username and self.type and self.password:
@@ -139,33 +141,33 @@ class User(AbstractUser):
 
 # ------------------------------------------------------------------
 # Model   : Client
-# Description : í´ë¼ì´ì–¸íŠ¸ ëª¨ë¸
+# Description : Å¬¶óÀÌ¾ğÆ® ¸ğµ¨
 # ------------------------------------------------------------------
 
 class Client(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='ìœ ì €')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='À¯Àú')
 
     class Meta:
-        verbose_name = 'í´ë¼ì´ì–¸íŠ¸'
-        verbose_name_plural = 'í´ë¼ì´ì–¸íŠ¸'
+        verbose_name = 'Å¬¶óÀÌ¾ğÆ®'
+        verbose_name_plural = 'Å¬¶óÀÌ¾ğÆ®'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.user.username)
 
 # ------------------------------------------------------------------
 # Model   : Clientclass
-# Description : ê²°ì œì— ë”°ë¥¸ í´ë¼ì´ì–¸íŠ¸ì˜ Class
+# Description : °áÁ¦¿¡ µû¸¥ Å¬¶óÀÌ¾ğÆ®ÀÇ Class
 # ------------------------------------------------------------------
 
 class Clientclass(models.Model):
-    client = models.OneToOneField(Client, on_delete=models.CASCADE, verbose_name='í´ë¼ì´ì–¸íŠ¸')
-    client_class = models.IntegerField('í´ë¼ì´ì–¸íŠ¸ í´ë˜ìŠ¤', default=0, null=True)
-    created_at = models.DateTimeField('ë“±ë¡ì¼ì', auto_now_add=True)
-    end_time = models.DateTimeField('í´ë˜ìŠ¤ ì¢…ë£Œ ì¼ì', null=True)
+    client = models.OneToOneField(Client, on_delete=models.CASCADE, verbose_name='Å¬¶óÀÌ¾ğÆ®')
+    client_class = models.IntegerField('Å¬¶óÀÌ¾ğÆ® Å¬·¡½º', default=0, null=True)
+    created_at = models.DateTimeField('µî·ÏÀÏÀÚ', auto_now_add=True)
+    end_time = models.DateTimeField('Å¬·¡½º Á¾·á ÀÏÀÚ', null=True)
 
     class Meta:
-        verbose_name = 'í´ë¼ì´ì–¸íŠ¸ í´ë˜ìŠ¤'
-        verbose_name_plural = 'í´ë¼ì´ì–¸íŠ¸ í´ë˜ìŠ¤'
+        verbose_name = 'Å¬¶óÀÌ¾ğÆ® Å¬·¡½º'
+        verbose_name_plural = 'Å¬¶óÀÌ¾ğÆ® Å¬·¡½º'
 
     def __str__(self):
         return str(self.id)
@@ -173,119 +175,140 @@ class Clientclass(models.Model):
 
 # ------------------------------------------------------------------
 # Model   : Partner
-# Description : íŒŒíŠ¸ë„ˆ ëª¨ë¸
+# Description : ÆÄÆ®³Ê ¸ğµ¨
 # ------------------------------------------------------------------
 
 class Partner(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='ìœ ì €')
-    name = models.CharField('ì—…ì²´ëª…', max_length=256, null=True)
-    logo = models.ImageField('ë¡œê³ ', upload_to=partner_update_filename, blank=True, null=True)
-    #ì§€ì—­
-    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name="ì‹œ/ë„", null=True)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, verbose_name="êµ¬", null=True)
-    career = models.CharField('ì„¤ë¦½ì¼', max_length=256, null=True)
-    employee = models.CharField('ê·¼ë¡œììˆ˜', max_length=256, null=True)
-    revenue = models.CharField('ë§¤ì¶œ(ë°±ë§Œì›)', max_length=256, null=True)
-    info_company = models.TextField('íšŒì‚¬ì†Œê°œ', blank=True, null=True)
-    info_biz = models.TextField('ì£¼ìš”ì‚¬ì—…', blank=True, null=True)
-    history = models.TextField('ì£¼ìš”ì´ë ¥', blank=True, null=True)
-    deal = models.TextField('ì£¼ìš”ê±°ë˜ì²˜', blank=True, null=True)
-    category_middle = models.ManyToManyField(Develop, verbose_name='ì˜ë¢°ê°€ëŠ¥ë¶„ì•¼', related_name='category_middle')
-    possible_set = models.ManyToManyField(Subclass, verbose_name='ê°œë°œê°€ëŠ¥ì œí’ˆë¶„ì•¼', related_name='possible_product')
-    history_set = models.ManyToManyField(Subclass, verbose_name='ì§„í–‰í•œì œí’ˆë“¤', related_name='history_product')
-    #ê²°ì œ
-    coin = models.IntegerField('ì½”ì¸', default=2000, null=True)
-    #íšŒì›ê°€ì… ì‹œ íŒŒì¼
-    file = models.FileField('íšŒì‚¬ì†Œê°œ ë° í¬í† í´ë¦¬ì˜¤íŒŒì¼', upload_to=partner_update_filename, blank=True, null=True)
-    avg_score = models.DecimalField('í‰ê· ì ìˆ˜', default=0, max_digits=5, decimal_places=2, null=True)
-    # ë¯¸íŒ… ì „í™˜ìœ¨ - ë§¤ì¹­ ì•Œê³ ë¦¬ì¦˜
-    success = models.IntegerField('ë¯¸íŒ… ì„±ê³µ', default=0, null=True)
-    fail = models.IntegerField('ë¯¸íŒ… ì‹¤íŒ¨', default=0, null=True)
-    meeting = models.FloatField('ë¯¸íŒ… ì „í™˜ìœ¨', default=0, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='À¯Àú')
+    name = models.CharField('¾÷Ã¼¸í', max_length=256, null=True)
+    logo = models.ImageField('·Î°í', upload_to=partner_update_filename, blank=True, null=True)
+    #Áö¿ª
+    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name="½Ã/µµ", null=True)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, verbose_name="±¸", null=True)
+    career = models.CharField('¼³¸³ÀÏ', max_length=256, null=True)
+    employee = models.CharField('±Ù·ÎÀÚ¼ö', max_length=256, null=True)
+    revenue = models.CharField('¸ÅÃâ(¹é¸¸¿ø)', max_length=256, null=True)
+    info_company = models.TextField('È¸»ç¼Ò°³', blank=True, null=True)
+    info_biz = models.TextField('ÁÖ¿ä»ç¾÷', blank=True, null=True)
+    history = models.TextField('ÁÖ¿äÀÌ·Â', blank=True, null=True)
+    deal = models.TextField('ÁÖ¿ä°Å·¡Ã³', blank=True, null=True)
+    category_middle = models.ManyToManyField(Develop, verbose_name='ÀÇ·Ú°¡´ÉºĞ¾ß', related_name='category_middle')
+    #possible_set = models.ManyToManyField(Subclass, verbose_name='°³¹ß°¡´ÉÁ¦Ç°ºĞ¾ß', related_name='possible_product')
+    history_set = models.ManyToManyField(Subclass, verbose_name='ÁøÇàÇÑÁ¦Ç°µé', related_name='history_product')
+    #°áÁ¦
+    coin = models.IntegerField('ÄÚÀÎ', default=2000, null=True)
+    #È¸¿ø°¡ÀÔ ½Ã ÆÄÀÏ
+    file = models.FileField('È¸»ç¼Ò°³ ¹× Æ÷ÅäÆú¸®¿ÀÆÄÀÏ', upload_to=partner_update_filename, blank=True, null=True)
+    avg_score = models.DecimalField('Æò±ÕÁ¡¼ö', default=0, max_digits=5, decimal_places=2, null=True)
+    # ¹ÌÆÃ ÀüÈ¯À² - ¸ÅÄª ¾Ë°í¸®Áò
+    success = models.IntegerField('¹ÌÆÃ ¼º°ø', default=0, null=True)
+    fail = models.IntegerField('¹ÌÆÃ ½ÇÆĞ', default=0, null=True)
+    meeting = models.FloatField('¹ÌÆÃ ÀüÈ¯À²', default=0, null=True)
+    # ÆÄÆ®³Ê ¿©ºÎ
+    is_partner = models.BooleanField('ÆÄÆ®³Ê¿©ºÎ', default=True, null=True)
 
     class Meta:
-        verbose_name = 'íŒŒíŠ¸ë„ˆ'
-        verbose_name_plural = 'íŒŒíŠ¸ë„ˆ'
+        verbose_name = 'ÆÄÆ®³Ê'
+        verbose_name_plural = 'ÆÄÆ®³Ê'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.user.username)
 
 # ------------------------------------------------------------------
 # Model   : Portfolio
-# Description : í¬íŠ¸í´ë¦¬ì˜¤ ëª¨ë¸
+# Description : Æ÷Æ®Æú¸®¿À ¸ğµ¨
 # ------------------------------------------------------------------
 class Portfolio(models.Model):
-    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="íŒŒíŠ¸ë„ˆ", null=True)
-    img_portfolio = models.ImageField('í¬í† í´ë¦¬ì˜¤ ì´ë¯¸ì§€', upload_to=portfolio_update_filename, null=True)
-    is_main = models.BooleanField('ë©”ì¸ ì—¬ë¶€', default=False)
+    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="ÆÄÆ®³Ê", null=True)
+    img_portfolio = models.ImageField('Æ÷ÅäÆú¸®¿À ÀÌ¹ÌÁö', upload_to=portfolio_update_filename, null=True)
+    is_main = models.BooleanField('¸ŞÀÎ ¿©ºÎ', default=False)
 
     class Meta:
-        verbose_name = '     í¬íŠ¸í´ë¦¬ì˜¤'
-        verbose_name_plural = '     í¬íŠ¸í´ë¦¬ì˜¤'
+        verbose_name = '     Æ÷Æ®Æú¸®¿À'
+        verbose_name_plural = '     Æ÷Æ®Æú¸®¿À'
 
     def __str__(self):
-        return str(self.partner.name) + " í¬íŠ¸í´ë¦¬ì˜¤"
+        return str(self.partner.name) + " Æ÷Æ®Æú¸®¿À"
 
 # ------------------------------------------------------------------
 # Model   : Structure
-# Description : ì¡°ì§ë„ ëª¨ë¸
+# Description : Á¶Á÷µµ ¸ğµ¨
 # ------------------------------------------------------------------
 class Structure(models.Model):
-    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="íŒŒíŠ¸ë„ˆ", null=True)
-    img_structure = models.ImageField('ì¡°ì§ë„ ì´ë¯¸ì§€', upload_to=structure_update_filename, null=True)
-    is_main = models.BooleanField('ë©”ì¸ ì—¬ë¶€', default=False)
+    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="ÆÄÆ®³Ê", null=True)
+    img_structure = models.ImageField('Á¶Á÷µµ ÀÌ¹ÌÁö', upload_to=structure_update_filename, null=True)
+    is_main = models.BooleanField('¸ŞÀÎ ¿©ºÎ', default=False)
 
     class Meta:
-        verbose_name = '     ì¡°ì§ë„'
-        verbose_name_plural = '     ì¡°ì§ë„'
+        verbose_name = '     Á¶Á÷µµ'
+        verbose_name_plural = '     Á¶Á÷µµ'
 
     def __str__(self):
-        return str(self.partner.name) + " ì¡°ì§ë„"
+        return str(self.partner.name) + " Á¶Á÷µµ"
 
 # ------------------------------------------------------------------
 # Model   : Machine
-# Description : ë³´ìœ ì¥ë¹„ ëª¨ë¸
+# Description : º¸À¯Àåºñ ¸ğµ¨
 # ------------------------------------------------------------------
 class Machine(models.Model):
-    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="íŒŒíŠ¸ë„ˆ", null=True)
-    img_machine = models.ImageField('ë³´ìœ ì¥ë¹„ ì´ë¯¸ì§€', upload_to=machine_update_filename, null=True)
-    is_main = models.BooleanField('ë©”ì¸ ì—¬ë¶€', default=False)
+    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="ÆÄÆ®³Ê", null=True)
+    img_machine = models.ImageField('º¸À¯Àåºñ ÀÌ¹ÌÁö', upload_to=machine_update_filename, null=True)
+    is_main = models.BooleanField('¸ŞÀÎ ¿©ºÎ', default=False)
 
     class Meta:
-        verbose_name = '     ë³´ìœ ì¥ë¹„'
-        verbose_name_plural = '     ë³´ìœ ì¥ë¹„'
+        verbose_name = '     º¸À¯Àåºñ'
+        verbose_name_plural = '     º¸À¯Àåºñ'
 
     def __str__(self):
-        return str(self.partner.name) + " ë³´ìœ ì¥ë¹„"
+        return str(self.partner.name) + " º¸À¯Àåºñ"
 
 # ------------------------------------------------------------------
 # Model   : Certification
-# Description : í¬íŠ¸í´ë¦¬ì˜¤ ëª¨ë¸
+# Description : Æ÷Æ®Æú¸®¿À ¸ğµ¨
 # ------------------------------------------------------------------
 class Certification(models.Model):
-    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="íŒŒíŠ¸ë„ˆ", null=True)
-    img_certification = models.ImageField('ë³´ìœ ì¸ì¦ì„œ ì´ë¯¸ì§€', upload_to=certification_update_filename, null=True)
-    is_main = models.BooleanField('ë©”ì¸ ì—¬ë¶€', default=False)
+    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="ÆÄÆ®³Ê", null=True)
+    img_certification = models.ImageField('º¸À¯ÀÎÁõ¼­ ÀÌ¹ÌÁö', upload_to=certification_update_filename, null=True)
+    is_main = models.BooleanField('¸ŞÀÎ ¿©ºÎ', default=False)
 
     class Meta:
-        verbose_name = '     ë³´ìœ ì¸ì¦ì„œ'
-        verbose_name_plural = '     ë³´ìœ ì¸ì¦ì„œ'
+        verbose_name = '     º¸À¯ÀÎÁõ¼­'
+        verbose_name_plural = '     º¸À¯ÀÎÁõ¼­'
 
     def __str__(self):
-        return str(self.partner.name) + " ë³´ìœ ì¸ì¦ì„œ"
+        return str(self.partner.name) + " º¸À¯ÀÎÁõ¼­"
 
 # ------------------------------------------------------------------
 # Model   : Process
-# Description : ì§„í–‰ê³µì • ëª¨ë¸
+# Description : ÁøÇà°øÁ¤ ¸ğµ¨
 # ------------------------------------------------------------------
 class Process(models.Model):
-    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="íŒŒíŠ¸ë„ˆ", null=True)
-    img_process = models.ImageField('ì§„í–‰ê³µì • ì´ë¯¸ì§€', upload_to=process_update_filename, null=True)
-    is_main = models.BooleanField('ë©”ì¸ ì—¬ë¶€', default=False)
+    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="ÆÄÆ®³Ê", null=True)
+    img_process = models.ImageField('ÁøÇà°øÁ¤ ÀÌ¹ÌÁö', upload_to=process_update_filename, null=True)
+    is_main = models.BooleanField('¸ŞÀÎ ¿©ºÎ', default=False)
 
     class Meta:
-        verbose_name = '     ì§„í–‰ê³µì •'
-        verbose_name_plural = '     ì§„í–‰ê³µì •'
+        verbose_name = '     ÁøÇà°øÁ¤'
+        verbose_name_plural = '     ÁøÇà°øÁ¤'
 
     def __str__(self):
-        return str(self.partner.name) + " ì§„í–‰ê³µì •"
+        return str(self.partner.name) + " ÁøÇà°øÁ¤"
+        
+# ------------------------------------------------------------------
+# Model   : LoginLog
+# Description : ·Î±×ÀÎ ·Î±× ÀúÀå ¸ğµ¨
+# ------------------------------------------------------------------
+
+class LoginLog(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE, verbose_name = 'User', null=True)
+    created_at = models.DateTimeField('·Î±×ÀÎÀÏÀÚ', auto_now_add=True)
+    type = models.IntegerField('À¯ÀúÅ¸ÀÔ', default=0, choices=USER_TYPE)
+
+
+    class Meta:
+        verbose_name = '·Î±×ÀÎ ·Î±×'
+        verbose_name_plural = '·Î±×ÀÎ ·Î±×'
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return '{}_log'.format(self.user)

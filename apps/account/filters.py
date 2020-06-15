@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 import django_filters
 from rest_framework import filters
 from django.db.models import (
@@ -8,30 +9,30 @@ from django.db.models import (
 
 from apps.account.models import *
 
-class PartnerFilter(filters.BaseFilterBackend): # íŒŒë¼ë¯¸í„° ì—¬ëŸ¬ ê°œ ë³´ë‚´ë„ orë¡œ ê°€ì ¸ì˜¤ëŠ” í•„í„°
+class PartnerFilter(filters.BaseFilterBackend): # ÆÄ¶ó¹ÌÅÍ ¿©·¯ °³ º¸³»µµ or·Î °¡Á®¿À´Â ÇÊÅÍ
 
-        def filter_queryset(self, request, queryset, view):  ## í•„í„° ë¶€ë¥¼ ë•Œ ìë™
+        def filter_queryset(self, request, queryset, view):  ## ÇÊÅÍ ºÎ¸¦ ¶§ ÀÚµ¿
           data=request.GET
-          data_dict = data.dict() # dictionary í™”
+          data_dict = data.dict() # dictionary È­
 
           if  'region' in data_dict:
                 data2 = data['region'].split(',')
-                queryset = queryset.filter(region__in=data2).distinct('id')
+                queryset = queryset.filter(region__in=data2).distinct('id','avg_score')
 
           if 'city' in data_dict:
                 data2 = data['city'].split(',')
-                queryset = queryset.filter(city__in=data2).distinct('id')
+                queryset = queryset.filter(city__in=data2).distinct('id','avg_score')
 
           if 'category_middle__id' in data_dict:
                 data2 = data['category_middle__id'].split(',')
-                queryset = queryset.filter(category_middle__in=data2).distinct('id')
+                queryset = queryset.filter(category_middle__in=data2).distinct('id','avg_score')
 
-          if 'possible_set__id' in data_dict:
-                data2 = data['possible_set__id'].split(',')
-                queryset = queryset.filter(possible_set__in=data2).distinct('id')
+          #if 'possible_set__id' in data_dict:
+          #      data2 = data['possible_set__id'].split(',')
+          #      queryset = queryset.filter(possible_set__in=data2).distinct('id','avg_score')
 
           if 'history_set__id' in data_dict:
                 data2 = data['history_set__id'].split(',')
-                queryset = queryset.filter(history_set__in=data2).distinct('id')
+                queryset = queryset.filter(history_set__in=data2).distinct('id','avg_score')
 
           return queryset

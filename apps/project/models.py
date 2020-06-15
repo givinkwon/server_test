@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 import os, datetime, uuid
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
@@ -11,11 +12,10 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from hashids import Hashids
 from django.core.validators import MaxValueValidator
 
-#ì‹œê°„ ê´€ë ¨ í•¨ìˆ˜
+#½Ã°£ °ü·Ã ÇÔ¼ö
 from django.utils import timezone
 from datetime import date
 
-now = timezone.localtime()
 
 # Create your models here.
 def get_default_hash_id():
@@ -90,40 +90,55 @@ def subclass_update_filename(instance, filename):
     format = uuid.uuid4().hex + "_subclass" + "." + ext
     return os.path.join(path, format)
 
+def answer_update_filename(instance, filename):
+    ext = filename.split('.')[-1]
+    now = datetime.datetime.now()
+    path = "answer/" + str(now.year) + "/" + str(now.month) + "/" + str(now.day)
+    format = uuid.uuid4().hex + "_answer" + "." + ext
+    return os.path.join(path, format)
+
+def time():
+    time = timezone.now()
+    return time
 
 # ------------------------------------------------------------------
 # Model   : Project
-# Description : í”„ë¡œì íŠ¸ ëª¨ë¸
+# Description : ÇÁ·ÎÁ§Æ® ¸ğµ¨
 # ------------------------------------------------------------------
 class Project(models.Model):
 
     class Meta:
-        verbose_name = '     í”„ë¡œì íŠ¸'
-        verbose_name_plural = '     í”„ë¡œì íŠ¸'
+        verbose_name = '     ÇÁ·ÎÁ§Æ®'
+        verbose_name_plural = '     ÇÁ·ÎÁ§Æ®'
 
     def __str__(self):
         return str(self.id)
 
 # ------------------------------------------------------------------
 # Model   : Request
-# Description : ì˜ë¢°ì„œ ëª¨ë¸
+# Description : ÀÇ·Ú¼­ ¸ğµ¨
 # ------------------------------------------------------------------
 class Request(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='ì‘ì„±í´ë¼ì´ì–¸íŠ¸')
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='í”„ë¡œì íŠ¸')
-    product = models.ForeignKey(Subclass, on_delete=models.CASCADE, verbose_name='ì˜ë¢°ì œí’ˆ')
-    # ì„ íƒì§ˆë¬¸
-    category = models.ManyToManyField(Develop, verbose_name='ì˜ë¢°ë¶„ì•¼')
-    #ê³µí†µì§ˆë¬¸
-    name = models.CharField('ì˜ë¢°ì œí’ˆëª…', max_length=256, blank=True, null=True)
-    price = models.CharField('í¬ë§ë¹„ìš©', max_length=256, blank=True, null=True)
-    day = models.CharField('í¬ë§í”„ë¡œì íŠ¸ê¸°ê°„(ì¼)', max_length=256, blank=True, null=True)
-    content = RichTextUploadingField('ì˜ë¢°ë‚´ìš©', null=True)
-    file = models.FileField('ì˜ë¢°íŒŒì¼', upload_to=request_update_filename, blank=True, null=True)
-    #ë“±ë¡ì¼ì ê¸°ë¡ìš©
-    created_at = models.DateTimeField('ë“±ë¡ì¼ì', auto_now_add=True)
-    #ì˜ë¢°ì„œ ì™„ì„±ë˜ì—ˆëŠ” ì§€
-    add_meeting = models.BooleanField('ì¶”ê°€ë¡œ ë¯¸íŒ…í•˜ê¸° ì—¬ë¶€', default=False, null=True)
+       
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='ÀÛ¼ºÅ¬¶óÀÌ¾ğÆ®')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='ÇÁ·ÎÁ§Æ®')
+    product = models.ForeignKey(Subclass, on_delete=models.CASCADE, verbose_name='ÀÇ·ÚÁ¦Ç°')
+    # ¼±ÅÃÁú¹®
+    category = models.ManyToManyField(Develop, verbose_name='ÀÇ·ÚºĞ¾ß')
+    #°øÅëÁú¹®
+    name = models.CharField('ÀÇ·ÚÁ¦Ç°¸í', max_length=256, blank=True, null=True)
+    price = models.CharField('Èñ¸Áºñ¿ë', max_length=256, blank=True, null=True)
+    day = models.CharField('Èñ¸ÁÇÁ·ÎÁ§Æ®±â°£(ÀÏ)', max_length=256, blank=True, null=True)
+    content = RichTextUploadingField('ÀÇ·Ú³»¿ë', null=True)
+    file = models.FileField('ÀÇ·ÚÆÄÀÏ', upload_to=request_update_filename, blank=True, null=True)
+    #µî·ÏÀÏÀÚ ±â·Ï¿ë
+    created_at = models.DateTimeField('µî·ÏÀÏÀÚ', default=time)
+    #ÀÇ·Ú¼­ ¿Ï¼ºµÇ¾ú´Â Áö
+    add_meeting = models.BooleanField('Ãß°¡·Î ¹ÌÆÃÇÏ±â ¿©ºÎ', default=False, null=True)
+    #ÀÇ·Ú¼­ °ËÅä µÇ¾ú´Â Áö
+    examine = models.BooleanField('°ËÅäÇÏ±â ¿©ºÎ', default=False, null=True)
+    active_save = models.BooleanField('È°¼º º¯È­ ÀúÀå', default=True, null=True)
+
     @property
     def apply_count(self):
         return Answer.objects.filter(project=self.project).count()
@@ -138,15 +153,18 @@ class Request(models.Model):
         print(self.time_out.days)
         active=self.time_out.days
         if active >= 1:
+            if self.active_save is True:
+                self.active_save = False
+                self.save()
             return False
         return True
 
     @property
     def coin(self):
         category_qs = self.category.all()
-        #ì¿¼ë¦¬ì…‹ ë°¸ë¥˜ ê°€ì ¸ì˜¤ê³  ë¦¬ìŠ¤íŠ¸í™”í•˜ê¸°
+        #Äõ¸®¼Â ¹ë·ù °¡Á®¿À°í ¸®½ºÆ®È­ÇÏ±â
         category_coin =category_qs.values_list('coin', flat=True)
-        #ë¦¬ìŠ¤íŠ¸í™” ë° ê°’ ëª¨ë‘ ë”í•˜ê¸°
+        #¸®½ºÆ®È­ ¹× °ª ¸ğµÎ ´õÇÏ±â
         category_coin = list(category_coin)
         category_coin_sum = sum(category_coin)
         price = category_coin_sum
@@ -159,131 +177,138 @@ class Request(models.Model):
         return False
 
     class Meta:
-        verbose_name = '     ìš”ì²­ëœ ì˜ë¢°'
-        verbose_name_plural = '     ìš”ì²­ëœ ì˜ë¢°'
+        verbose_name = '     ¿äÃ»µÈ ÀÇ·Ú'
+        verbose_name_plural = '     ¿äÃ»µÈ ÀÇ·Ú'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.name)
 
 # ------------------------------------------------------------------
 # Model   : Select_save
-# Description : ì˜ë¡œì„œì— ì €ì¥ë˜ëŠ” ì„ íƒì§ˆë¬¸/ë‹µë³€ ëª¨ë¸
+# Description : ÀÇ·Î¼­¿¡ ÀúÀåµÇ´Â ¼±ÅÃÁú¹®/´äº¯ ¸ğµ¨
 # ------------------------------------------------------------------
 class Select_save(models.Model):
-    request = models.ForeignKey(Request, on_delete=models.CASCADE, verbose_name='ì˜ë¢°ì„œ')
-    category = models.ForeignKey(Develop, on_delete=models.CASCADE, verbose_name='ê°œë°œë¶„ì•¼')
-    question = models.CharField('ì„ íƒì§ˆë¬¸', max_length=256, blank=True, null=True)
-    answer = models.CharField('ì„ íƒì§ˆë¬¸ë‹µë³€', max_length=256, blank=True, null=True)
+    request = models.ForeignKey(Request, on_delete=models.CASCADE, verbose_name='ÀÇ·Ú¼­')
+    category = models.ForeignKey(Develop, on_delete=models.CASCADE, verbose_name='°³¹ßºĞ¾ß')
+    question = models.CharField('¼±ÅÃÁú¹®', max_length=256, blank=True, null=True)
+    answer = models.CharField('¼±ÅÃÁú¹®´äº¯', max_length=256, blank=True, null=True)
 
     class Meta:
-        verbose_name = '     ì˜ë¢°ì„œì— ì €ì¥ë˜ëŠ” ì„ íƒì§ˆë¬¸/ë‹µë³€'
-        verbose_name_plural = '     ì˜ë¢°ì„œì— ì €ì¥ë˜ëŠ” ì„ íƒì§ˆë¬¸/ë‹µë³€'
+        verbose_name = '     ÀÇ·Ú¼­¿¡ ÀúÀåµÇ´Â ¼±ÅÃÁú¹®/´äº¯'
+        verbose_name_plural = '     ÀÇ·Ú¼­¿¡ ÀúÀåµÇ´Â ¼±ÅÃÁú¹®/´äº¯'
 
     def __str__(self):
         return str(self.id)
 
 # ------------------------------------------------------------------
 # Model   : Select
-# Description : ì„ íƒì§ˆë¬¸ ëª¨ë¸
+# Description : ¼±ÅÃÁú¹® ¸ğµ¨
 # ------------------------------------------------------------------
 class Select(models.Model):
-    # ì„ íƒì§ˆë¬¸
-    category = models.ForeignKey(Develop, on_delete=models.CASCADE, verbose_name='ê°œë°œë¶„ì•¼ì¤‘ë¶„ë¥˜')
-    request = models.TextField('ì„ íƒì§ˆë¬¸', blank=True, null=True)
+    # ¼±ÅÃÁú¹®
+    category = models.ForeignKey(Develop, on_delete=models.CASCADE, verbose_name='°³¹ßºĞ¾ßÁßºĞ·ù')
+    request = models.TextField('¼±ÅÃÁú¹®', blank=True, null=True)
 
 
     class Meta:
-        verbose_name = '     ì„ íƒì§ˆë¬¸'
-        verbose_name_plural = '     ì„ íƒì§ˆë¬¸'
+        verbose_name = '     ¼±ÅÃÁú¹®'
+        verbose_name_plural = '     ¼±ÅÃÁú¹®'
 
     def __str__(self):
         return str(self.request)
 
 # ------------------------------------------------------------------
 # Model   : Content
-# Description : ì„ íƒì§ˆë¬¸ë‚´ìš© ëª¨ë¸.
+# Description : ¼±ÅÃÁú¹®³»¿ë ¸ğµ¨.
 # ------------------------------------------------------------------
 class Content(models.Model):
-    # ì„ íƒì§ˆë¬¸
-    request = models.ForeignKey(Select, on_delete=models.CASCADE, verbose_name='ì„ íƒì§ˆë¬¸')
-    content1 = models.CharField('ì»¨í…ì¸ 1', max_length=256, blank=True, null=True)
-    content2 = models.CharField('ì»¨í…ì¸ 2', max_length=256, blank=True, null=True)
-    content3 = models.CharField('ì»¨í…ì¸ 3', max_length=256, blank=True, null=True)
-    content4 = models.CharField('ì»¨í…ì¸ 4', max_length=256, blank=True, null=True)
+    # ¼±ÅÃÁú¹®
+    request = models.ForeignKey(Select, on_delete=models.CASCADE, verbose_name='¼±ÅÃÁú¹®')
+    content1 = models.CharField('ÄÁÅÙÃ÷1', max_length=256, blank=True, null=True)
+    content2 = models.CharField('ÄÁÅÙÃ÷2', max_length=256, blank=True, null=True)
+    content3 = models.CharField('ÄÁÅÙÃ÷3', max_length=256, blank=True, null=True)
+    content4 = models.CharField('ÄÁÅÙÃ÷4', max_length=256, blank=True, null=True)
 
     class Meta:
-        verbose_name = '     ì„ íƒì§ˆë¬¸ì»¨í…ì¸ '
-        verbose_name_plural = '     ì„ íƒì§ˆë¬¸ì»¨í…ì¸ '
+        verbose_name = '     ¼±ÅÃÁú¹®ÄÁÅÙÃ÷'
+        verbose_name_plural = '     ¼±ÅÃÁú¹®ÄÁÅÙÃ÷'
 
     def __str__(self):
         return str(self.request)
 
 # ------------------------------------------------------------------
 # Model   : Common
-# Description : ê³µí†µì§ˆë¬¸ ëª¨ë¸
+# Description : °øÅëÁú¹® ¸ğµ¨
 # ------------------------------------------------------------------
 class Common(models.Model):
-    # ê³µí†µì§ˆë¬¸
-    product = models.CharField('ì˜ë¢°ì œí’ˆëª…', max_length=256, blank=True, null=True)
-    price = models.CharField('í¬ë§ë¹„ìš©', max_length=256, blank=True, null=True)
-    day = models.CharField('í¬ë§í”„ë¡œì íŠ¸ê¸°ê°„(ì¼)', max_length=256, blank=True, null=True)
-    content = RichTextUploadingField('ì˜ë¢°ë‚´ìš©')
-    file = models.FileField('ì˜ë¢°íŒŒì¼', upload_to=request_update_filename, blank=True, null=True)
+    # °øÅëÁú¹®
+    product = models.CharField('ÀÇ·ÚÁ¦Ç°¸í', max_length=256, blank=True, null=True)
+    price = models.CharField('Èñ¸Áºñ¿ë', max_length=256, blank=True, null=True)
+    day = models.CharField('Èñ¸ÁÇÁ·ÎÁ§Æ®±â°£(ÀÏ)', max_length=256, blank=True, null=True)
+    content = RichTextUploadingField('ÀÇ·Ú³»¿ë')
+    file = models.FileField('ÀÇ·ÚÆÄÀÏ', upload_to=request_update_filename, blank=True, null=True)
 
 
     class Meta:
-        verbose_name = '     ê³µí†µì§ˆë¬¸'
-        verbose_name_plural = '     ê³µí†µì§ˆë¬¸'
+        verbose_name = '     °øÅëÁú¹®'
+        verbose_name_plural = '     °øÅëÁú¹®'
 
     def __str__(self):
         return str(self.id)
 
 # ------------------------------------------------------------------
 # Model   : Answer
-# Description : ì œì•ˆì„œ ëª¨ë¸
+# Description : Á¦¾È¼­ ¸ğµ¨
 # ------------------------------------------------------------------
 
 MEETING_STATE = [
-    (0, "NOTSUBMIT"), # ì„ íƒë˜ì§€ ì•ŠìŒ
+    (0, "NOTSUBMIT"), # ¼±ÅÃµÇÁö ¾ÊÀ½
     (1, "YES"),
     (2, "NO"),
 ]
 class Answer(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name="í´ë¼ì´ì–¸íŠ¸")
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name="í”„ë¡œì íŠ¸", null=True)
-    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="ì‘ì„± íŒŒíŠ¸ë„ˆ")
-    price = models.IntegerField('ì œì•ˆë¹„ìš©', default=0)
-    day = models.CharField('ì œì•ˆê°œë°œê¸°ê°„', max_length=256, blank=True, null=True)
-    expert = models.TextField('ì „ë¬¸ì„± ë° ê²½í—˜', blank=True, null=True)
-    strategy = models.TextField('ì œì•ˆ ì „ëµ', blank=True, null=True)
-    created_at = models.DateTimeField('ë“±ë¡ì¼ì', auto_now_add=True)
-    state = models.IntegerField('ë¯¸íŒ… ìƒíƒœ', default=0, choices=MEETING_STATE)
-    active = models.BooleanField('í™œì„±í™”ì—¬ë¶€', default=False)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name="Å¬¶óÀÌ¾ğÆ®")
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name="ÇÁ·ÎÁ§Æ®", null=True)
+    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="ÀÛ¼º ÆÄÆ®³Ê")
+    category = models.TextField('°³¹ß ºĞ¾ß', blank=True, null=True)
+    people = models.TextField('°³¹ß ÅõÀÔ ÀÎ¿ø', blank=True, null=True)
+    price = models.TextField('°³¹ß ÀÔ·ü', blank=True, null=True)
+    strategy = models.TextField('¿¹»ó °³¹ß ±â´É', blank=True, null=True)
+    period = models.TextField('¿¹»ó °³¹ß ±â°£', blank=True, null=True)
 
+    day = models.IntegerField('ÃÑ °³¹ß ±â°£', default=0)
+    all_price = models.IntegerField('¿¹»ó °ßÀû', default=0)
+
+    expert = models.TextField('Àü¹®¼º ¹× °æÇè', blank=True, null=True)
+    file = models.FileField('ÀÇ·ÚÆÄÀÏ', upload_to=answer_update_filename, blank=True, null=True)
+
+    created_at = models.DateTimeField('µî·ÏÀÏÀÚ', auto_now_add=True)
+    state = models.IntegerField('¹ÌÆÃ »óÅÂ', default=0, choices=MEETING_STATE)
+    active = models.BooleanField('È°¼ºÈ­¿©ºÎ', default=False)
     @property
-    def see_phone(self): # ì „í™”ë²ˆí˜¸ ë²„íŠ¼ì„ ë³´ì—¬ì¤„ ê²ƒì¸ì§€
+    def see_phone(self): # ÀüÈ­¹øÈ£ ¹öÆ°À» º¸¿©ÁÙ °ÍÀÎÁö
         if self.active:
             return True
         else:
             return False
 
     @property
-    def see_review(self): # ë¦¬ë·° ë²„íŠ¼ì„ ë³´ì—¬ì¤„ ê²ƒì¸ì§€
+    def see_review(self): # ¸®ºä ¹öÆ°À» º¸¿©ÁÙ °ÍÀÎÁö
         if self.state == 1:
             return True
         else:
             return False
 
     @property
-    def down_chage(self): # ì•„ë˜ì˜ ì œì•ˆì„œë¥¼ í™œì„±í™”ì‹œí‚¬ ê²ƒì¸ì§€
+    def down_chage(self): # ¾Æ·¡ÀÇ Á¦¾È¼­¸¦ È°¼ºÈ­½ÃÅ³ °ÍÀÎÁö
         if self.active and self.state:
              return True
         else:
              return False
 
     class Meta:
-        verbose_name = '     ì œì•ˆì„œ'
-        verbose_name_plural = '     ì œì•ˆì„œ'
+        verbose_name = '     Á¦¾È¼­'
+        verbose_name_plural = '     Á¦¾È¼­'
 
     def __str__(self):
         return str(self.id)
@@ -291,19 +316,19 @@ class Answer(models.Model):
 
 # ------------------------------------------------------------------
 # Model   : Review
-# Description : ë¦¬ë·° ëª¨ë¸
+# Description : ¸®ºä ¸ğµ¨
 # ------------------------------------------------------------------
 class Review(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name ="ì‘ì„±í´ë¼ì´ì–¸íŠ¸")
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name="í”„ë¡œì íŠ¸")
-    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="íŒŒíŠ¸ë„ˆ")
-    price_score = models.PositiveSmallIntegerField('ê°€ê²© ë§Œì¡±ë„', default=0, validators=[MaxValueValidator(5), ])
-    time_score = models.PositiveSmallIntegerField('ì—…ë¬´ì†ë„ ë° ë‚©ê¸°', default=0, validators=[MaxValueValidator(5), ])
-    talk_score = models.PositiveSmallIntegerField('ì˜ì‚¬ì†Œí†µ', default=0, validators=[MaxValueValidator(5), ])
-    expert_score = models.PositiveSmallIntegerField('ì „ë¬¸ì„±', default=0, validators=[MaxValueValidator(5), ])
-    result_score = models.PositiveSmallIntegerField('ê²°ê³¼ë¬¼ ë° í’ˆì§ˆ', default=0, validators=[MaxValueValidator(5), ])
-    content_good = models.TextField('ì¢‹ì•˜ë˜ ì ', blank=True, null=True)
-    content_bad = models.TextField('ì•„ì‰¬ì› ë˜ ì ', blank=True, null=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name ="ÀÛ¼ºÅ¬¶óÀÌ¾ğÆ®")
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name="ÇÁ·ÎÁ§Æ®")
+    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="ÆÄÆ®³Ê")
+    price_score = models.PositiveSmallIntegerField('°¡°İ ¸¸Á·µµ', default=0, validators=[MaxValueValidator(5), ])
+    time_score = models.PositiveSmallIntegerField('¾÷¹«¼Óµµ ¹× ³³±â', default=0, validators=[MaxValueValidator(5), ])
+    talk_score = models.PositiveSmallIntegerField('ÀÇ»ç¼ÒÅë', default=0, validators=[MaxValueValidator(5), ])
+    expert_score = models.PositiveSmallIntegerField('Àü¹®¼º', default=0, validators=[MaxValueValidator(5), ])
+    result_score = models.PositiveSmallIntegerField('°á°ú¹° ¹× Ç°Áú', default=0, validators=[MaxValueValidator(5), ])
+    content_good = models.TextField('¹ÌÆÃ ÈÄ±â', blank=True, null=True)
+    content_bad = models.TextField('°è¾à ÈÄ±â', blank=True, null=True)
 
     @property
     def avg_score(self):
@@ -311,8 +336,8 @@ class Review(models.Model):
         return avg_score
 
     class Meta:
-        verbose_name = 'ë¦¬ë·°ë³„ì '
-        verbose_name_plural = 'ë¦¬ë·°ë³„ì '
+        verbose_name = '¸®ºäº°Á¡'
+        verbose_name_plural = '¸®ºäº°Á¡'
 
     def __str__(self):
         return str(self.id)

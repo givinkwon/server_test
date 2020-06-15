@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 #from django.contrib.auth.models import Group
 from apps.category.models import *
 from rest_framework import viewsets
@@ -15,7 +16,7 @@ class MaincategoryViewSet(viewsets.ModelViewSet):
     queryset = Maincategory.objects.all()
     serializer_class = MaincategorySerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
-    search_fields = ['maincategory'] # ìë™ìœ¼ë¡œ FK í…Œì´ë¸” ê´€ë ¨ ë°ì´í„°ë¥¼ ê°€ì ¸ì˜¬ ìˆ˜ ìˆìŒ
+    search_fields = ['maincategory'] # ÀÚµ¿À¸·Î FK Å×ÀÌºí °ü·Ã µ¥ÀÌÅÍ¸¦ °¡Á®¿Ã ¼ö ÀÖÀ½
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """
@@ -24,7 +25,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
-    search_fields = ['category']  # ìë™ìœ¼ë¡œ FK í…Œì´ë¸” ê´€ë ¨ ë°ì´í„°ë¥¼ ê°€ì ¸ì˜¬ ìˆ˜ ìˆìŒ
+    search_fields = ['category']  # ÀÚµ¿À¸·Î FK Å×ÀÌºí °ü·Ã µ¥ÀÌÅÍ¸¦ °¡Á®¿Ã ¼ö ÀÖÀ½
 
 class SubclassViewSet(viewsets.ModelViewSet):
     """
@@ -33,7 +34,7 @@ class SubclassViewSet(viewsets.ModelViewSet):
     queryset = Subclass.objects.all()
     serializer_class = SubclassSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
-    search_fields = ['subclass']  # ìë™ìœ¼ë¡œ FK í…Œì´ë¸” ê´€ë ¨ ë°ì´í„°ë¥¼ ê°€ì ¸ì˜¬ ìˆ˜ ìˆìŒ
+    search_fields = ['subclass']  # ÀÚµ¿À¸·Î FK Å×ÀÌºí °ü·Ã µ¥ÀÌÅÍ¸¦ °¡Á®¿Ã ¼ö ÀÖÀ½
 
 class CityViewSet(viewsets.ModelViewSet):
     """
@@ -62,5 +63,5 @@ class DevelopbigViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    queryset = Developbig.objects.all()
+    queryset = Developbig.objects.all().order_by('id')
     serializer_class = DevelopbigSerializer

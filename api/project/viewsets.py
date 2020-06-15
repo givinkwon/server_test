@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 from apps.project.models import *
 from apps.category.models import *
 from rest_framework import (
@@ -55,13 +56,13 @@ class RequestViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         project = Project.objects.create()
         serializer.save(project=project)
-        print(serializer)
+        
 
    # search_fields = []
-# ì¥ê³  í•„í„°ë¡œ ëŒ€ì²´
+# Àå°í ÇÊÅÍ·Î ´ëÃ¼
 #    @swagger_auto_schema(request_body=RequestSerializer)
 #    @action(detail=False, methods=('POST',), http_method_names=('post',))
-#    def find_request(self, request, *args, **kwargs):  # ìš”ì²­í•œ ì˜ë¢°ì„œ í™•ì¸(ìœ ì €ê¸°ì¤€)
+#    def find_request(self, request, *args, **kwargs):  # ¿äÃ»ÇÑ ÀÇ·Ú¼­ È®ÀÎ(À¯Àú±âÁØ)
 #
 #        user = request.data.get('user')
 #        # user id
@@ -74,7 +75,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
 #    @swagger_auto_schema(request_body=RequestSerializer)
 #    @action(detail=False, methods=('POST',), http_method_names=('post',))
-#    def find_request_project(self, request, *args, **kwargs):  # í”„ë¡œì íŠ¸ë§ˆë‹¤ ì˜ë¢°ì„œ ì°¾ì•„ì˜¤ê¸°
+#    def find_request_project(self, request, *args, **kwargs):  # ÇÁ·ÎÁ§Æ®¸¶´Ù ÀÇ·Ú¼­ Ã£¾Æ¿À±â
 #
 #        project = request.data.get('project')
 #        # project id
@@ -88,7 +89,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(request_body=RequestSerializer)
     @action(detail=False, methods=('POST',), url_path='partner', http_method_names=('post',), permission_classes=(IsAuthenticated,),)
-    def find_request_partner(self, request, *args, **kwargs):  # íŒŒíŠ¸ë„ˆì—ê²Œ ì í•©í•œ ë¬¸ì˜ì„œ ëª¨ë‘ ê°€ì ¸ì˜¤ê¸°
+    def find_request_partner(self, request, *args, **kwargs):  # ÆÄÆ®³Ê¿¡°Ô ÀûÇÕÇÑ ¹®ÀÇ¼­ ¸ğµÎ °¡Á®¿À±â
         possible_product = request.user.partner.possible_set
         history_prodcut = request.user.partner.history_set
         #print(possible_product)
@@ -96,14 +97,14 @@ class RequestViewSet(viewsets.ModelViewSet):
         #subclass_qs
         request1_qs = possible_product.all()
         request2_qs = history_prodcut.all()
-        #query_set í•©ì¹˜ê¸°
+        #query_set ÇÕÄ¡±â
         partner_product = request1_qs.union(request2_qs)
-        #query_set value ê°€ì ¸ì˜¤ê¸°
+        #query_set value °¡Á®¿À±â
         partner_product = partner_product.values_list('id', flat=True)
         request = Request.objects.filter(product__in=partner_product)
 
         return Response(data={'code': ResponseCode.SUCCESS.value,
-                              'message': 'í•´ë‹¹ íŒŒíŠ¸ë„ˆì—ê²Œ ì í•©í•œ ëª¨ë“  ë¬¸ì˜ì„œì…ë‹ˆë‹¤.',
+                              'message': 'ÇØ´ç ÆÄÆ®³Ê¿¡°Ô ÀûÇÕÇÑ ¸ğµç ¹®ÀÇ¼­ÀÔ´Ï´Ù.',
                               'data': RequestSerializer(request, many=True).data
                               }
                         )
@@ -123,14 +124,14 @@ class SelectViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(request_body=SelectSerializer)
     @action(detail=False, methods=('POST',), url_path='category', http_method_names=('post',))
-    def find_select(self, request, *args, **kwargs):  # ì„ íƒëœ ê°œë°œ ë¶„ì•¼ì— ë”°ë¼ ì„ íƒì§ˆë¬¸ ì„ ë³„
+    def find_select(self, request, *args, **kwargs):  # ¼±ÅÃµÈ °³¹ß ºĞ¾ß¿¡ µû¶ó ¼±ÅÃÁú¹® ¼±º°
 
         category = request.data.get('category')
         # product id
 
         develop_instances = Develop.objects.filter(id__in=category)
        # select = Select.objects.filter(range__in=product_instances)
-    #    select = Select.objects.filter(range=product) # ì™œ ë‘˜ ë‹¤ ë˜ì§€..?
+    #    select = Select.objects.filter(range=product) # ¿Ö µÑ ´Ù µÇÁö..?
 
         return Response(data={'code': ResponseCode.SUCCESS.value,
                               'data': DevelopSerializer(develop_instances, many=True).data
@@ -168,7 +169,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(request_body=AnswerSerializer)
     @action(detail=False, methods=('POST',), url_path='first-active', http_method_names=('post',), permission_classes=(IsAuthenticated,),)
-    def first_active(self, request, *args, **kwargs):  # ì œì¼ í‰ì  ë†’ì€ íŒŒíŠ¸ë„ˆ í™œì„±í™” > í”„ë¡œì íŠ¸ë§ˆë‹¤ ë˜ì–´ì•¼í•¨.
+    def first_active(self, request, *args, **kwargs):  # Á¦ÀÏ ÆòÁ¡ ³ôÀº ÆÄÆ®³Ê È°¼ºÈ­ > ÇÁ·ÎÁ§Æ®¸¶´Ù µÇ¾î¾ßÇÔ.
             project__id = request.data.get('project__id')
             answer_qs = Answer.objects.filter(project = project__id)
             if answer_qs.exists():
@@ -176,16 +177,16 @@ class AnswerViewSet(viewsets.ModelViewSet):
                 instance.active = True
                 instance.save()
                 return Response(data={'code': ResponseCode.SUCCESS.value,
-                                      'message' : "í‰ì ì´ ì œì¼ ë†’ì€ íŒŒíŠ¸ë„ˆê°€ í™œì„±í™”ë˜ì—ˆìŠµë‹ˆë‹¤.",
+                                      'message' : "ÆòÁ¡ÀÌ Á¦ÀÏ ³ôÀº ÆÄÆ®³Ê°¡ È°¼ºÈ­µÇ¾ú½À´Ï´Ù.",
                                       'data': AnswerSerializer(answer_qs, many=True).data
                                     })
             return Response(status=status.HTTP_400_BAD_REQUEST,
-                            data={'message': "í”„ë¡œì íŠ¸ì— ë“¤ì–´ì˜¨ ì œì•ˆì„œê°€ ì—†ìŠµë‹ˆë‹¤"
+                            data={'message': "ÇÁ·ÎÁ§Æ®¿¡ µé¾î¿Â Á¦¾È¼­°¡ ¾ø½À´Ï´Ù"
                             })
 
     @swagger_auto_schema(request_body=AnswerSerializer)
     @action(detail=False, methods=('PATCH',), url_path='active', http_method_names=('patch',))
-    def change_active(self, request, *args, **kwargs):  # íŒŒíŠ¸ë„ˆì˜ idë¥¼ ë°›ì•„ì„œ í•´ë‹¹ idì˜ íŒŒíŠ¸ë„ˆê°€ ë³´ë‚¸ ì œì•ˆì„œì˜ active ê°’ì„ Trueë¡œ ë§Œë“¤ì–´ì£¼ëŠ” API
+    def change_active(self, request, *args, **kwargs):  # ÆÄÆ®³ÊÀÇ id¸¦ ¹Ş¾Æ¼­ ÇØ´ç idÀÇ ÆÄÆ®³Ê°¡ º¸³½ Á¦¾È¼­ÀÇ active °ªÀ» True·Î ¸¸µé¾îÁÖ´Â API
         partner_id = request.data.get('partner_id')
         project_id = request.data.get('project_id')
         answer_qs = Answer.objects.filter(project = project_id, partner = partner_id)
@@ -196,16 +197,16 @@ class AnswerViewSet(viewsets.ModelViewSet):
             instance.save()
             print(instance)
             return Response(data={'code': ResponseCode.SUCCESS.value,
-                                  'message': "í•´ë‹¹ íŒŒíŠ¸ë„ˆì˜ ì œì•ˆì„œê°€ í™œì„±í™”ë˜ì—ˆìŠµë‹ˆë‹¤."
+                                  'message': "ÇØ´ç ÆÄÆ®³ÊÀÇ Á¦¾È¼­°¡ È°¼ºÈ­µÇ¾ú½À´Ï´Ù."
                                   })
         return Response(status=status.HTTP_400_BAD_REQUEST,
-                            data={'message': "í”„ë¡œì íŠ¸ì— ë“¤ì–´ì˜¨ ì œì•ˆì„œê°€ ì—†ìŠµë‹ˆë‹¤"
+                            data={'message': "ÇÁ·ÎÁ§Æ®¿¡ µé¾î¿Â Á¦¾È¼­°¡ ¾ø½À´Ï´Ù"
                             })
     # search_fields = []
-#ì¥ê³  í•„í„°ë¡œ ëŒ€ì²´
+#Àå°í ÇÊÅÍ·Î ´ëÃ¼
 #    @swagger_auto_schema(request_body=AnswerSerializer)
 #    @action(detail=False, methods=('POST',), http_method_names=('post',))
-#    def find_answer(self, request, *args, **kwargs):  # í•´ë‹¹ í”„ë¡œì íŠ¸ì— ì œì•ˆí•œ íŒŒíŠ¸ë„ˆ ì •ë³´ì™€ ì œì•ˆì„œ í™•ì¸
+#    def find_answer(self, request, *args, **kwargs):  # ÇØ´ç ÇÁ·ÎÁ§Æ®¿¡ Á¦¾ÈÇÑ ÆÄÆ®³Ê Á¤º¸¿Í Á¦¾È¼­ È®ÀÎ
 
 #        project = request.data.get('project')
 #        # project id
@@ -218,7 +219,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
 
 #    @swagger_auto_schema(request_body=AnswerSerializer)
 #    @action(detail=False, methods=('POST',), http_method_names=('post',))
-#    def find_answer_partner(self, request, *args, **kwargs):  # íŒŒíŠ¸ë„ˆê°€ ì“´ ëª¨ë“  ì œì•ˆì„œ ë¶ˆëŸ¬ì˜¤ê¸°
+#    def find_answer_partner(self, request, *args, **kwargs):  # ÆÄÆ®³Ê°¡ ¾´ ¸ğµç Á¦¾È¼­ ºÒ·¯¿À±â
 
 #        partner = request.data.get('partner')
 #        # partner id
@@ -241,7 +242,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(request_body=ReviewSerializer)
     @action(detail=False, methods=['POST', ], url_path='create', http_method_names=('post',),)
-    def create_review(self, request, *args, **kwargs):  #ë¦¬ë·°ë¥¼ ë§Œë“œëŠ” api
+    def create_review(self, request, *args, **kwargs):  #¸®ºä¸¦ ¸¸µå´Â api
         client = request.data.get('client')
         project = request.data.get('project')
         partner = request.data.get('partner')
@@ -270,7 +271,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     #    @swagger_auto_schema(request_body=ReviewSerializer)
 #    @action(detail=False, methods=('POST',), http_method_names=('post',))
-#    def score_avg(self, request, *args, **kwargs):  # íŒŒíŠ¸ë„ˆ í‰ì  ë¶ˆëŸ¬ì˜¤ê¸° >> Serializerë¡œ ì˜®ê¹€
+#    def score_avg(self, request, *args, **kwargs):  # ÆÄÆ®³Ê ÆòÁ¡ ºÒ·¯¿À±â >> Serializer·Î ¿Å±è
 #
 #        partner = request.data.get('partner')
 #        #partner id
@@ -284,14 +285,14 @@ class ReviewViewSet(viewsets.ModelViewSet):
 #        avg_score = (a['price_score__avg'] + b['time_score__avg'] + c['talk_score__avg'] + d['expert_score__avg'] + e['result_score__avg']) / 5
 
 #        return Response(data={'code': ResponseCode.SUCCESS.value,
-#                              'message': 'í•´ë‹¹ íŒŒíŠ¸ë„ˆ í‰ì ì…ë‹ˆë‹¤',
+#                              'message': 'ÇØ´ç ÆÄÆ®³Ê ÆòÁ¡ÀÔ´Ï´Ù',
 #                              'data': avg_score
 #                              }
 #                        )
 
 #    @swagger_auto_schema(request_body=ReviewSerializer)
 #    @action(detail=False, methods=('POST',), http_method_names=('post',))
-#    def review_partner(self, request, *args, **kwargs):  # íŒŒíŠ¸ë„ˆ ë¦¬ë·° ë¦¬ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸°
+#    def review_partner(self, request, *args, **kwargs):  # ÆÄÆ®³Ê ¸®ºä ¸®½ºÆ® °¡Á®¿À±â
 
 #        partner = request.data.get('partner')
 #        # partner id
@@ -299,14 +300,14 @@ class ReviewViewSet(viewsets.ModelViewSet):
 #        review = Review.objects.filter(partner=partner)
 
 #        return Response(data={'code': ResponseCode.SUCCESS.value,
-#                              'message': 'í•´ë‹¹ íŒŒíŠ¸ë„ˆ ë¦¬ë·°ì…ë‹ˆë‹¤',
+#                              'message': 'ÇØ´ç ÆÄÆ®³Ê ¸®ºäÀÔ´Ï´Ù',
 #                              'data': ReviewSerializer(review,many=True).data
 #                              }
 #                        )
 
 #    @swagger_auto_schema(request_body=ReviewSerializer)
 #    @action(detail=False, methods=('POST',), http_method_names=('post',))
-#    def find_review_project(self, request, *args, **kwargs):  # í”„ë¡œì íŠ¸ë§ˆë‹¤ íŒŒíŠ¸ë„ˆ ë¦¬ë·° ì°¾ì•„ì˜¤ê¸°
+#    def find_review_project(self, request, *args, **kwargs):  # ÇÁ·ÎÁ§Æ®¸¶´Ù ÆÄÆ®³Ê ¸®ºä Ã£¾Æ¿À±â
 
 #        project = request.data.get('project')
         # project id
@@ -328,15 +329,15 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(request_body=ProjectSerializer)
     @action(detail=False, methods=['PATCH', ], url_path='state', http_method_names=('patch',))
-    def change_state(self, request, *args, **kwargs):  # ë²„íŠ¼ í´ë¦­ì— ë”°ë¼ í”„ë¡œì íŠ¸ state ìƒíƒœë¥¼ ë°”ê¾¸ëŠ” api
+    def change_state(self, request, *args, **kwargs):  # ¹öÆ° Å¬¸¯¿¡ µû¶ó ÇÁ·ÎÁ§Æ® state »óÅÂ¸¦ ¹Ù²Ù´Â api
 
         project_id = request.data.get('project_id')
         state = request.data.get('state')
         # project id
 
-        #filterë¡œ ê²€ìƒ‰ ì‹œ Querysetì´ ì˜´, getì€ ëª¨ë¸ì„ ê°€ì ¸ì˜¤ê³  ì—†ìœ¼ë©´ ì˜ˆì™¸ë¥¼ ë°œìƒì‹œí‚´
+        #filter·Î °Ë»ö ½Ã QuerysetÀÌ ¿È, getÀº ¸ğµ¨À» °¡Á®¿À°í ¾øÀ¸¸é ¿¹¿Ü¸¦ ¹ß»ı½ÃÅ´
         update_project = Project.objects.get(id=project_id)
-        # Serializerì˜ ì²˜ìŒ íŒŒë¼ë¯¸í„°ì—ëŠ” model(row)ì´ ì™€ì•¼í•¨.
+        # SerializerÀÇ Ã³À½ ÆÄ¶ó¹ÌÅÍ¿¡´Â model(row)ÀÌ ¿Í¾ßÇÔ.
         serializer = ProjectSerializer(update_project, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()

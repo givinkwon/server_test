@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 from rest_framework import serializers
 from apps.account.models import *
 from apps.category.models import *
@@ -8,13 +9,13 @@ from api.category.serializers import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'type', 'password', 'is_update','phone']
+        fields = ['username', 'type', 'password', 'is_update','phone','marketing']
 
 class PatchUserSerializer(serializers.ModelSerializer):
  #   user_data = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ['id','username', 'type','phone']
+        fields = ['id','username', 'type','phone','marketing']
         #,'user_data']
 
  #   def get_user_data(self,obj):
@@ -66,6 +67,11 @@ class ProcessSerializer(serializers.ModelSerializer):
         model = Process
         fields = ['id','partner','img_process','is_main']
 
+class LoginLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LoginLog
+        fields = ['id']
+        
 class PartnerSerializer(serializers.ModelSerializer):
     avg_price_score = serializers.SerializerMethodField()
     avg_time_score = serializers.SerializerMethodField()
@@ -73,11 +79,12 @@ class PartnerSerializer(serializers.ModelSerializer):
     avg_expert_score = serializers.SerializerMethodField()
     avg_result_score = serializers.SerializerMethodField()
     avg_score = serializers.SerializerMethodField()
-    product_possible = serializers.SerializerMethodField()
+  #  product_possible = serializers.SerializerMethodField()
     product_history = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
     meeting_count = serializers.SerializerMethodField()
     meeting = serializers.SerializerMethodField()
+    count_loginlog = serializers.SerializerMethodField()
     user = PatchUserSerializer()
     answer_set = AnswerSerializer(many=True)
     review_set = ReviewSerializer(many=True)
@@ -88,36 +95,36 @@ class PartnerSerializer(serializers.ModelSerializer):
     process_set = ProcessSerializer(many=True)
     class Meta:
         model = Partner
-        fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category_middle','category', 'possible_set','product_possible', 'history_set', 'product_history', 'coin','avg_score',
-                  'avg_price_score','avg_time_score','avg_talk_score','avg_expert_score','avg_result_score', 'answer_set','review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set', 'success', 'fail', 'meeting_count', 'meeting']
+        fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category_middle','category', 'history_set', 'product_history', 'coin','avg_score',
+                  'avg_price_score','avg_time_score','avg_talk_score','avg_expert_score','avg_result_score', 'answer_set','review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set', 'success', 'fail', 'meeting_count', 'meeting','is_partner','count_loginlog']
 
     def get_avg_price_score(self,obj):
         a = Review.objects.filter(partner=obj.id).aggregate(Avg('price_score'))
-        if not a['price_score__avg'] is None: # ë¦¬ë·°ê°€ ìˆìœ¼ë©´
+        if not a['price_score__avg'] is None: # ¸®ºä°¡ ÀÖÀ¸¸é
             return a
         return 0
 
     def get_avg_time_score(self,obj):
         b = Review.objects.filter(partner=obj.id).aggregate(Avg('time_score'))
-        if not b['time_score__avg'] is None: # ë¦¬ë·°ê°€ ìˆìœ¼ë©´
+        if not b['time_score__avg'] is None: # ¸®ºä°¡ ÀÖÀ¸¸é
             return b
         return 0
 
     def get_avg_talk_score(self,obj):
         c = Review.objects.filter(partner=obj.id).aggregate(Avg('talk_score'))
-        if not c['talk_score__avg'] is None: # ë¦¬ë·°ê°€ ìˆìœ¼ë©´
+        if not c['talk_score__avg'] is None: # ¸®ºä°¡ ÀÖÀ¸¸é
             return c
         return 0
 
     def get_avg_expert_score(self,obj):
         d = Review.objects.filter(partner=obj.id).aggregate(Avg('expert_score'))
-        if not d['expert_score__avg'] is None: # ë¦¬ë·°ê°€ ìˆìœ¼ë©´
+        if not d['expert_score__avg'] is None: # ¸®ºä°¡ ÀÖÀ¸¸é
             return d
         return 0
 
     def get_avg_result_score(self,obj):
         e = Review.objects.filter(partner=obj.id).aggregate(Avg('result_score'))
-        if not e['result_score__avg'] is None: # ë¦¬ë·°ê°€ ìˆìœ¼ë©´
+        if not e['result_score__avg'] is None: # ¸®ºä°¡ ÀÖÀ¸¸é
             return e
         return 0
 
@@ -127,23 +134,23 @@ class PartnerSerializer(serializers.ModelSerializer):
         c = Review.objects.filter(partner=obj.id).aggregate(Avg('talk_score'))
         d = Review.objects.filter(partner=obj.id).aggregate(Avg('expert_score'))
         e = Review.objects.filter(partner=obj.id).aggregate(Avg('result_score'))
-        if not a['price_score__avg'] is None: # ë¦¬ë·°ê°€ ìˆìœ¼ë©´
+        if not a['price_score__avg'] is None: # ¸®ºä°¡ ÀÖÀ¸¸é
             avg_score = (a['price_score__avg'] + b['time_score__avg'] + c['talk_score__avg'] + d['expert_score__avg'] + e['result_score__avg']) / 5
             obj.avg_score = avg_score
             obj.save()
             return avg_score
         return 0
 
-    def get_product_possible(self, obj):
-        a=obj.possible_set # many to manyëŠ” ì–‘ìª½ì— FKë¡œ ì‘ìš© > obj.possible_setì´ ë°ì´í„°ë² ì´ìŠ¤ í…Œì´ë¸”(ëª¨ë¸) ë° Queryset
-        return SubclassSerializer(a,many=True).data
+  #  def get_product_possible(self, obj):
+  #      a=obj.possible_set # many to many´Â ¾çÂÊ¿¡ FK·Î ÀÛ¿ë > obj.possible_setÀÌ µ¥ÀÌÅÍº£ÀÌ½º Å×ÀÌºí(¸ğµ¨) ¹× Queryset
+  #      return SubclassSerializer(a,many=True).data
 
     def get_product_history(self, obj):
-        a=obj.history_set # many to manyëŠ” ì–‘ìª½ì— FKë¡œ ì‘ìš© > obj.possible_setì´ ë°ì´í„°ë² ì´ìŠ¤ í…Œì´ë¸”(ëª¨ë¸) ë° Queryset
+        a=obj.history_set # many to many´Â ¾çÂÊ¿¡ FK·Î ÀÛ¿ë > obj.possible_setÀÌ µ¥ÀÌÅÍº£ÀÌ½º Å×ÀÌºí(¸ğµ¨) ¹× Queryset
         return SubclassSerializer(a,many=True).data
 
     def get_category(self, obj):
-        a=obj.category_middle # many to manyëŠ” ì–‘ìª½ì— FKë¡œ ì‘ìš© > obj.possible_setì´ ë°ì´í„°ë² ì´ìŠ¤ í…Œì´ë¸”(ëª¨ë¸) ë° Queryset
+        a=obj.category_middle # many to many´Â ¾çÂÊ¿¡ FK·Î ÀÛ¿ë > obj.possible_setÀÌ µ¥ÀÌÅÍº£ÀÌ½º Å×ÀÌºí(¸ğµ¨) ¹× Queryset
         return DevelopSerializer(a,many=True).data
 
     def get_meeting_count(self, obj):
@@ -160,11 +167,11 @@ class PartnerSerializer(serializers.ModelSerializer):
 
     def get_meeting(self, obj):
         meeting_count = (obj.success + obj.fail)
-        # Serializerì˜ ì²˜ìŒ íŒŒë¼ë¯¸í„°ì—ëŠ” model(row)ì´ ì™€ì•¼í•¨.
+        # SerializerÀÇ Ã³À½ ÆÄ¶ó¹ÌÅÍ¿¡´Â model(row)ÀÌ ¿Í¾ßÇÔ.
         if meeting_count == 0:
-            if not obj.success == 0:  # ë¯¸íŒ… ì„±ê³µì´ 1íšŒ ì´ìƒì¸ ê²½ìš°
+            if not obj.success == 0:  # ¹ÌÆÃ ¼º°øÀÌ 1È¸ ÀÌ»óÀÎ °æ¿ì
                 obj.meeting = 100
-            else:  # ë¯¸íŒ… ì„±ê³µì´ 0íšŒì¸ ê²½ìš°
+            else:  # ¹ÌÆÃ ¼º°øÀÌ 0È¸ÀÎ °æ¿ì
                 obj.meeting = 0
         else:
             obj.meeting = obj.success / meeting_count
@@ -174,3 +181,9 @@ class PartnerSerializer(serializers.ModelSerializer):
         obj.save()
 
         return meeting_percent
+        
+    def get_count_loginlog(self, obj):
+        loginlog_qs = LoginLog.objects.filter(user=obj.user)
+        if loginlog_qs.exists():
+            return loginlog_qs.count()
+        return 0                     

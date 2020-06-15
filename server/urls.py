@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
@@ -18,13 +19,13 @@ urlpatterns += [
     path('admin/', admin.site.urls),
     path('', include('api.url')),
     path('test_payment', pv.payment_view, name="payment_view"),
-    re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
-]
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+] 
 
-admin.site.site_header = 'Bolt&Nut ê´€ë¦¬ì í˜ì´ì§€'
+admin.site.site_header = 'Bolt&Nut °ü¸®ÀÚ ÆäÀÌÁö'
 admin.site.site_title = 'Bolt&Nut'
 
-# drf_yasg ì…‹íŒ…
+# drf_yasg ¼ÂÆÃ
 schema_url_v1_patterns = [
     url('', include('api.url', namespace='boltnnut_api')),
 ]
@@ -33,7 +34,7 @@ schema_view_v1 = get_schema_view(
     openapi.Info(
         title="BOLTNNUT API",
         default_version='v1',
-        description="ë³¼íŠ¸ì•¤ë„ˆíŠ¸ API ë¬¸ì„œ.",
+        description="º¼Æ®¾Ø³ÊÆ® API ¹®¼­.",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="rlqls505@naver.com"),
         license=openapi.License(name="Gibin Kwon"),

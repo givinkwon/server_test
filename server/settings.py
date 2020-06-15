@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 """
 Django settings for server project.
 
@@ -106,13 +107,24 @@ AUTHENTICATION_BACKENDS = (
 #    }
 #}
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'boltnnutplatform2',
+#        'USER': 'boltnnutplatform',
+#        'PASSWORD': 'ckddyd505',
+#        'HOST': 'boltnnutplatform.cgo19gfj1xo1.ap-northeast-2.rds.amazonaws.com',
+#        'PORT': '5432',
+#    }
+#}
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'boltnnutplatform2',
         'USER': 'boltnnutplatform',
         'PASSWORD': 'ckddyd505',
-        'HOST': 'boltnnutplatform.cgo19gfj1xo1.ap-northeast-2.rds.amazonaws.com',
+        'HOST': 'boltnnutplatform.crt62jbermqa.ap-northeast-2.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
@@ -168,6 +180,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow"
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -181,7 +194,7 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
-#Ïû•Í≥† Ïù¥Î©îÏùº ÏÑúÎ≤Ñ
+#¿Â∞Ì ¿Ã∏ﬁ¿œ º≠πˆ
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'boltnnut@boltnnut.com'
 EMAIL_HOST_PASSWORD = 'dsghhwuxqxfdpdtq' #ajumsee12
@@ -192,9 +205,9 @@ DEFAULT_TO_EMAIL = 'boltnnut@boltnnut.com'
 DEFAULT_ADMIN_EMAIL = 'boltnnut@boltnnut.com'
 
 #S3
-AWS_STORAGE_BUCKET_NAME = 'boltnnut-platform'
-AWS_ACCESS_KEY_ID = 'AKIAI7RLZ5EV4TL72NKQ'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'boltnnutplatform'
+AWS_ACCESS_KEY_ID = 'AKIATYAEQEY5RQM64SEC'
+AWS_SECRET_ACCESS_KEY = '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'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',

@@ -28,8 +28,46 @@ class AnswerInline(admin.StackedInline):
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     inlines = [RequestInline, AnswerInline,ReviewInline]
-    list_display = ['id']
+    list_display = ['request_name','client_phone','client_email','project_price','project_created','count_answer','count_meeting']
+    
+    def request_name(self, obj):
+        project_id = obj.id
+        request_name = Request.objects.get(project = project_id)
+        return request_name
 
+    def client_email(self, obj):
+        project_id = obj.id
+        client = Request.objects.get(project=project_id).client
+        return client
+        
+    def client_phone(self, obj):
+        project_id = obj.id
+        client = Request.objects.get(project=project_id).client
+        phone = User.objects.get(username=client).phone
+        return phone
+
+    def project_price(self, obj):
+        project_id = obj.id
+        request_price = Request.objects.get(project=project_id).price
+        return request_price
+
+    def project_created(self, obj):
+        project_id = obj.id
+        created_at = Request.objects.get(project=project_id).created_at
+        return created_at
+
+    def count_answer(self, obj):
+        project_id = obj.id
+        answer = Answer.objects.filter(project=project_id)
+        count = len(answer)
+        return count
+
+    def count_meeting(self, obj):
+        project_id = obj.id
+        answer_yes = Answer.objects.filter(project = project_id, state = 1)
+        count = len(answer_yes)
+        return count
+      
 @admin.register(Request)
 class RequestAdmin(admin.ModelAdmin):
     list_display = ['client', 'created_at', 'id', 'project', 'name', 'price', 'day']
@@ -53,7 +91,7 @@ class CommonAdmin(admin.ModelAdmin):
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ['created_at', 'id', 'project', 'price', 'day','state']
+    list_display = ['created_at', 'id', 'project', 'all_price', 'day','state','file']
 
 
 @admin.register(Review)

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from apps.project.models import *
 
-#시간 관련 함수
+
 from django.utils import timezone
 from datetime import date
 
@@ -11,7 +11,7 @@ class RequestSerializer(serializers.ModelSerializer):
     count_answer = serializers.SerializerMethodField()
     class Meta:
         model = Request
-        fields = ['count_answer','active', 'time_out', 'created_at', 'id', 'client', 'project', 'product','category', 'price', 'day', 'content', 'name','file','created_at','apply_count', 'coin','complete', 'add_meeting']
+        fields = ['count_answer','active', 'time_out', 'created_at', 'id', 'client', 'project', 'product','category', 'price', 'day', 'content', 'name','file','created_at','apply_count', 'coin','complete', 'add_meeting', 'examine']
         read_only_fields = ['project']
 
     def get_count_answer(self, obj):
@@ -41,12 +41,12 @@ class CommonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Common
         fields = ['id', 'product', 'price', 'day', 'content','file']
-
+#-*- coding: cp949 -*-
 class AnswerSerializer(serializers.ModelSerializer):
     writed_review = serializers.SerializerMethodField()
     class Meta:
         model = Answer
-        fields = ['state', 'active','created_at', 'id', 'client','project', 'partner', 'price', 'day', 'expert', 'strategy', 'see_phone', 'see_review', 'down_chage','writed_review']
+        fields = ['state', 'active','created_at', 'id', 'client','project', 'partner', 'category', 'people', 'price',  'strategy', 'period', 'day', 'all_price', 'expert', 'see_phone', 'see_review', 'down_chage','writed_review','file']
 
     def get_writed_review(self, obj):
         review_qs = Review.objects.filter(project=obj.project)
@@ -62,7 +62,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    # 외래키 참조시 자동으로 모델이름_set 테이블이 만들어지며 모두 소문자로 변경
+
     request_set = RequestSerializer(many=True, read_only=True)
     answer_set = AnswerSerializer(many=True, read_only=True)
     review_set = ReviewSerializer(many=True, read_only=True)

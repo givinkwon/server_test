@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 from django.contrib import admin
 
 from .models import *
@@ -40,7 +41,7 @@ class ProcessInline(admin.StackedInline):
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['id','username', 'password','type', 'phone']
+    list_display = ['id','username', 'password','type', 'phone','marketing']
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
@@ -55,5 +56,7 @@ class PartnerAdmin(admin.ModelAdmin):
     inlines = [PortfolioInline, StructureInline, MachineInline, CertificationInline, ProcessInline]
     list_display = ['id', 'name', 'city']
 
-
+@admin.register(LoginLog)
+class LoginLogAdmin(admin.ModelAdmin):
+    list_display = ['id','user','type','created_at']
 

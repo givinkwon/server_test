@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 from django.utils.deconstruct import deconstructible
 
 from rest_framework.response import Response
@@ -72,7 +73,7 @@ class Util():
         return str(result)
 
 class kakaotalk(object):
-# ë¹ˆ ì „í™”ë²ˆí˜¸ / ì´ìƒí•œ ì „í™”ë²ˆí˜¸ëŠ” ì—ëŸ¬ëœ¹ë‹ˆë‹¤.
+# ºó ÀüÈ­¹øÈ£ / ÀÌ»óÇÑ ÀüÈ­¹øÈ£´Â ¿¡·¯¶å´Ï´Ù.
         def send(phone_list, subject):
             print(subject)
             print(phone_list)
@@ -82,11 +83,37 @@ class kakaotalk(object):
              data = {'account': 'boltnnut_korea', 'refkey': 'bolt123', 'type': 'at', 'from': '01028741248',
                      'to': phone, 'content': {
                    'at': {'senderkey': '44e4fdc989b12906c82fc46e428dd91dd99f0d98', 'templatecode': 'request_to_partner2',
-                            'message': 'íŒŒíŠ¸ë„ˆë‹˜ì—ê²Œ ì í•©í•œ ì˜ë¢°ì„œê°€ ë„ì°©í–ˆìŠµë‹ˆë‹¤.\nì˜ë¢°ì„œëª… : ' + subject,
+                            'message': 'ÆÄÆ®³Ê´Ô¿¡°Ô ÀûÇÕÇÑ ÀÇ·Ú¼­°¡ µµÂøÇß½À´Ï´Ù.\nÀÇ·Ú¼­¸í : ' + subject,
 
                           'button': [
                                 {
-                                 'name': 'í™•ì¸í•˜ëŸ¬ ê°€ê¸°',
+                                 'name': 'È®ÀÎÇÏ·¯ °¡±â',
+                                 'type': 'WL',
+                                 'url_mobile': 'http://www.boltnnut.com',
+                                 'url_pc': 'http://www.boltnnut.com'
+                             }
+                         ]}}}
+             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+             response = requests.post(url, data=json.dumps(data), headers=headers)
+            return response
+
+
+class kakaotalk2(object):
+# ºó ÀüÈ­¹øÈ£ / ÀÌ»óÇÑ ÀüÈ­¹øÈ£´Â ¿¡·¯¶å´Ï´Ù.
+        def send(phone_list, subject, subclass,category):
+            print(subject)
+            print(phone_list)
+            for phone in phone_list:
+             print(phone)
+             url = 'https://api.bizppurio.com/v1/message'
+             data = {'account': 'boltnnut_korea', 'refkey': 'bolt123', 'type': 'at', 'from': '01028741248',
+                     'to': phone, 'content': {
+                   'at': {'senderkey': '44e4fdc989b12906c82fc46e428dd91dd99f0d98', 'templatecode': 'request_to_partner3',
+                            'message': 'ÆÄÆ®³Ê´Ô¿¡°Ô ÀûÇÕÇÑ ÀÇ·Ú¼­°¡ µµÂøÇß½À´Ï´Ù.\nÀÇ·Ú¼­¸í : ' + subject + '\nÀÇ·ÚÁ¦Ç°ºĞ¾ß : ' + str(subclass) + '\nÁ¦Á¶ÀÇ·ÚºĞ¾ß : ' + category,
+
+                          'button': [
+                                {
+                                 'name': 'È®ÀÎÇÏ·¯ °¡±â',
                                  'type': 'WL',
                                  'url_mobile': 'http://www.boltnnut.com',
                                  'url_pc': 'http://www.boltnnut.com'
@@ -98,7 +125,7 @@ class kakaotalk(object):
 
 
 class kakaotalk_request(object):
-# ë¹ˆ ì „í™”ë²ˆí˜¸ / ì´ìƒí•œ ì „í™”ë²ˆí˜¸ëŠ” ì—ëŸ¬ëœ¹ë‹ˆë‹¤.
+# ºó ÀüÈ­¹øÈ£ / ÀÌ»óÇÑ ÀüÈ­¹øÈ£´Â ¿¡·¯¶å´Ï´Ù.
         def send(phone_list):
             print(phone_list)
             for phone in phone_list:
@@ -107,11 +134,11 @@ class kakaotalk_request(object):
              data = {'account': 'boltnnut_korea', 'refkey': 'bolt123', 'type': 'at', 'from': '01028741248',
                      'to': phone, 'content': {
                    'at': {'senderkey': '44e4fdc989b12906c82fc46e428dd91dd99f0d98', 'templatecode': 'answer_to_client',
-                            'message': 'ê³ ê°ë‹˜ì˜ ì˜ë¢°ì— ëŒ€í•œ ì „ë¬¸ê°€ì˜ ì œì•ˆì„œê°€ ë„ì°©í•˜ì˜€ìŠµë‹ˆë‹¤.\n\n* í•´ë‹¹ ë©”ì‹œì§€ëŠ” ê³ ê°ë‹˜ê»˜ì„œ ìš”ì²­í•˜ì‹  ì˜ë¢°ì— ëŒ€í•œ ì œì•ˆì´ ìˆì„ ê²½ìš° ë°œì†¡ë©ë‹ˆë‹¤',
+                            'message': '°í°´´ÔÀÇ ÀÇ·Ú¿¡ ´ëÇÑ Àü¹®°¡ÀÇ Á¦¾È¼­°¡ µµÂøÇÏ¿´½À´Ï´Ù.\n\n* ÇØ´ç ¸Ş½ÃÁö´Â °í°´´Ô²²¼­ ¿äÃ»ÇÏ½Å ÀÇ·Ú¿¡ ´ëÇÑ Á¦¾ÈÀÌ ÀÖÀ» °æ¿ì ¹ß¼ÛµË´Ï´Ù',
 
                           'button': [
                                 {
-                                 'name': 'í™•ì¸í•˜ëŸ¬ ê°€ê¸°',
+                                 'name': 'È®ÀÎÇÏ·¯ °¡±â',
                                  'type': 'WL',
                                  'url_mobile': 'http://www.boltnnut.com',
                                  'url_pc': 'http://www.boltnnut.com'

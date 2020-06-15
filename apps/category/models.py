@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 import os, datetime, uuid
 
 from django.contrib.auth.models import AbstractUser
@@ -92,66 +93,66 @@ def develop_update_filename(instance, filename):
 
 # ------------------------------------------------------------------
 # Model   : Maincategory
-# Description : ì—…ì¢… ëŒ€ë¶„ë¥˜ ëª¨ë¸
+# Description : ¾÷Á¾ ´ëºĞ·ù ¸ğµ¨
 # ------------------------------------------------------------------
 class Maincategory(models.Model):
 
-    maincategory = models.CharField('ì œí’ˆëŒ€ë¶„ë¥˜', max_length=256)
-    big_img = models.ImageField('ì œí’ˆëŒ€ë¶„ë¥˜ì´ë¯¸ì§€', upload_to=maincategory_update_filename)
+    maincategory = models.CharField('Á¦Ç°´ëºĞ·ù', max_length=256)
+    big_img = models.ImageField('Á¦Ç°´ëºĞ·ùÀÌ¹ÌÁö', upload_to=maincategory_update_filename)
 
     class Meta:
-        verbose_name = '  ì œí’ˆëŒ€ë¶„ë¥˜'
-        verbose_name_plural = '  ì œí’ˆëŒ€ë¶„ë¥˜'
+        verbose_name = '  Á¦Ç°´ëºĞ·ù'
+        verbose_name_plural = '  Á¦Ç°´ëºĞ·ù'
 
     def __str__(self):
         return str(self.maincategory)
 
 # ------------------------------------------------------------------
 # Model   : Category
-# Description : ì—…ì¢… ì¤‘ë¶„ë¥˜ ëª¨ë¸
+# Description : ¾÷Á¾ ÁßºĞ·ù ¸ğµ¨
 # ------------------------------------------------------------------
 class Category(models.Model):
 
-    maincategory = models.ForeignKey(Maincategory, on_delete=models.CASCADE, verbose_name='ì œí’ˆëŒ€ë¶„ë¥˜')
-    category = models.CharField('ì œí’ˆì¤‘ë¶„ë¥˜', max_length=256)
-    middle_img = models.ImageField('ì¤‘ë¶„ë¥˜ì´ë¯¸ì§€', upload_to=category_update_filename)
+    maincategory = models.ForeignKey(Maincategory, on_delete=models.CASCADE, verbose_name='Á¦Ç°´ëºĞ·ù')
+    category = models.CharField('Á¦Ç°ÁßºĞ·ù', max_length=256)
+    middle_img = models.ImageField('ÁßºĞ·ùÀÌ¹ÌÁö', upload_to=category_update_filename)
 
     class Meta:
-        verbose_name = '  ì œí’ˆì¤‘ë¶„ë¥˜'
-        verbose_name_plural = '  ì œí’ˆì¤‘ë¶„ë¥˜'
+        verbose_name = '  Á¦Ç°ÁßºĞ·ù'
+        verbose_name_plural = '  Á¦Ç°ÁßºĞ·ù'
 
     def __str__(self):
         return str(self.category)
 
 # ------------------------------------------------------------------
 # Model   : Subclass
-# Description : ì—…ì¢… ì†Œë¶„ë¥˜ ëª¨ë¸
+# Description : ¾÷Á¾ ¼ÒºĞ·ù ¸ğµ¨
 # ------------------------------------------------------------------
 class Subclass(models.Model):
 
-    maincategory = models.ForeignKey(Maincategory, on_delete=models.CASCADE, verbose_name='ì œí’ˆëŒ€ë¶„ë¥˜')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='ì œí’ˆì¤‘ë¶„ë¥˜')
-    subclass = models.CharField('ì œí’ˆì†Œë¶„ë¥˜', max_length=256, blank=True)
-    small_img = models.ImageField('ì œí’ˆì†Œë¶„ë¥˜ì´ë¯¸ì§€', upload_to=subclass_update_filename)
+    maincategory = models.ForeignKey(Maincategory, on_delete=models.CASCADE, verbose_name='Á¦Ç°´ëºĞ·ù')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Á¦Ç°ÁßºĞ·ù')
+    subclass = models.CharField('Á¦Ç°¼ÒºĞ·ù', max_length=256, blank=True)
+    small_img = models.ImageField('Á¦Ç°¼ÒºĞ·ùÀÌ¹ÌÁö', upload_to=subclass_update_filename)
 
     class Meta:
-        verbose_name = '  ì œí’ˆì†Œë¶„ë¥˜'
-        verbose_name_plural = '  ì œí’ˆì†Œë¶„ë¥˜'
+        verbose_name = '  Á¦Ç°¼ÒºĞ·ù'
+        verbose_name_plural = '  Á¦Ç°¼ÒºĞ·ù'
 
     def __str__(self):
         return str(self.subclass)
 
 # ------------------------------------------------------------------
 # Model   : City
-# Description : ì‹œ/ë„ ëª¨ë¸
+# Description : ½Ã/µµ ¸ğµ¨
 # ------------------------------------------------------------------
 class City(models.Model):
 
-    city = models.CharField('ì‹œ/ë„', max_length=256)
+    city = models.CharField('½Ã/µµ', max_length=256)
 
     class Meta:
-        verbose_name = 'ì‹œ/ë„'
-        verbose_name_plural = 'ì‹œ/ë„'
+        verbose_name = '½Ã/µµ'
+        verbose_name_plural = '½Ã/µµ'
 
     def __str__(self):
         return str(self.city)
@@ -159,47 +160,47 @@ class City(models.Model):
 
 # ------------------------------------------------------------------
 # Model   : Region
-# Description : ì§€ì—­ ëª¨ë¸
+# Description : Áö¿ª ¸ğµ¨
 # ------------------------------------------------------------------
 class Region(models.Model):
-    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='ì‹œ/ë„')
-    region = models.CharField('êµ¬', max_length=256)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name='½Ã/µµ')
+    region = models.CharField('±¸', max_length=256)
 
     class Meta:
-        verbose_name = 'êµ¬'
-        verbose_name_plural = 'êµ¬'
+        verbose_name = '±¸'
+        verbose_name_plural = '±¸'
 
     def __str__(self):
         return str(self.region)
 
 # ------------------------------------------------------------------
 # Model   : Developbig
-# Description : ê°œë°œë¶„ì•¼ ëŒ€ë¶„ë¥˜
+# Description : °³¹ßºĞ¾ß ´ëºĞ·ù
 # ------------------------------------------------------------------
 class Developbig(models.Model):
-    maincategory = models.CharField('ê°œë°œëŒ€ë¶„ë¥˜', max_length=256)
-    maincategory_img = models.ImageField('ê°œë°œëŒ€ë¶„ì•¼ ì´ë¯¸ì§€', upload_to=developbig_update_filename, null=True)
+    maincategory = models.CharField('°³¹ß´ëºĞ·ù', max_length=256)
+    maincategory_img = models.ImageField('°³¹ß´ëºĞ¾ß ÀÌ¹ÌÁö', upload_to=developbig_update_filename, null=True)
 
     class Meta:
-        verbose_name = 'ê°œë°œë¶„ì•¼ ëŒ€ë¶„ë¥˜'
-        verbose_name_plural = 'ê°œë°œë¶„ì•¼ ëŒ€ë¶„ë¥˜'
+        verbose_name = '°³¹ßºĞ¾ß ´ëºĞ·ù'
+        verbose_name_plural = '°³¹ßºĞ¾ß ´ëºĞ·ù'
 
     def __str__(self):
         return str(self.maincategory)
 
 # ------------------------------------------------------------------
 # Model   : Develop
-# Description : ê°œë°œë¶„ì•¼ ì¤‘ë¶„ë¥˜
+# Description : °³¹ßºĞ¾ß ÁßºĞ·ù
 # ------------------------------------------------------------------
 class Develop(models.Model):
-    maincategory = models.ForeignKey(Developbig, on_delete=models.CASCADE, verbose_name='ê°œë°œëŒ€ë¶„ë¥˜')
-    category = models.CharField('ê°œë°œì¤‘ë¶„ë¥˜', max_length=256)
-  #  category_img = models.ImageField('ê°œë°œë¶„ì•¼ ì´ë¯¸ì§€', upload_to=develop_update_filename, null=True)
-    coin =models.IntegerField('ì¹´í…Œê³ ë¦¬ë‹¹ ê°€ê²©', default=0, null=True)
+    maincategory = models.ForeignKey(Developbig, on_delete=models.CASCADE, verbose_name='°³¹ß´ëºĞ·ù')
+    category = models.CharField('°³¹ßÁßºĞ·ù', max_length=256)
+  #  category_img = models.ImageField('°³¹ßºĞ¾ß ÀÌ¹ÌÁö', upload_to=develop_update_filename, null=True)
+    coin =models.IntegerField('Ä«Å×°í¸®´ç °¡°İ', default=0, null=True)
 
     class Meta:
-        verbose_name = 'ê°œë°œë¶„ì•¼ ì¤‘ë¶„ë¥˜'
-        verbose_name_plural = 'ê°œë°œë¶„ì•¼ ì¤‘ë¶„ë¥˜'
+        verbose_name = '°³¹ßºĞ¾ß ÁßºĞ·ù'
+        verbose_name_plural = '°³¹ßºĞ¾ß ÁßºĞ·ù'
 
     def __str__(self):
         return str(self.category)

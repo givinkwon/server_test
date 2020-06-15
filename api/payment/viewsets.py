@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 from rest_framework import (
     viewsets,
     status,
@@ -34,25 +35,6 @@ from iamport import Iamport
 import requests as rq
 
 
-
-"""
-í”„ë¡ íŠ¸ì•¤ë“œ ì‘ì—…ì ë¶„ì´ ìš”ì²­í•˜ì‹  ORDER APIëŠ” merchant_uid ìƒì„±ì„ ìœ„í•œ APIì…ë‹ˆë‹¤.
-ë”°ë¼ì„œ paymentì— ëŒ€í•œ ëª¨ë¸ì„ ë§Œë“œì‹  í›„ model.id + @ë¡œ ê³ ìœ í•œ merchant_uidë¥¼ ìƒì„±í•˜ì…”ì•¼ í•©ë‹ˆë‹¤.(generate_muid ì°¸ì¡°)
-PAYMENTAPIëŠ” ê²°ì œ ì§„í–‰ í›„ ê²€ì¦ìš©ìœ¼ë¡œ ì´ìš©í•˜ì‹œë©´ ë  ê²ƒ ê°™ìŠµë‹ˆë‹¤.
-
-## ORDERAPI - Iamport ì´ìš©í•  í•„ìš” ì—†ìŒ
-1. ORDERAPI ì‘ì„±
-2. ORDERAPI ì—ì„œëŠ” ë¹„ì–´ìˆëŠ” payment ëª¨ë¸ì„ ìƒì„±
-3. payment ëª¨ë¸ì— muid í•„ë“œ(CharField, 256ì •ë„, ì›í•˜ì‹œëŠ” ê¸¸ì´ë¡œ ìƒì„±í•˜ì‹œë©´ ë©ë‹ˆë‹¤.)ë¥¼ ìƒì„±í•˜ì‹  í›„ ëª¨ë¸ idë¥¼ ë°”íƒ•ìœ¼ë¡œ muidë¥¼ ìƒì„±í•˜ì—¬ ì €ì¥
-4. ORDERAPIì˜ ì‘ë‹µìœ¼ë¡œ {code:......., mid: ëª¨ë¸id, muid: ëª¨ë¸muid} ë°˜í™˜
-
-## PAYMENTAPI
-1. í´ë¼ì´ì–¸íŠ¸ë¡œë¶€í„° merchant_uid ë° ê²°ì œ ì •ë³´ë¥¼ ì…ë ¥ë°›ìŒ
-2. iamp.find í˜¹ì€ iamp.findallë¡œ ê²°ì œ ì •ë³´ ê²€ìƒ‰
-3. í´ë¼ì´ì–¸íŠ¸ê°€ ë³´ë‚¸ ì •ë³´(merchant_uid, amount, ì¹´ë“œì •ë³´ë“±ë“±...)ì´ ì¼ì¹˜í•œë‹¤ë©´ ì •ìƒ ì½”ë“œ ì „ì†¡
-4. ì¼ì¹˜í•˜ì§€ ì•ŠëŠ”ë‹¤ë©´ ì·¨ì†Œ ìš”ì²­ í›„ ì—ëŸ¬ ì½”ë“œ ì „ì†¡
-"""
-
 def generate_random_code(length=5):
     from random import choices
     CODE='ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
@@ -73,12 +55,12 @@ class PaylistViewSet(viewsets.ModelViewSet):
 
     @swagger_auto_schema(request_body=PaylistSerializer)
     @action(detail=False, methods=('POST',), url_path='order', http_method_names=('post',),permission_classes=(IsAuthenticated,),)
-    def order(self, request, *args, **kwargs):  # merchant_uidë¥¼ ì €ì¥í•˜ê³  í•´ì‰¬í™”
+    def order(self, request, *args, **kwargs):  # merchant_uid¸¦ ÀúÀåÇÏ°í ÇØ½¬È­
         user = request.user
-        product_name = request.data.get('product_name') # ìƒí’ˆëª…
+        product_name = request.data.get('product_name') # »óÇ°¸í
         product_price = request.data.get('product_price')
         coin = request.data.get('coin')
-        # merchant_uid hashí™”
+        # merchant_uid hashÈ­
         merchant_hash = generate_muid(user.id)
         paylist = Paylist.objects.create(
                                  user=user,
@@ -91,14 +73,14 @@ class PaylistViewSet(viewsets.ModelViewSet):
                                  pay_method = 0,
                              )
         return Response(data={'code': ResponseCode.SUCCESS.value,
-                              'message': 'ê²°ì œ ë¦¬ìŠ¤íŠ¸ì…ë‹ˆë‹¤.',
+                              'message': '°áÁ¦ ¸®½ºÆ®ÀÔ´Ï´Ù.',
                               'data': {
                                     'paylist' : PaylistSerializer(paylist).data,
                                   }})
 
     @swagger_auto_schema(request_body=PaylistSerializer)
     @action(detail=False, methods=('POST',), url_path='payment', http_method_names=('post',),permission_classes=(IsAuthenticated,),)
-    def payment(self, request, *args, **kwargs):  # ê²°ì œ í™•ì¸
+    def payment(self, request, *args, **kwargs):  # °áÁ¦ È®ÀÎ
             date = request.data.get('date')
             user = request.user
             merchant_uid = request.data.get('merchant_uid')
@@ -107,7 +89,7 @@ class PaylistViewSet(viewsets.ModelViewSet):
             #print(0)
             print(product_price)
             #product_price = request.data.get('product_price')
-            # ì•„ì„í¬íŠ¸ ì¸ìŠ¤í„´ìŠ¤ ê°€ì ¸ì˜¤ê¸°
+            # ¾ÆÀÓÆ÷Æ® ÀÎ½ºÅÏ½º °¡Á®¿À±â
             iamport = Iamport(imp_key=settings.IAMPORT_KEY, imp_secret=settings.IAMPORT_SECRET)
             response = iamport.find(merchant_uid=merchant_uid)
             print(response)
@@ -131,25 +113,25 @@ class PaylistViewSet(viewsets.ModelViewSet):
                         a.save()
 
                     return Response(data={'code': ResponseCode.SUCCESS.value,
-                              'message': 'ê²°ì œê°€ ì„±ê³µì ìœ¼ë¡œ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.',
+                              'message': '°áÁ¦°¡ ¼º°øÀûÀ¸·Î ¿Ï·áµÇ¾ú½À´Ï´Ù.',
                               'data': {
                                     'paylist' : PaylistSerializer(paylist).data,
                                   }})
 
                 return Response(status=status.HTTP_400_BAD_REQUEST,
-                                data={'message': 'ë¹„ì •ìƒì ì¸ ê²°ì œ ìš”ì²­ì…ë‹ˆë‹¤. (ê²°ì œ ê¸ˆì•¡ì´ ë‹¤ë¦…ë‹ˆë‹¤.)'}
+                                data={'message': 'ºñÁ¤»óÀûÀÎ °áÁ¦ ¿äÃ»ÀÔ´Ï´Ù. (°áÁ¦ ±İ¾×ÀÌ ´Ù¸¨´Ï´Ù.)'}
                                        )
 
             return Response(status=status.HTTP_400_BAD_REQUEST,
-                            data={'message': 'ë¹„ì •ìƒì ì¸ ê²°ì œ ìš”ì²­ì…ë‹ˆë‹¤.(ê²°ì œì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.)'}
+                            data={'message': 'ºñÁ¤»óÀûÀÎ °áÁ¦ ¿äÃ»ÀÔ´Ï´Ù.(°áÁ¦Á¤º¸°¡ ¾ø½À´Ï´Ù.)'}
                                  )
 
          #   if iamport:
          #       print(iamport.find(merchant_uid="1"))
-         #       response = iamport.find(merchant_uid=merchant_uid)  # ê²°ì œì •ë³´ ê°€ì ¸ì˜¤ê¸°
+         #       response = iamport.find(merchant_uid=merchant_uid)  # °áÁ¦Á¤º¸ °¡Á®¿À±â
          #       if response:
          #           print(response)
-   #                 iamport.is_paid(product_price, merchant_uid=merchant_uid)  # ê²°ì œ ê°€ê²©ì´ë‘ ë“¤ì–´ì˜¨ ë°ì´í„° ë¹„êµí•˜ê¸°
+   #                 iamport.is_paid(product_price, merchant_uid=merchant_uid)  # °áÁ¦ °¡°İÀÌ¶û µé¾î¿Â µ¥ÀÌÅÍ ºñ±³ÇÏ±â
    #                 if iamport.is_paid:
    #                     paylist = Paylist.objects.create(
    #                         user=user,
@@ -160,22 +142,23 @@ class PaylistViewSet(viewsets.ModelViewSet):
    #                     )
 
    #                     return Response(data={'code': ResponseCode.SUCCESS.value,
-   #                                           'message': 'ê²°ì œê°€ ì„±ê³µì ìœ¼ë¡œ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.',
+   #                                           'message': '°áÁ¦°¡ ¼º°øÀûÀ¸·Î ¿Ï·áµÇ¾ú½À´Ï´Ù.',
    #                                           'data': {
    #                                               'iamport': iamport,
    #                                               'paylist': PaylistSerializer(paylist).data,
    #                                           }})
 
    #                 return Response(status=status.HTTP_400_BAD_REQUEST,
-   #                                 data={'message': 'ë¹„ì •ìƒì ì¸ ê²°ì œ ìš”ì²­ì…ë‹ˆë‹¤. (ê²°ì œ ê¸ˆì•¡ì´ ë‹¤ë¦…ë‹ˆë‹¤.'}
+   #                                 data={'message': 'ºñÁ¤»óÀûÀÎ °áÁ¦ ¿äÃ»ÀÔ´Ï´Ù. (°áÁ¦ ±İ¾×ÀÌ ´Ù¸¨´Ï´Ù.'}
    #                                 )
 
 
 
    #         return Response(status=status.HTTP_400_BAD_REQUEST,
-   #                         data={'message': 'ì•„ì„í¬íŠ¸ Keyê°€ ì˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.'}
+   #                         data={'message': '¾ÆÀÓÆ÷Æ® Key°¡ Àß¸øµÇ¾ú½À´Ï´Ù.'}
    #                         )
 
    #     return Response(status=status.HTTP_400_BAD_REQUEST,
-   #                     data={'message': 'ê²°ì œê°€ ì‹¤íŒ¨ë˜ì—ˆìŠµë‹ˆë‹¤.'}
+   #                     data={'message': '°áÁ¦°¡ ½ÇÆĞµÇ¾ú½À´Ï´Ù.'}
    #                     )
+

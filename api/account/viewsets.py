@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 from rest_framework import (
     viewsets,
     status,
@@ -29,8 +30,17 @@ from apps.category.models import *
 from apps.kakaotalk.models import *
 from .serializers import *
 
-# ì¥ê³  ë©”ì¼ ì„œë²„
+# Àå°í ¸ŞÀÏ ¼­¹ö
 from django.core.mail import EmailMessage
+
+# logging
+import logging
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.dispatch import receiver
+
+# signal
+from django.db.models.signals import post_init, post_save
+from django.dispatch import receiver
 
 class ResponseCode(enum.Enum):
 
@@ -44,25 +54,32 @@ class UserViewSet(viewsets.GenericViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
     @swagger_auto_schema(manual_parameters=[openapi.Parameter('username', in_=openapi.IN_QUERY,
-                                                              description='ì•„ì´ë””', type=openapi.TYPE_STRING),
+                                                              description='¾ÆÀÌµğ', type=openapi.TYPE_STRING),
                                             openapi.Parameter('password', in_=openapi.IN_QUERY,
-                                                              description='ë¹„ë°€ë²ˆí˜¸', type=openapi.TYPE_STRING),
+                                                              description='ºñ¹Ğ¹øÈ£', type=openapi.TYPE_STRING),
                                             ], )
     @action(detail=False, methods=('POST',), url_path='login', http_method_names=('post',))
     def login(self, request, *args, **kawrgs):
         '''
-        ì¼ë°˜ ë¡œê·¸ì¸
+        ÀÏ¹İ ·Î±×ÀÎ
         '''
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
+        
         if user:
             token, _ = Token.objects.get_or_create(user=user)
+            
+            LoginLog.objects.create(
+                   user=user,
+                   type=user.type,
+            )
+            
             if user.type == 0:
                 client = Client.objects.filter(user=user)
                 return Response(data={
                                     'code': ResponseCode.SUCCESS.value,
-                                    'message': 'ë¡œê·¸ì¸ì— ì„±ê³µí•˜ì˜€ìŠµë‹ˆë‹¤.',
+                                    'message': '·Î±×ÀÎ¿¡ ¼º°øÇÏ¿´½À´Ï´Ù.',
                                     'data': {
                                         'token': user.auth_token.key,
                                         'User': PatchUserSerializer(user).data,
@@ -71,7 +88,7 @@ class UserViewSet(viewsets.GenericViewSet):
             partner = Partner.objects.filter(user=user)
             return Response(data={
                                     'code': ResponseCode.SUCCESS.value,
-                                    'message': 'ë¡œê·¸ì¸ì— ì„±ê³µí•˜ì˜€ìŠµë‹ˆë‹¤.',
+                                    'message': '·Î±×ÀÎ¿¡ ¼º°øÇÏ¿´½À´Ï´Ù.',
                                     'data': {
                                         'token': user.auth_token.key,
                                         'User': PatchUserSerializer(user).data,
@@ -80,20 +97,20 @@ class UserViewSet(viewsets.GenericViewSet):
 
         return Response(
             status=status.HTTP_400_BAD_REQUEST,
-            data={'message': 'ì•„ì´ë”” í˜¹ì€ ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë ¸ìŠµë‹ˆë‹¤.'},
+            data={'message': '¾ÆÀÌµğ È¤Àº ºñ¹Ğ¹øÈ£°¡ Æ²·È½À´Ï´Ù.'},
         )
 
     @action(detail=False, methods=('POST',), url_path='data', http_method_names=('post',), permission_classes=(IsAuthenticated,),)
     def Token_data(self, request, *args, **kawrgs):
         '''
-        ìƒˆë¡œê³ ì¹¨í•  ë•Œ, í† í° ë³´ë‚´ì„œ ë°ì´í„° ê°€ì§€ê³  ì˜¤ê¸°
+        »õ·Î°íÄ§ÇÒ ¶§, ÅäÅ« º¸³»¼­ µ¥ÀÌÅÍ °¡Áö°í ¿À±â
         '''
         user = request.user
         if user.type == 0:
             client = Client.objects.filter(user=user)
             return Response(data={
                 'code': ResponseCode.SUCCESS.value,
-                'message': 'í´ë¼ì´ì–¸íŠ¸ ë°ì´í„°ë¥¼ ë³´ë‚´ë“œë¦½ë‹ˆë‹¤.',
+                'message': 'Å¬¶óÀÌ¾ğÆ® µ¥ÀÌÅÍ¸¦ º¸³»µå¸³´Ï´Ù.',
                 'data': {
                     'token': user.auth_token.key,
                     'User': PatchUserSerializer(user).data,
@@ -102,7 +119,7 @@ class UserViewSet(viewsets.GenericViewSet):
         partner = Partner.objects.filter(user=user)
         return Response(data={
             'code': ResponseCode.SUCCESS.value,
-            'message': 'íŒŒíŠ¸ë„ˆ ë°ì´í„°ë¥¼ ë³´ë‚´ë“œë¦½ë‹ˆë‹¤.',
+            'message': 'ÆÄÆ®³Ê µ¥ÀÌÅÍ¸¦ º¸³»µå¸³´Ï´Ù.',
             'data': {
                 'token': user.auth_token.key,
                 'User': PatchUserSerializer(user).data,
@@ -113,14 +130,14 @@ class UserViewSet(viewsets.GenericViewSet):
     @action(detail=False, methods=('PATCH',), url_path='deactivate', http_method_names=('patch',),  permission_classes=[IsAuthenticated], )
     def deactivate(self, request, *args, **kwargs):
         """
-        íšŒì› íƒˆí‡´
+        È¸¿ø Å»Åğ
         """
         user = request.user
         password = request.data.get('password')
         if not authenticate(username=user.username, password=password):
             return Response(
                         status=status.HTTP_400_BAD_REQUEST,
-                        data={'message': 'ë¹„ë°€ë²ˆí˜¸ê°€ ë§ì§€ ì•ŠìŠµë‹ˆë‹¤.'},
+                        data={'message': 'ºñ¹Ğ¹øÈ£°¡ ¸ÂÁö ¾Ê½À´Ï´Ù.'},
                     )
         user.is_active = False
         user.save()
@@ -129,43 +146,43 @@ class UserViewSet(viewsets.GenericViewSet):
 #    @swagger_auto_schema(request_body=openapi.Schema(
 #        type=openapi.TYPE_OBJECT,
 #        properties={
-#            'phone_num': openapi.Schema(type=openapi.TYPE_STRING, description='í•¸ë“œí° ë²ˆí˜¸'),
+#            'phone_num': openapi.Schema(type=openapi.TYPE_STRING, description='ÇÚµåÆù ¹øÈ£'),
 #        }
 #    ), )
 #    @action(detail=False, methods=('POST',), url_path='username', http_method_names=('post',))
 #    def search_username(self, request, *args, **kwargs):
 #        '''
-#        ì•„ì´ë”” ì°¾ê¸°
+#        ¾ÆÀÌµğ Ã£±â
 #        '''
-#        # if request.user.is_authenticated: ë¡œê·¸ì¸ì‹œì—ëŠ” trueê°€ ë‚˜ì˜´
+#        # if request.user.is_authenticated: ·Î±×ÀÎ½Ã¿¡´Â true°¡ ³ª¿È
 #        phone = request.data.get('phone')
 #        user_qs = User.objects.filter(phone=phone)
 #        if not user_qs.exists():
 #            return Response(
 #                        status=status.HTTP_400_BAD_REQUEST,
-#                        data={'message': 'í•´ë‹¹ ì •ë³´ì™€ ë§ëŠ” ì‚¬ìš©ìê°€ ì—†ìŠµë‹ˆë‹¤.'},
+#                        data={'message': 'ÇØ´ç Á¤º¸¿Í ¸Â´Â »ç¿ëÀÚ°¡ ¾ø½À´Ï´Ù.'},
 #                    )
 
-#        #email = EmailMessage('[ë³¼íŠ¸ì•¤ë„ˆíŠ¸]ì•„ì´ë””ë¥¼ ì´ë©”ì¼ë¡œ ë³´ë‚´ë“œë¦½ë‹ˆë‹¤.', '', to=[user_qs.first()])
+#        #email = EmailMessage('[º¼Æ®¾Ø³ÊÆ®]¾ÆÀÌµğ¸¦ ÀÌ¸ŞÀÏ·Î º¸³»µå¸³´Ï´Ù.', '', to=[user_qs.first()])
 #        return Response(data={'code': ResponseCode.SUCCESS.value,
-#                              'message' : 'íšŒì›ë‹˜ì˜ ì´ë©”ì¼ì€ ë‹¤ìŒê³¼ ê°™ìŠµë‹ˆë‹¤.',
+#                              'message' : 'È¸¿ø´ÔÀÇ ÀÌ¸ŞÀÏÀº ´ÙÀ½°ú °°½À´Ï´Ù.',
 #                              'data' : PatchUserSerializer(user_qs.first()).data,
 #                             })
 
-#   def search_password(self, request, *args, **kwargs): ì¶”í›„ êµ¬í˜„ ì˜ˆì •
+#   def search_password(self, request, *args, **kwargs): ÃßÈÄ ±¸Çö ¿¹Á¤
 
     @swagger_auto_schema(
         request_body=openapi.Schema(type=openapi.TYPE_OBJECT,
                                     properties={
-                                        'password': openapi.Schema(type=openapi.TYPE_STRING, description='ê¸°ì¡´ ë¹„ë°€ë²ˆí˜¸'),
-                                        'new_password': openapi.Schema(type=openapi.TYPE_STRING, description='ìƒˆ ë¹„ë°€ë²ˆí˜¸'),
+                                        'password': openapi.Schema(type=openapi.TYPE_STRING, description='±âÁ¸ ºñ¹Ğ¹øÈ£'),
+                                        'new_password': openapi.Schema(type=openapi.TYPE_STRING, description='»õ ºñ¹Ğ¹øÈ£'),
                                     }, ),
     )
     @action(detail=False, methods=['PATCH', ], url_path='password',
             http_method_names=('patch',), permission_classes=(IsAuthenticated,), )
     def change_password(self, request, *args, **kwargs):
         '''
-        ë¹„ë°€ë²ˆí˜¸ ë³€ê²½
+        ºñ¹Ğ¹øÈ£ º¯°æ
         '''
         password = request.data.get('password')
         new_password = request.data.get('new_password')
@@ -174,15 +191,15 @@ class UserViewSet(viewsets.GenericViewSet):
             if password == new_password:
                 return Response(
                     status=status.HTTP_400_BAD_REQUEST,
-                    data={'message': 'ì´ì „ê³¼ ê°™ì€ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì…¨ìŠµë‹ˆë‹¤.'}
+                    data={'message': 'ÀÌÀü°ú °°Àº ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼Ì½À´Ï´Ù.'}
                 )
             user.set_password(new_password)
             user.save()
             return Response(data={'code': ResponseCode.SUCCESS.value,
-                                  'message': 'ì„±ê³µì ìœ¼ë¡œ ë¹„ë°€ë²ˆí˜¸ë¥¼ ë³€ê²½í•˜ì˜€ìŠµë‹ˆë‹¤.'})
+                                  'message': '¼º°øÀûÀ¸·Î ºñ¹Ğ¹øÈ£¸¦ º¯°æÇÏ¿´½À´Ï´Ù.'})
         return Response(
             status=status.HTTP_400_BAD_REQUEST,
-            data={'message': 'ê¸°ì¡´ì˜ ë¹„ë°€ë²ˆí˜¸ê°€ ë§ì§€ ì•ŠìŠµë‹ˆë‹¤.', })
+            data={'message': '±âÁ¸ÀÇ ºñ¹Ğ¹øÈ£°¡ ¸ÂÁö ¾Ê½À´Ï´Ù.', })
 
     @action(detail=False, methods=('POST',), url_path='password/email', http_method_names=('post',))
     def send_password(self, request, *args, **kawrgs):
@@ -194,13 +211,13 @@ class UserViewSet(viewsets.GenericViewSet):
             password = Util.get_random_letter(10)
             user.set_password(password)
             user.save()
-            email = EmailMessage('[ë³¼íŠ¸ì•¤ë„ˆíŠ¸]íšŒì›ë‹˜ì˜ ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ë¥¼ ì´ë©”ì¼ë¡œ ë³´ë‚´ë“œë¦½ë‹ˆë‹¤.', 'íšŒì›ë‹˜ì˜ ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ëŠ”\n\n' + password + '\n\nì…ë‹ˆë‹¤.', to=[user.username])
+            email = EmailMessage('[º¼Æ®¾Ø³ÊÆ®]È¸¿ø´ÔÀÇ ÀÓ½Ã ºñ¹Ğ¹øÈ£¸¦ ÀÌ¸ŞÀÏ·Î º¸³»µå¸³´Ï´Ù.', 'È¸¿ø´ÔÀÇ ÀÓ½Ã ºñ¹Ğ¹øÈ£´Â\n\n' + password + '\n\nÀÔ´Ï´Ù.', to=[user.username])
             email.send()
             return Response(data={'code': ResponseCode.SUCCESS.value,
-                                  'message' : 'ì„ì‹œ ë¹„ë°€ë²ˆí˜¸ê°€ íšŒì›ë‹˜ì˜ ì´ë©”ì¼ë¡œ ë°œì†¡ë˜ì—ˆìŠµë‹ˆë‹¤.',
+                                  'message' : 'ÀÓ½Ã ºñ¹Ğ¹øÈ£°¡ È¸¿ø´ÔÀÇ ÀÌ¸ŞÀÏ·Î ¹ß¼ÛµÇ¾ú½À´Ï´Ù.',
                                   })
         return Response( status=status.HTTP_400_BAD_REQUEST,
-                         data={'message': 'íšŒì›ì •ë³´ê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤.'}
+                         data={'message': 'È¸¿øÁ¤º¸°¡ ¿Ã¹Ù¸£Áö ¾Ê½À´Ï´Ù.'}
                                   )
 
 class ClientViewSet(viewsets.ModelViewSet):
@@ -218,35 +235,36 @@ class ClientViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=('POST',), url_path='signup', http_method_names=('post',))
     def client_signup(self, request, *args, **kwargs):
         '''
-        íšŒì›ê°€ì…
+        È¸¿ø°¡ÀÔ
         '''
         username = request.data.get('username')
         password = request.data.get('password')
 
         phone = request.data.get('phone')
         type = request.data.get('type')
-
-        # typeì— ë”°ë¼ì„œ def(partner / client)ë¥¼ apië¥¼ ë”°ë¡œ ì„¤ê³„
+        marketing = request.data.get('marketing')
+        # type¿¡ µû¶ó¼­ def(partner / client)¸¦ api¸¦ µû·Î ¼³°è
         if not username or not password:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
-                data={'message': 'ì´ë©”ì¼ ì´ë‚˜ ë¹„ë°€ë²ˆí˜¸ ê°’ì´ ì—†ìŠµë‹ˆë‹¤.'})
+                data={'message': 'ÀÌ¸ŞÀÏ ÀÌ³ª ºñ¹Ğ¹øÈ£ °ªÀÌ ¾ø½À´Ï´Ù.'})
 
         if not phone:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
-                data={'message': 'ì „í™”ë²ˆí˜¸ ê°’ì´ ì—†ìŠµë‹ˆë‹¤.'})
+                data={'message': 'ÀüÈ­¹øÈ£ °ªÀÌ ¾ø½À´Ï´Ù.'})
 
         if User.objects.filter(username=username).exists():
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
-                data={'message': 'í•´ë‹¹ ì´ë©”ì¼ì´ ì´ë¯¸ ì¡´ì¬í•©ë‹ˆë‹¤.'})
+                data={'message': 'ÇØ´ç ÀÌ¸ŞÀÏÀÌ ÀÌ¹Ì Á¸ÀçÇÕ´Ï´Ù.'})
 
         user = User.objects.create_user(
             username=username,
             password=password,
             type=type,
             phone=phone,
+            marketing=marketing,
         )
 
         client = Client.objects.create(
@@ -255,25 +273,25 @@ class ClientViewSet(viewsets.ModelViewSet):
         token, _ = Token.objects.get_or_create(user=user)
 
         return Response(data={'code': ResponseCode.SUCCESS.value,
-                              'message': 'íšŒì›ê°€ì…ì´ ì„±ê³µì ìœ¼ë¡œ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.\në‹¤ì‹œ ë¡œê·¸ì¸ì„ í•´ì£¼ì„¸ìš”.',
+                              'message': 'È¸¿ø°¡ÀÔÀÌ ¼º°øÀûÀ¸·Î ¿Ï·áµÇ¾ú½À´Ï´Ù.\n´Ù½Ã ·Î±×ÀÎÀ» ÇØÁÖ¼¼¿ä.',
                               'data': {
                                      'token': user.auth_token.key,
                                      'client': ClientSerializer(client).data,
                                      'user': PatchUserSerializer(user).data,
-                                     # passwordê°€ ì—†ëŠ” ë°ì´í„°ë¥¼ ë³´ë‚´ì¤˜ì•¼í•¨
+                                     # password°¡ ¾ø´Â µ¥ÀÌÅÍ¸¦ º¸³»Áà¾ßÇÔ
                                 }})
 
     @swagger_auto_schema(request_body=ClientSerializer)
     @action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
-    def kakao_client(self, request, *args, **kwargs):  # í´ë¼ì´ì–¸íŠ¸í•œí…Œ ì œì•ˆì„œ ë“±ë¡ë  ë•Œ ì¹´ì¹´ì˜¤í†¡ ë³´ë‚´ê¸°
+    def kakao_client(self, request, *args, **kwargs):  # Å¬¶óÀÌ¾ğÆ®ÇÑÅ× Á¦¾È¼­ µî·ÏµÉ ¶§ Ä«Ä«¿ÀÅå º¸³»±â
         client = request.data.get('client')
         client_qs = Client.objects.filter(id=client)
         client_phone_list = client_qs.values_list('user__phone', flat=True)
         # print(client_qs)
         # print(client_phone_list)
-        # ë¦¬ìŠ¤íŠ¸í™”
+        # ¸®½ºÆ®È­
         client_phone_list = list(client_phone_list)
-        # ê³µë°±ì œê±°
+        # °ø¹éÁ¦°Å
         client_phone_list = list(filter(None, client_phone_list))
         #print(client_phone_list)
         response = kakaotalk_request.send(client_phone_list)
@@ -287,35 +305,73 @@ class ClientViewSet(viewsets.ModelViewSet):
 
         return Response(data={
             'code': ResponseCode.SUCCESS.value,
-            'message': 'ë°œì†¡ì— ì„±ê³µí•˜ì˜€ìŠµë‹ˆë‹¤.',
+            'message': '¹ß¼Û¿¡ ¼º°øÇÏ¿´½À´Ï´Ù.',
             'data': {
                 'status_code': response.status_code,
                 'response': response.json(),
             }})
 
 
+    @action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
+    @receiver(post_init, sender=Request)
+    def request_init(sender, instance, **kwargs):
+        instance._previous_active_save = instance.active_save
+
+    @receiver(post_save, sender=Request)
+    def kakao_answer_end(sender, instance, **kwargs):
+        client = instance.client.id
+        client_qs = Client.objects.filter(id=client)
+        client_phone_list = client_qs.values_list('user__phone', flat=True)
+        # ¸®½ºÆ®È­
+        client_phone_list = list(client_phone_list)
+        # °ø¹éÁ¦°Å
+        client_phone_list = list(filter(None, client_phone_list))
+        # print(client_phone_list)
+
+        if instance.active_save is False and instance._previous_active_save is True:
+            response = kakaotalk_request.send(client_phone_list)
+            print(response)
+            Sendkakao.objects.create(
+                status_code=response.status_code,
+                description=response.json()['description'],
+                refkey=response.json()['refkey'],
+                messagekey=response.json()['messagekey'],
+            )
+
+            return Response(data={
+                'code': ResponseCode.SUCCESS.value,
+                'message': '¹ß¼Û¿¡ ¼º°øÇÏ¿´½À´Ï´Ù.',
+                'data': {
+                    'status_code': response.status_code,
+                    'response': response.json(),
+                }})
+
+
 class PartnerViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    queryset = Partner.objects.filter(user__is_active=True)
+    orderbyList = ['-avg_score','-login_count', 'id']
+    queryset = Partner.objects.filter(user__is_active=True).annotate(login_count = Count('user__loginlog')).order_by(*orderbyList)
     serializer_class = PartnerSerializer
     pagination_class = PartnerPageNumberPagination
     filter_backends = [filters.SearchFilter,PartnerFilter, filters.OrderingFilter]
-    filterset_fields = ['possible_set', 'history_set', 'city', 'region', 'category_middle__id','possible_set__id', 'history_set__id']
-    search_fields = ['name', 'info_company', 'info_biz', 'deal', 'possible_set__subclass', 'history_set__subclass','category_middle__category']
+    filterset_fields = ['history_set', 'city', 'region', 'category_middle__id', 'history_set__id']
+    search_fields = ['name', 'info_company', 'info_biz', 'deal', 'history_set__subclass','category_middle__category']
     ordering_fields = '__all__'
 
     @swagger_auto_schema(request_body=PartnerSerializer)
     @action(detail=False, methods=('POST',), url_path='signup',http_method_names=('post',))
     def partner_signup(self, request, *args, **kwargs):
         '''
-        íŒŒíŠ¸ë„ˆ íšŒì›ê°€ì…
+        ÆÄÆ®³Ê È¸¿ø°¡ÀÔ
         '''
         username = request.data.get('username')
         password = request.data.get('password')
         phone = request.data.get('phone')
         type = request.data.get('type')
+        marketing = request.data.get('marketing')
+        
         name = request.data.get('name')
         logo = request.data.get('logo')
         city = request.data.get('city')
@@ -328,78 +384,79 @@ class PartnerViewSet(viewsets.ModelViewSet):
        # history = request.data.get('history')
         deal = request.data.get('deal')
         category_middle = request.data.get('category_middle')
-        possible_set = request.data.get('possible_set')
+        #possible_set = request.data.get('possible_set')
         history_set = request.data.get('history_set')
 
-        # ë¦¬ìŠ¤íŠ¸ í˜•íƒœë¡œ ë°›ê¸° ìœ„í•´ì„œ
+        # ¸®½ºÆ® ÇüÅÂ·Î ¹Ş±â À§ÇØ¼­
         category_middle = category_middle.split(',')
-        possible_set = possible_set.split(',')
+        #possible_set = possible_set.split(',')
         history_set = history_set.split(',')
 
 
         file = request.data.get('file')
-        coin = 0
-        # typeì— ë”°ë¼ì„œ def(partner / client)ë¥¼ apië¥¼ ë”°ë¡œ ì„¤ê³„
+        coin = 2000
+        # type¿¡ µû¶ó¼­ def(partner / client)¸¦ api¸¦ µû·Î ¼³°è
         if not name:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
-                data={'message': 'ìƒí˜¸ëª… ê°’ì´ ì—†ìŠµë‹ˆë‹¤.'})
+                data={'message': '»óÈ£¸í °ªÀÌ ¾ø½À´Ï´Ù.'})
 
         if not phone:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
-                data={'message': 'ì—°ë½ì²˜ ê°’ì´ ì—†ìŠµë‹ˆë‹¤.'})
+                data={'message': '¿¬¶ôÃ³ °ªÀÌ ¾ø½À´Ï´Ù.'})
 
         if not logo:
              return Response(
                  status=status.HTTP_400_BAD_REQUEST,
-                 data={'message': 'ë¡œê³  íŒŒì¼ì´ ì—†ìŠµë‹ˆë‹¤.'})
+                 data={'message': '·Î°í ÆÄÀÏÀÌ ¾ø½À´Ï´Ù.'})
 
         if not career:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
-                data={'message': 'ê²½ë ¥ ë…„ìˆ˜ê°€ ì—†ìŠµë‹ˆë‹¤.'})
+                data={'message': '°æ·Â ³â¼ö°¡ ¾ø½À´Ï´Ù.'})
 
         if not employee:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
-                data={'message': 'ì¢…ì—…ì› ê°’ì´ ì—†ìŠµë‹ˆë‹¤.'})
+                data={'message': 'Á¾¾÷¿ø °ªÀÌ ¾ø½À´Ï´Ù.'})
 
         if not revenue:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
-                data={'message': 'ë§¤ì¶œ ê°’ì´ ì—†ìŠµë‹ˆë‹¤.'})
+                data={'message': '¸ÅÃâ °ªÀÌ ¾ø½À´Ï´Ù.'})
 
         if not info_company:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
-                data={'message': 'íšŒì‚¬ì†Œê°œ ê°’ì´ ì—†ìŠµë‹ˆë‹¤.'})
+                data={'message': 'È¸»ç¼Ò°³ °ªÀÌ ¾ø½À´Ï´Ù.'})
 
         if not info_biz:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
-                data={'message': 'ì£¼ìš”ì‚¬ì—… ê°’ì´ ì—†ìŠµë‹ˆë‹¤.'})
+                data={'message': 'ÁÖ¿ä»ç¾÷ °ªÀÌ ¾ø½À´Ï´Ù.'})
 
      #   if not history:
      #       return Response(
      #           status=status.HTTP_400_BAD_REQUEST,
-     #           data={'message': 'ì—°í˜ ê°’ì´ ì—†ìŠµë‹ˆë‹¤.'})
+     #           data={'message': '¿¬Çõ °ªÀÌ ¾ø½À´Ï´Ù.'})
 
         if not deal:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
-                data={'message': 'ì£¼ìš”ê±°ë˜ì²˜ ê°’ì´ ì—†ìŠµë‹ˆë‹¤.'})
+                data={'message': 'ÁÖ¿ä°Å·¡Ã³ °ªÀÌ ¾ø½À´Ï´Ù.'})
 
         if User.objects.filter(username=username).exists():
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
-                data={'message': 'í•´ë‹¹ ì´ë©”ì¼ì´ ì´ë¯¸ ì¡´ì¬í•©ë‹ˆë‹¤.'})
+                data={'message': 'ÇØ´ç ÀÌ¸ŞÀÏÀÌ ÀÌ¹Ì Á¸ÀçÇÕ´Ï´Ù.'})
 
         user = User.objects.create_user(
             username=username,
             password=password,
             type=type,
             phone=phone,
+            marketing=marketing,
         )
 
         partner = Partner.objects.create(
@@ -423,12 +480,12 @@ class PartnerViewSet(viewsets.ModelViewSet):
 
         category_elements = Develop.objects.filter(id__in=category_middle)
         history_elements = Subclass.objects.filter(id__in=history_set)
-        possible_elements = Subclass.objects.filter(id__in=possible_set)
+        #possible_elements = Subclass.objects.filter(id__in=possible_set)
         partner.category_middle.add(*category_elements)
         partner.history_set.add(*history_elements)
-        partner.possible_set.add(*possible_elements)
+        #partner.possible_set.add(*possible_elements)
         partner.save()
-        #form-dataëŠ” ìë™ìœ¼ë¡œ ì£¼ì„ ì½”ë“œë¥¼ ì‹¤í–‰ ì‹œì¼œì¤Œ
+        #form-data´Â ÀÚµ¿À¸·Î ÁÖ¼® ÄÚµå¸¦ ½ÇÇà ½ÃÄÑÁÜ
         #serializer = PartnerSerializer(partner, data=request.data, partial=True)
         #serializer.is_valid(raise_exception=True)
         #instance = serializer.save()
@@ -436,147 +493,147 @@ class PartnerViewSet(viewsets.ModelViewSet):
 
         token, _ = Token.objects.get_or_create(user=user)
         return Response(data={'code': ResponseCode.SUCCESS.value,
-                              'message': 'íšŒì›ê°€ì…ì´ ì„±ê³µì ìœ¼ë¡œ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.\në‹¤ì‹œ ë¡œê·¸ì¸ì„ í•´ì£¼ì„¸ìš”.',
+                              'message': 'È¸¿ø°¡ÀÔÀÌ ¼º°øÀûÀ¸·Î ¿Ï·áµÇ¾ú½À´Ï´Ù.\n´Ù½Ã ·Î±×ÀÎÀ» ÇØÁÖ¼¼¿ä.',
                               'data': {
                                   'token': user.auth_token.key,
                                   'partner': PartnerSerializer(partner).data,
                                   'user': PatchUserSerializer(user).data,
                               }})
 
-    # get_objectëŠ” íŠœí”Œ í•˜ë‚˜ì¸ë°, í•„í„°ê°€ëŠ¥, get_queryset í…Œì´ë¸” íŠœí”Œ ë¦¬ìŠ¤íŠ¸ì¸ë° ì „ì²´ë„ ë˜ê³  í•„í„°ë„ ê°€ëŠ¥
- # django filterë¡œ ëŒ€ì²´
+    # get_object´Â Æ©ÇÃ ÇÏ³ªÀÎµ¥, ÇÊÅÍ°¡´É, get_queryset Å×ÀÌºí Æ©ÇÃ ¸®½ºÆ®ÀÎµ¥ ÀüÃ¼µµ µÇ°í ÇÊÅÍµµ °¡´É
+ # django filter·Î ´ëÃ¼
  #   @swagger_auto_schema(request_body=PartnerSerializer)
  #   @action(detail=False, methods=('POST',), http_method_names=('post',))
- #   def search(self, request, *args, **kwargs): # íŒŒíŠ¸ë„ˆ ê²€ìƒ‰ìš©
+ #   def search(self, request, *args, **kwargs): # ÆÄÆ®³Ê °Ë»ö¿ë
  #       text = request.data.get('text')
- #       # __inì€ listë§Œ // textëŠ” __icontains ì´ìš©
+ #       # __inÀº list¸¸ // text´Â __icontains ÀÌ¿ë
  #       result1 = Partner.objects.filter(name__icontains=text)
  #       result2 = Partner.objects.filter(info_company__icontains=text)
  #       result3 = Partner.objects.filter(info_biz__icontains=text)
  #       result4 = Partner.objects.filter(deal__icontains=text)
- #       # ì œí’ˆêµ° ê²€ìƒ‰ì„ ì¼ë¶€ë¡œ ì•ˆë˜ê²Œ ë§Œë“¤ê¸° >> íë ˆì´ì…˜ì„ ì´ìš©í•  ìˆ˜ ìˆë„ë¡
- #       #ì¶”í›„ì— ìœ ë£Œ ì„œë¹„ìŠ¤ë¡œ ê°œë°œ ì˜ˆì •
+ #       # Á¦Ç°±º °Ë»öÀ» ÀÏºÎ·Î ¾ÈµÇ°Ô ¸¸µé±â >> Å¥·¹ÀÌ¼ÇÀ» ÀÌ¿ëÇÒ ¼ö ÀÖµµ·Ï
+ #       #ÃßÈÄ¿¡ À¯·á ¼­ºñ½º·Î °³¹ß ¿¹Á¤
  #       return Response(data={'code': ResponseCode.SUCCESS.value,
- #                             'message': 'íŒŒíŠ¸ë„ˆ ê²€ìƒ‰ê²°ê³¼ì…ë‹ˆë‹¤.',
+ #                             'message': 'ÆÄÆ®³Ê °Ë»ö°á°úÀÔ´Ï´Ù.',
  #                             'data': PartnerSerializer(result1.union(result2).union(result3).union(result4), many=True).data
  #                             }
  #                       )
 
  #   @swagger_auto_schema(request_body=PartnerSerializer)
  #   @action(detail=False, methods=('POST',), http_method_names=('post',))
- #   def request_partner(self, request, *args, **kwargs):  # ì˜ë¢°ì„œ ë³´ë‚¼ íŒŒíŠ¸ë„ˆ ì •ë³´ ì°¾ê¸°
+ #   def request_partner(self, request, *args, **kwargs):  # ÀÇ·Ú¼­ º¸³¾ ÆÄÆ®³Ê Á¤º¸ Ã£±â
  #
  #       #maincategory = request.data.get('maincategory')
  #       #category = request.data.get('category')
  #
  #       subclass = request.data.get('subclass')
- #       #sub í´ë˜ìŠ¤ì˜ idë¥¼ ë³´ë‚´ì•¼í•¨.
+ #       #sub Å¬·¡½ºÀÇ id¸¦ º¸³»¾ßÇÔ.
  #
  #       possible_elements = Partner.objects.filter(possible_set__in=subclass)
  #       history_elements = Partner.objects.filter(history_set__in=subclass)
 
  #       return Response(data={'code': ResponseCode.SUCCESS.value,
- #                             'message': 'ì˜ë¢°ì„œë¥¼ ë³´ë‚¼ íŒŒíŠ¸ë„ˆ ì •ë³´ì…ë‹ˆë‹¤.',
+ #                             'message': 'ÀÇ·Ú¼­¸¦ º¸³¾ ÆÄÆ®³Ê Á¤º¸ÀÔ´Ï´Ù.',
  #                             'data': PartnerSerializer(possible_elements.union(history_elements),many=True).data
  #                             }
  #                       )
 
  #   @swagger_auto_schema(request_body=PartnerSerializer)
  #   @action(detail=False, methods=('POST',), http_method_names=('post',))
- #   def region_search(self, request, *args, **kwargs):  # ì§€ì—­ì— ë”°ë¼ íŒŒíŠ¸ë„ˆ ê²€ìƒ‰
+ #   def region_search(self, request, *args, **kwargs):  # Áö¿ª¿¡ µû¶ó ÆÄÆ®³Ê °Ë»ö
 
- #       city = request.data.get('city') #ì‹œ/ë„ id
- #       region = request.data.get('region') #êµ¬ id, ë§Œì•½ ì‹œë§Œ ì„ íƒí–ˆì„ ë•Œ ë¦¬ìŠ¤íŠ¸ í˜•íƒœì˜ id
+ #       city = request.data.get('city') #½Ã/µµ id
+ #       region = request.data.get('region') #±¸ id, ¸¸¾à ½Ã¸¸ ¼±ÅÃÇßÀ» ¶§ ¸®½ºÆ® ÇüÅÂÀÇ id
 
- #       if not region: # ì‹œ/ë„ë§Œ ê³ ë¥¸ ê²½ìš°
+ #       if not region: # ½Ã/µµ¸¸ °í¸¥ °æ¿ì
  #           partner = Partner.objects.filter(city=city)
  #           return Response(data={'code': ResponseCode.SUCCESS.value,
- #                                 'message': 'í•´ë‹¹ ì§€ì—­ì˜ íŒŒíŠ¸ë„ˆì…ë‹ˆë‹¤.',
+ #                                 'message': 'ÇØ´ç Áö¿ªÀÇ ÆÄÆ®³ÊÀÔ´Ï´Ù.',
  #                                 'data': PartnerSerializer(partner, many=True).data
  #                                 }
  #                           )
- #       partner = Partner.objects.filter(region=region) #êµ¬ë¥¼ ê³ ë¥¸ ê²½ìš°
+ #       partner = Partner.objects.filter(region=region) #±¸¸¦ °í¸¥ °æ¿ì
  #       return Response(data={'code': ResponseCode.SUCCESS.value,
- #                             'message': 'í•´ë‹¹ ì§€ì—­ì˜ íŒŒíŠ¸ë„ˆì…ë‹ˆë‹¤.',
+ #                             'message': 'ÇØ´ç Áö¿ªÀÇ ÆÄÆ®³ÊÀÔ´Ï´Ù.',
  #                             'data': PartnerSerializer(partner, many=True).data
  #                             }
  #                       )
     
  #    @swagger_auto_schema(request_body=PartnerSerializer)
  #   @action(detail=False, methods=('POST',), http_method_names=('post',))
- #   def category_search(self, request, *args, **kwargs):  # ì˜ë¢° ë¶„ì•¼ì— ë”°ë¥¸ íŒŒíŠ¸ë„ˆ ê²€ìƒ‰ìš©
+ #   def category_search(self, request, *args, **kwargs):  # ÀÇ·Ú ºĞ¾ß¿¡ µû¸¥ ÆÄÆ®³Ê °Ë»ö¿ë
  #
- #       category_big = request.data.get('category_big')  # ì˜ë¢°ë¶„ì•¼ ëŒ€ë¶„ë¥˜
- #       category_middle = request.data.get('category_middle')  # ì˜ë¢°ë¶„ì•¼ ì¤‘ë¶„ë¥˜
+ #       category_big = request.data.get('category_big')  # ÀÇ·ÚºĞ¾ß ´ëºĞ·ù
+ #       category_middle = request.data.get('category_middle')  # ÀÇ·ÚºĞ¾ß ÁßºĞ·ù
 
- #       if not category_middle:  # ì˜ë¢°ë¶„ì•¼ ëŒ€ë¶„ë¥˜ë§Œ ê³ ë¥¸ê²½ìš°
+ #       if not category_middle:  # ÀÇ·ÚºĞ¾ß ´ëºĞ·ù¸¸ °í¸¥°æ¿ì
  #           partner = Partner.objects.filter(category_big__in=category_big)
  #           return Response(data={'code': ResponseCode.SUCCESS.value,
- #                                 'message': 'í•´ë‹¹ ì˜ë¢°ë¶„ì•¼ì˜ íŒŒíŠ¸ë„ˆì…ë‹ˆë‹¤.',
+ #                                 'message': 'ÇØ´ç ÀÇ·ÚºĞ¾ßÀÇ ÆÄÆ®³ÊÀÔ´Ï´Ù.',
  #                                 'data': PartnerSerializer(partner, many=True).data
  #                                 }
  #                           )
- #       partner = Partner.objects.filter(category_middle__in=category_middle)  # ì˜ë¢°ë¶„ì•¼ ì¤‘ë¶„ë¥˜ë¥¼ ê³ ë¥¸ ê²½ìš°
+ #       partner = Partner.objects.filter(category_middle__in=category_middle)  # ÀÇ·ÚºĞ¾ß ÁßºĞ·ù¸¦ °í¸¥ °æ¿ì
  #       return Response(data={'code': ResponseCode.SUCCESS.value,
- #                             'message': 'í•´ë‹¹ ì˜ë¢°ë¶„ì•¼ì˜ íŒŒíŠ¸ë„ˆì…ë‹ˆë‹¤.',
+ #                             'message': 'ÇØ´ç ÀÇ·ÚºĞ¾ßÀÇ ÆÄÆ®³ÊÀÔ´Ï´Ù.',
  #                             'data': PartnerSerializer(partner, many=True).data
  #                             }
  #                       )
 
-   # @swagger_auto_schema(request_body=PartnerSerializer) # ì¶”í›„ ìœ ë£Œ ì„œë¹„ìŠ¤ ê°œë°œ
+   # @swagger_auto_schema(request_body=PartnerSerializer) # ÃßÈÄ À¯·á ¼­ºñ½º °³¹ß
    # @action(detail=False, methods=('POST',), http_method_names=('post',))
-   # def product_search(self, request, *args, **kwargs):  # ì œí’ˆ ë¶„ì•¼ì— ë”°ë¥¸ íŒŒíŠ¸ë„ˆ ê²€ìƒ‰ìš© # ì†Œë¶„ë¥˜ ê²€ìƒ‰ì˜ ê²½ìš°ì—ëŠ” ë‚˜ì¤‘ì— ì¶”ê°€ ê°œë°œì„ í†µí•´ ìœ ë£Œ ì„œë¹„ìŠ¤í™” ì§„í–‰ ì˜ˆì •
+   # def product_search(self, request, *args, **kwargs):  # Á¦Ç° ºĞ¾ß¿¡ µû¸¥ ÆÄÆ®³Ê °Ë»ö¿ë # ¼ÒºĞ·ù °Ë»öÀÇ °æ¿ì¿¡´Â ³ªÁß¿¡ Ãß°¡ °³¹ßÀ» ÅëÇØ À¯·á ¼­ºñ½ºÈ­ ÁøÇà ¿¹Á¤
    #
-   #     product_big = request.data.get('product_big')  # ì œí’ˆë¶„ì•¼ ëŒ€ë¶„ë¥˜
-   #     product = request.data.get('product')  # ì œí’ˆë¶„ì•¼ ì¤‘ë¶„ë¥˜
+   #     product_big = request.data.get('product_big')  # Á¦Ç°ºĞ¾ß ´ëºĞ·ù
+   #     product = request.data.get('product')  # Á¦Ç°ºĞ¾ß ÁßºĞ·ù
    #
-   #     if not product:  # ì œí’ˆë¶„ì•¼ ëŒ€ë¶„ë¥˜ë§Œ ê³ ë¥¸ê²½ìš°
+   #     if not product:  # Á¦Ç°ºĞ¾ß ´ëºĞ·ù¸¸ °í¸¥°æ¿ì
    #         partner = Partner.objects.filter(product_big__in=product_big)
    #         return Response(data={'code': ResponseCode.SUCCESS.value,
-   #                               'message': 'í•´ë‹¹ ì§€ì—­ì˜ íŒŒíŠ¸ë„ˆì…ë‹ˆë‹¤.',
+   #                               'message': 'ÇØ´ç Áö¿ªÀÇ ÆÄÆ®³ÊÀÔ´Ï´Ù.',
    #                               'data': PartnerSerializer(partner, many=True).data
    #                               }
    #                         )
-   #     partner = Partner.objects.filter(product__in=product)  # ì œí’ˆë¶„ì•¼ ì¤‘ë¶„ë¥˜ë¥¼ ê³ ë¥¸ ê²½ìš°
+   #     partner = Partner.objects.filter(product__in=product)  # Á¦Ç°ºĞ¾ß ÁßºĞ·ù¸¦ °í¸¥ °æ¿ì
    #     return Response(data={'code': ResponseCode.SUCCESS.value,
-   #                           'message': 'í•´ë‹¹ ì§€ì—­ì˜ íŒŒíŠ¸ë„ˆì…ë‹ˆë‹¤.',
+   #                           'message': 'ÇØ´ç Áö¿ªÀÇ ÆÄÆ®³ÊÀÔ´Ï´Ù.',
    #                           'data': PartnerSerializer(partner, many=True).data
    #                           }
    #                     )
 
     @action(detail=False, methods=('GET',), url_path='request', http_method_names=('get',))
-    def find_partner(self, request, *args, **kwargs):  # ì˜ë¢°ì„œ ì™„ì„± ì‹œì— ì í•©í•œ íŒŒíŠ¸ë„ˆ ë¦¬ìŠ¤íŠ¸ ì¶”ì²œ
+    def find_partner(self, request, *args, **kwargs):  # ÀÇ·Ú¼­ ¿Ï¼º ½Ã¿¡ ÀûÇÕÇÑ ÆÄÆ®³Ê ¸®½ºÆ® ÃßÃµ
         subclass = request.GET['subclass']
 
-        partner1_qs = Partner.objects.filter(possible_set__id = subclass)
+       # partner1_qs = Partner.objects.filter(possible_set__id = subclass)
        # print(partner1_qs)
         partner2_qs = Partner.objects.filter(history_set__id = subclass)
        # print(partner2_qs)
-        #query_set í•©ì¹˜ê¸°
-        partner_qs = partner1_qs.union(partner2_qs)
+        #query_set ÇÕÄ¡±â
+       # partner_qs = partner1_qs.union(partner2_qs)
 
         return Response(data={'code': ResponseCode.SUCCESS.value,
-                              'message': 'í•´ë‹¹ ì˜ë¢°ì„œì— ì í•©í•œ íŒŒíŠ¸ë„ˆ ë¦¬ìŠ¤íŠ¸ì…ë‹ˆë‹¤.',
-                              'data': PartnerSerializer(partner_qs[:5], many=True).data
+                              'message': 'ÇØ´ç ÀÇ·Ú¼­¿¡ ÀûÇÕÇÑ ÆÄÆ®³Ê ¸®½ºÆ®ÀÔ´Ï´Ù.',
+                              'data': PartnerSerializer(partner2_qs[:5], many=True).data
                               }
                         )
 
     @swagger_auto_schema(request_body=PartnerSerializer)
     @action(detail=False, methods=['PATCH', ], url_path='coin', http_method_names=('patch',), permission_classes=(IsAuthenticated,),)
-    def update_coin(self, request, *args, **kwargs):  # ì½”ì¸ì„ ê²°ì œí–ˆì„ ë•Œ ì½”ì¸ ì¶”ê°€
-        # ê²°ì œ ì„±ê³µ ì‹œë¦¬ì–¼ì„ ë°›ì•„ì„œ ì•„ì„í¬íŠ¸ì— ìš”ì²­.
+    def update_coin(self, request, *args, **kwargs):  # ÄÚÀÎÀ» °áÁ¦ÇßÀ» ¶§ ÄÚÀÎ Ãß°¡
+        # °áÁ¦ ¼º°ø ½Ã¸®¾óÀ» ¹Ş¾Æ¼­ ¾ÆÀÓÆ÷Æ®¿¡ ¿äÃ».
         partner_id = request.user.partner.id
         #partner_id = request.data.get('partner_id')
-        coin = request.data.get('coin')  # í”„ë¡ íŠ¸ì—ì„œ Partner coinê°’ì„ ë¶ˆëŸ¬ì™€ì„œ ë”í•˜ê¸° í˜¹ì€ ë¹¼ê¸° ìˆ˜í–‰
+        coin = request.data.get('coin')  # ÇÁ·ĞÆ®¿¡¼­ Partner coin°ªÀ» ºÒ·¯¿Í¼­ ´õÇÏ±â È¤Àº »©±â ¼öÇà
 
-        # filterë¡œ ê²€ìƒ‰ ì‹œ Querysetì´ ì˜´, getì€ ëª¨ë¸ì„ ê°€ì ¸ì˜¤ê³  ì—†ìœ¼ë©´ ì˜ˆì™¸ë¥¼ ë°œìƒì‹œí‚´
+        # filter·Î °Ë»ö ½Ã QuerysetÀÌ ¿È, getÀº ¸ğµ¨À» °¡Á®¿À°í ¾øÀ¸¸é ¿¹¿Ü¸¦ ¹ß»ı½ÃÅ´
         partner_data = Partner.objects.get(id=partner_id)
-        # Serializerì˜ ì²˜ìŒ íŒŒë¼ë¯¸í„°ì—ëŠ” model(row)ì´ ì™€ì•¼í•¨.
+        # SerializerÀÇ Ã³À½ ÆÄ¶ó¹ÌÅÍ¿¡´Â model(row)ÀÌ ¿Í¾ßÇÔ.
         partner_data.coin += coin
         partner_data.save()
 
         return Response(data={'code': ResponseCode.SUCCESS.value,
-                              'message': 'ì½”ì¸ì„ ì—…ë°ì´íŠ¸í•œ íŒŒíŠ¸ë„ˆ ì •ë³´ì…ë‹ˆë‹¤.',
+                              'message': 'ÄÚÀÎÀ» ¾÷µ¥ÀÌÆ®ÇÑ ÆÄÆ®³Ê Á¤º¸ÀÔ´Ï´Ù.',
                               'data': PartnerSerializer(partner_data).data
                               }
                         )
@@ -584,79 +641,82 @@ class PartnerViewSet(viewsets.ModelViewSet):
     @swagger_auto_schema(request_body=PartnerSerializer)
     @action(detail=False, methods=['PATCH', ], url_path='minus-coin', http_method_names=('patch',),
             permission_classes=(IsAuthenticated,), )
-    def minus_coin(self, request, *args, **kwargs):  # ê²°ì œ ì‹œì— ì½”ì¸ì„ ë¹¼ì£¼ëŠ” API
-        # ê²°ì œ ì„±ê³µ ì‹œë¦¬ì–¼ì„ ë°›ì•„ì„œ ì•„ì„í¬íŠ¸ì— ìš”ì²­.
+    def minus_coin(self, request, *args, **kwargs):  # °áÁ¦ ½Ã¿¡ ÄÚÀÎÀ» »©ÁÖ´Â API
+        # °áÁ¦ ¼º°ø ½Ã¸®¾óÀ» ¹Ş¾Æ¼­ ¾ÆÀÓÆ÷Æ®¿¡ ¿äÃ».
         partner_id = request.user.partner.id
-        coin = request.data.get('coin')  # í”„ë¡ íŠ¸ì—ì„œ Partner coinê°’ì„ ë¶ˆëŸ¬ì™€ì„œ ë”í•˜ê¸° í˜¹ì€ ë¹¼ê¸° ìˆ˜í–‰
+        coin = request.data.get('coin')  # ÇÁ·ĞÆ®¿¡¼­ Partner coin°ªÀ» ºÒ·¯¿Í¼­ ´õÇÏ±â È¤Àº »©±â ¼öÇà
 
-        # filterë¡œ ê²€ìƒ‰ ì‹œ Querysetì´ ì˜´, getì€ ëª¨ë¸ì„ ê°€ì ¸ì˜¤ê³  ì—†ìœ¼ë©´ ì˜ˆì™¸ë¥¼ ë°œìƒì‹œí‚´
+        # filter·Î °Ë»ö ½Ã QuerysetÀÌ ¿È, getÀº ¸ğµ¨À» °¡Á®¿À°í ¾øÀ¸¸é ¿¹¿Ü¸¦ ¹ß»ı½ÃÅ´
         partner_data = Partner.objects.get(id=partner_id)
-        # Serializerì˜ ì²˜ìŒ íŒŒë¼ë¯¸í„°ì—ëŠ” model(row)ì´ ì™€ì•¼í•¨.
+        # SerializerÀÇ Ã³À½ ÆÄ¶ó¹ÌÅÍ¿¡´Â model(row)ÀÌ ¿Í¾ßÇÔ.
         partner_data.coin -= coin
         partner_data.save()
 
         return Response(data={'code': ResponseCode.SUCCESS.value,
-                              'message': 'ì½”ì¸ì„ ì—…ë°ì´íŠ¸í•œ íŒŒíŠ¸ë„ˆ ì •ë³´ì…ë‹ˆë‹¤.',
+                              'message': 'ÄÚÀÎÀ» ¾÷µ¥ÀÌÆ®ÇÑ ÆÄÆ®³Ê Á¤º¸ÀÔ´Ï´Ù.',
                               'data': PartnerSerializer(partner_data).data
                               }
                         )
 
     @swagger_auto_schema(request_body=PartnerSerializer)
     @action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
-    def request_kakaotalk(self, request, *args, **kwargs):  # ì˜ë¢°ì„œ ë“±ë¡ ì‹œ ì í•©í•œ íŒŒíŠ¸ë„ˆì—ê²Œ ì¹´ì¹´ì˜¤í†¡ ì•Œë¦¼
-        subject = request.data.get('subject')
-        subclass = request.data.get('subclass')
-      #  print(subclass)
-      #  print(Partner.objects.all().values_list('possible_set', flat=True))
-      #  print(Partner.objects.filter(possible_set = "5"))
-        partner_qs1 = Partner.objects.filter(possible_set = subclass)
-        partner_qs2 = Partner.objects.filter(history_set = subclass)
-        partner_qs_all = partner_qs1.union(partner_qs2)
-        # query_set value ê°€ì ¸ì˜¤ê¸°
-        partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
-        #ë¦¬ìŠ¤íŠ¸í™”
-        partner_phone_list = list(partner_phone_list)
-        #print(len(partner_phone_list))
+    @receiver(post_init, sender=Request)
+    def request_init(sender, instance, **kwargs):
+        instance._previous_examine = instance.examine
 
-        if len(partner_phone_list) == 0:
+    @receiver(post_save, sender=Request)
+    def request_kakaotalk(sender, instance, *args, **kwargs):  # ÀÇ·Ú¼­ µî·Ï ½Ã ÀûÇÕÇÑ ÆÄÆ®³Ê¿¡°Ô Ä«Ä«¿ÀÅå ¾Ë¸²
+        subject = instance.name
+        subclass = instance.product
+        category = instance.category.values_list('category')
+        category_list = list(category)
+        # ¸®½ºÆ®È­
+        for i in range(len(category_list)):
+            category_list[i] = category_list[i][0]
+        # print(category_list)
+        # str È­
+        category = "/".join(category_list)
+        # print(category)
+        if instance.examine == True and instance._previous_examine == False:
             partner_qs1 = Partner.objects.filter()
             partner_qs2 = Partner.objects.filter()
             partner_qs_all = partner_qs1.union(partner_qs2)
-            # query_set value ê°€ì ¸ì˜¤ê¸°
+            # query_set value °¡Á®¿À±â
             partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
-            # ë¦¬ìŠ¤íŠ¸í™”
+            # ¸®½ºÆ®È­
             partner_phone_list = list(partner_phone_list)
-        #ê³µë°±ì œê±°
-        partner_phone_list = list(filter(None, partner_phone_list))
-        print(partner_phone_list)
-        response = kakaotalk.send(partner_phone_list,subject)
-        a = response.json()
-        Sendkakao.objects.create(
-            status_code=response.status_code,
-            description=response.json()['description'],
-            refkey=response.json()['refkey'],
-            messagekey=response.json()['messagekey'],
-        )
+            # °ø¹éÁ¦°Å
+            partner_phone_list = list(filter(None, partner_phone_list))
+            print(partner_phone_list)
+            # response = kakaotalk2.send(partner_phone_list,subject, subclass, category)
+            response = kakaotalk2.send(['010-4112-6637'], subject, subclass, category)
+            Sendkakao.objects.create(
+                status_code=response.status_code,
+                description=response.json()['description'],
+                refkey=response.json()['refkey'],
+                messagekey=response.json()['messagekey'],
+            )
 
-        return Response(data={
+            return Response(data={
                 'code': ResponseCode.SUCCESS.value,
-                'message': 'ë°œì†¡ì— ì„±ê³µí•˜ì˜€ìŠµë‹ˆë‹¤.',
+                'message': '¹ß¼Û¿¡ ¼º°øÇÏ¿´½À´Ï´Ù.',
                 'data': {
                     'status_code': response.status_code,
                     'response': response.json(),
                 }})
+        return False
 
     @swagger_auto_schema(request_body=PartnerSerializer)
     @action(detail=False, methods=('PATCH',), url_path='success', http_method_names=('patch',))
     def meeting_success(self, request, *args, **kwargs):
         partner_id = request.data.get('partner_id')
         partner_data = Partner.objects.get(id=partner_id)
-        # Serializerì˜ ì²˜ìŒ íŒŒë¼ë¯¸í„°ì—ëŠ” model(row)ì´ ì™€ì•¼í•¨.
+        # SerializerÀÇ Ã³À½ ÆÄ¶ó¹ÌÅÍ¿¡´Â model(row)ÀÌ ¿Í¾ßÇÔ.
         partner_data.success += 1
         partner_data.save()
 
         return Response(data={'code': ResponseCode.SUCCESS.value,
-                              'message': 'íŒŒíŠ¸ë„ˆ ë¯¸íŒ… ì„±ê³µ íšŸìˆ˜ê°€ ì¶”ê°€ë˜ì—ˆìŠµë‹ˆë‹¤.',
+                              'message': 'ÆÄÆ®³Ê ¹ÌÆÃ ¼º°ø È½¼ö°¡ Ãß°¡µÇ¾ú½À´Ï´Ù.',
                               'data': PartnerSerializer(partner_data).data,
                               }
                         )
@@ -666,12 +726,12 @@ class PartnerViewSet(viewsets.ModelViewSet):
     def meeting_fail(self, request, *args, **kwargs):
         partner_id = request.data.get('partner_id')
         partner_data = Partner.objects.get(id=partner_id)
-        # Serializerì˜ ì²˜ìŒ íŒŒë¼ë¯¸í„°ì—ëŠ” model(row)ì´ ì™€ì•¼í•¨.
+        # SerializerÀÇ Ã³À½ ÆÄ¶ó¹ÌÅÍ¿¡´Â model(row)ÀÌ ¿Í¾ßÇÔ.
         partner_data.fail += 1
         partner_data.save()
 
         return Response(data={'code': ResponseCode.SUCCESS.value,
-                              'message': 'íŒŒíŠ¸ë„ˆ ë¯¸íŒ… ì‹¤íŒ¨ íšŸìˆ˜ê°€ ì¶”ê°€ë˜ì—ˆìŠµë‹ˆë‹¤.',
+                              'message': 'ÆÄÆ®³Ê ¹ÌÆÃ ½ÇÆĞ È½¼ö°¡ Ãß°¡µÇ¾ú½À´Ï´Ù.',
                               'data': PartnerSerializer(partner_data).data,
                               }
                         )
@@ -682,11 +742,11 @@ class PartnerViewSet(viewsets.ModelViewSet):
         partner_id = request.data.get('partner_id')
         partner_data = Partner.objects.get(id=partner_id)
         meeting_count = (partner_data.success + partner_data.fail)
-        # Serializerì˜ ì²˜ìŒ íŒŒë¼ë¯¸í„°ì—ëŠ” model(row)ì´ ì™€ì•¼í•¨.
+        # SerializerÀÇ Ã³À½ ÆÄ¶ó¹ÌÅÍ¿¡´Â model(row)ÀÌ ¿Í¾ßÇÔ.
         if meeting_count == 0:
-           if not partner_data.success == 0: # ë¯¸íŒ… ì„±ê³µì´ 1íšŒ ì´ìƒì¸ ê²½ìš°
+           if not partner_data.success == 0: # ¹ÌÆÃ ¼º°øÀÌ 1È¸ ÀÌ»óÀÎ °æ¿ì
                 partner_data.meeting = 100
-           else:                            # ë¯¸íŒ… ì„±ê³µì´ 0íšŒì¸ ê²½ìš°
+           else:                            # ¹ÌÆÃ ¼º°øÀÌ 0È¸ÀÎ °æ¿ì
                 partner_data.meeting = 0
         else:
             partner_data.meeting = partner_data.success / meeting_count
@@ -694,7 +754,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
         partner_data.save()
 
         return Response(data={'code': ResponseCode.SUCCESS.value,
-                              'message': 'íŒŒíŠ¸ë„ˆì˜ ë¯¸íŒ… ì „í™˜ ì„±ê³µìœ¨ ì…ë‹ˆë‹¤.',
+                              'message': 'ÆÄÆ®³ÊÀÇ ¹ÌÆÃ ÀüÈ¯ ¼º°øÀ² ÀÔ´Ï´Ù.',
                               'data': PartnerSerializer(partner_data).data,
                               }
                         )

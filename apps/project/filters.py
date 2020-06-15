@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 import django_filters
 from rest_framework import filters
 from django.db.models import (
@@ -8,11 +9,11 @@ from django.db.models import (
 
 from apps.project.models import *
 
-class RequestFilter(filters.BaseFilterBackend): # íŒŒë¼ë¯¸í„° ì—¬ëŸ¬ ê°œ ë³´ë‚´ë„ orë¡œ ê°€ì ¸ì˜¤ëŠ” í•„í„°
+class RequestFilter(filters.BaseFilterBackend): # ÆÄ¶ó¹ÌÅÍ ¿©·¯ °³ º¸³»µµ or·Î °¡Á®¿À´Â ÇÊÅÍ
 
-        def filter_queryset(self, request, queryset, view):  ## í•„í„° ë¶€ë¥¼ ë•Œ ìë™
+        def filter_queryset(self, request, queryset, view):  ## ÇÊÅÍ ºÎ¸¦ ¶§ ÀÚµ¿
           data=request.GET
-          data_dict = data.dict() # dictionary í™”
+          data_dict = data.dict() # dictionary È­
 
           if  'product__id' in data_dict:
                 data = data['product__id'].split(',')

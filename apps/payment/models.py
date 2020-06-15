@@ -1,3 +1,4 @@
+#-*- coding: cp949 -*-
 import os, datetime, uuid
 
 from django.contrib.auth.models import AbstractUser
@@ -77,25 +78,25 @@ def subclass_update_filename(instance, filename):
 
 # ------------------------------------------------------------------
 # Model   : Paylist
-# Description : ê²°ì œ ì €ì¥ ëª¨ë¸
+# Description : °áÁ¦ ÀúÀå ¸ğµ¨
 # ------------------------------------------------------------------
 
 class Paylist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    merchant_uid = models.CharField('ê²°ì œì •ë³´', max_length=256)
-    product_name = models.CharField('ìƒí’ˆëª…', max_length=256)
-    #buyer_email = models.CharField('êµ¬ë§¤ì ì´ë©”ì¼', max_length=256)
-    #buyer_name = models.CharField('êµ¬ë§¤ì ì´ë¦„', max_length=256)
-    #buyer_tel = models.CharField('êµ¬ë§¤ì ì „í™”ë²ˆí˜¸', max_length=256)
-    channel = models.CharField('ê²°ì œí™˜ê²½(ì›¹/ëª¨ë°”ì¼', max_length=256)
-    pay_method = models.CharField('ê²°ì œ ë°©ë²•(ì¹´ë“œ/íœ´ëŒ€í° ë“±)', max_length=256)
-    status = models.CharField('ê²°ì œì„±ê³µì—¬ë¶€', max_length=256)
-    product_price = models.IntegerField('ë¹„ìš©', default=0)
-    coin = models.IntegerField('ì½”ì¸', default=0)
+    merchant_uid = models.CharField('°áÁ¦Á¤º¸', max_length=256)
+    product_name = models.CharField('»óÇ°¸í', max_length=256)
+    #buyer_email = models.CharField('±¸¸ÅÀÚ ÀÌ¸ŞÀÏ', max_length=256)
+    #buyer_name = models.CharField('±¸¸ÅÀÚ ÀÌ¸§', max_length=256)
+    #buyer_tel = models.CharField('±¸¸ÅÀÚ ÀüÈ­¹øÈ£', max_length=256)
+    channel = models.CharField('°áÁ¦È¯°æ(À¥/¸ğ¹ÙÀÏ', max_length=256)
+    pay_method = models.CharField('°áÁ¦ ¹æ¹ı(Ä«µå/ÈŞ´ëÆù µî)', max_length=256)
+    status = models.CharField('°áÁ¦¼º°ø¿©ºÎ', max_length=256)
+    product_price = models.IntegerField('ºñ¿ë', default=0)
+    coin = models.IntegerField('ÄÚÀÎ', default=0)
 
     class Meta:
-        verbose_name = '     ê²°ì œì €ì¥'
-        verbose_name_plural = '     ê²°ì œì €ì¥'
+        verbose_name = '     °áÁ¦ÀúÀå'
+        verbose_name_plural = '     °áÁ¦ÀúÀå'
 
     def __str__(self):
         return str(self.id)
