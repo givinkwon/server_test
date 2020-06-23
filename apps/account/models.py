@@ -146,7 +146,9 @@ class User(AbstractUser):
 
 class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='유저')
-
+    name = models.CharField('업체명', max_length=256, null=True)
+    title = models.CharField('직급', max_length=256, null=True)
+    path = models.CharField('방문경로', max_length=256, null=True)
     class Meta:
         verbose_name = '클라이언트'
         verbose_name_plural = '클라이언트'
@@ -312,3 +314,14 @@ class LoginLog(models.Model):
 
     def __str__(self):
         return '{}_log'.format(self.user)
+
+class Path(models.Model):
+    path = models.CharField('방문경로', max_length=256, null=True)
+
+
+    class Meta:
+        verbose_name = '방문경로'
+        verbose_name_plural = '방문경로'
+
+    def __str__(self):
+        return str(self.path)

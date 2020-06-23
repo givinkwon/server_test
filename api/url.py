@@ -20,6 +20,7 @@ router.register('structure', view_account.StructureViewSet)
 router.register('machine', view_account.MachineViewSet)
 router.register('certification', view_account.CertificationViewSet)
 router.register('process', view_account.ProcessViewSet)
+router.register('path', view_account.PathViewSet)
 #board
 router.register('notice', view_board.NoticeViewSet)
 router.register('magazine', view_board.MagazineViewSet)

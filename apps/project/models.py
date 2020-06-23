@@ -285,6 +285,32 @@ class Answer(models.Model):
     created_at = models.DateTimeField('등록일자', auto_now_add=True)
     state = models.IntegerField('미팅 상태', default=0, choices=MEETING_STATE)
     active = models.BooleanField('활성화여부', default=False)
+
+    open_time = models.DateTimeField('제안서 오픈 시간', default = None, null = True)
+    send_meeting = models.BooleanField('미팅 안내 카톡 전송 여부', default=False)
+
+    @property # 오픈 이후 시간 체크
+    def time_out(self):
+        now = timezone.now()
+        if self.open_time is not None:
+          return (now - self.open_time)
+
+        return  False
+
+    @property # 오픈 이후 하루 지나면 카톡 보내기
+    def send_kakao(self):
+        if self.open_time is not None:
+
+            active = self.time_out.days
+            if active >= 1:
+                if self.send_meeting is False:
+                    self.send_meeting = True
+                    self.save()
+                return False
+            return False
+
+        return False
+
     @property
     def see_phone(self): # 전화번호 버튼을 보여줄 것인지
         if self.active:
@@ -311,6 +337,7 @@ class Answer(models.Model):
         verbose_name_plural = '     제안서'
 
     def __str__(self):
+        self.send_kakao
         return str(self.id)
 
 

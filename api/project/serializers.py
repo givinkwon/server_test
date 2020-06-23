@@ -46,7 +46,7 @@ class AnswerSerializer(serializers.ModelSerializer):
     writed_review = serializers.SerializerMethodField()
     class Meta:
         model = Answer
-        fields = ['state', 'active','created_at', 'id', 'client','project', 'partner', 'category', 'people', 'price',  'strategy', 'period', 'day', 'all_price', 'expert', 'see_phone', 'see_review', 'down_chage','writed_review','file']
+        fields = ['state', 'active','created_at', 'id', 'client','project', 'partner', 'category', 'people', 'price',  'strategy', 'period', 'day', 'all_price', 'expert', 'see_phone', 'see_review', 'down_chage','writed_review','file', 'time_out', 'open_time','send_kakao']
 
     def get_writed_review(self, obj):
         review_qs = Review.objects.filter(project=obj.project)

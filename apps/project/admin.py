@@ -91,8 +91,17 @@ class CommonAdmin(admin.ModelAdmin):
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
-    list_display = ['created_at', 'id', 'project', 'all_price', 'day','state','file']
+    list_display = ['partner_phone', 'created_at', 'request_name', 'all_price', 'day','state','file']
 
+    def partner_phone(self, obj):
+        partner = obj.partner
+        phone = User.objects.get(username=partner).phone
+        return phone
+
+    def request_name(self, obj):
+        project_id = obj.project
+        request_name = Request.objects.get(project = project_id)
+        return request_name
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):

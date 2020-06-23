@@ -71,6 +71,11 @@ class LoginLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoginLog
         fields = ['id']
+
+class PathSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Path
+        fields = ['id','path']
         
 class PartnerSerializer(serializers.ModelSerializer):
     avg_price_score = serializers.SerializerMethodField()
