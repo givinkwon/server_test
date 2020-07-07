@@ -150,10 +150,7 @@ class kakaotalk_request(object):
 
 class kakaotalk_request_edit_end(object):
 # 빈 전화번호 / 이상한 전화번호는 에러뜹니다.
-        def send(phone_list):
-            print(phone_list)
-            for phone in phone_list:
-             #print(phone)
+        def send(phone):
              url = 'https://api.bizppurio.com/v1/message'
              data = {'account': 'boltnnut_korea', 'refkey': 'bolt123', 'type': 'at', 'from': '01028741248',
                      'to': phone, 'content': {
@@ -161,4 +158,4 @@ class kakaotalk_request_edit_end(object):
                             'message':'고객님의 의뢰서 검토가 완료되어 파트너 제안서 모집이 시작되었습니다.\n\n제안서가 도착할 때마다 카카오톡 알림메시지를 보내드립니다.\n\n조금만 기다려주세요'}}}
              headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
              response = requests.post(url, data=json.dumps(data), headers=headers)
-            return response
+             return response

@@ -13,10 +13,13 @@ from rest_framework.permissions import AllowAny
 from drf_yasg import openapi
 
 from apps.payment import views as pv
+from apps.chat import views as chat
 urlpatterns = []
 
 urlpatterns += [
     path('admin/', admin.site.urls),
+    path('chat', chat.index, name="chat"),
+    path('chat/<str:room_name>/', chat.room, name='room'),
     path('', include('api.url')),
     path('test_payment', pv.payment_view, name="payment_view"),
     path('ckeditor/', include('ckeditor_uploader.urls')),

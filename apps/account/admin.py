@@ -2,6 +2,7 @@
 from django.contrib import admin
 
 from .models import *
+from apps.project.models import *
 # Register your models here.
 
 from django.forms import TextInput, Textarea
@@ -74,8 +75,9 @@ class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ['id','client_phone', 'client_email', 'name', 'title','path']
-
+    list_display = ['id','client_phone', 'client_email', 'name', 'title','path', 'marketing','client_signup_date',
+                        'request_count', 'latest_request', 'answer_count', 'meeting_count']
+    actions = ['export_as_csv']
     def client_phone(self, obj):
         phone = User.objects.get(username=obj.user).phone
         return phone
@@ -83,6 +85,45 @@ class ClientAdmin(admin.ModelAdmin):
     def client_email(self, obj):
         email = User.objects.get(username=obj.user).username
         return email
+
+    def marketing(self, obj):
+        marketing = User.objects.get(username=obj.user).marketing
+        if marketing ==True:
+            return 'O'
+        return 'X'
+
+    def client_signup_date(self, obj):
+        return obj.user.date_joined
+
+        client_signup_date.short_descrption = "가입일자"
+
+    def request_count(self, obj):
+        request = Request.objects.filter(client=obj)
+        count = len(request)
+        return count
+
+        request_count.short_descrption = "의뢰서 수"
+
+    def latest_request(self, obj):
+        request = Request.objects.filter(client=obj).order_by('-created_at')
+        latest_request = request.first()
+        return latest_request
+
+        latest_request.short_descrption = "최근 의뢰"
+
+    def answer_count(self, obj):
+        answer = Answer.objects.filter(client=obj)
+        count = len(answer)
+        return count
+
+        answer_count.short_descrption = "제안서 수"
+
+    def meeting_count(self, obj):
+        answer = Answer.objects.filter(client=obj, state=1)
+        count = len(answer)
+        return count
+
+        meeting_count.short_descrption = "미팅 한 횟수"
 
 @admin.register(Clientclass)
 class ClientAdmin(admin.ModelAdmin):

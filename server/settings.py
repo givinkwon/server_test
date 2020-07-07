@@ -32,6 +32,7 @@ AUTH_USER_MODEL = 'account.User'
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'apps.payment',
     'apps.project',
     'apps.kakaotalk',
+    'apps.chat',
     'ckeditor_uploader',
     'ckeditor',
     'rest_framework',
@@ -90,7 +92,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'server.wsgi.application'
-
+ASGI_APPLICATION = 'server.routing.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    },
+}
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',

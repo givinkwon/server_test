@@ -734,9 +734,14 @@ class PartnerViewSet(viewsets.ModelViewSet):
         category = "/".join(category_list)
         # print(category)
         if instance.examine == True and instance._previous_examine == False:
-            partner_qs1 = Partner.objects.filter()
-            partner_qs2 = Partner.objects.filter()
-            partner_qs_all = partner_qs1.union(partner_qs2)
+            list_partner = []
+            for i in category_list:
+                result = Partner.objects.filter(category_middle__category__contains=i)
+                list_partner.append(result)
+            partner_qs1 = list_partner[0]
+            print(list_partner)
+            for partner in list_partner:
+                partner_qs_all = partner_qs1.union(partner)
             # query_set value 가져오기
             partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
             # 리스트화
@@ -746,16 +751,9 @@ class PartnerViewSet(viewsets.ModelViewSet):
             print(partner_phone_list)
             response = kakaotalk2.send(partner_phone_list,subject, subclass, category)
 
-            client_qs = Client.objects.filter(id=client)
-            client_phone_list = client_qs.values_list('user__phone', flat=True)
-            # print(client_qs)
-            # print(client_phone_list)
-            # 리스트화
-            client_phone_list = list(client_phone_list)
-            # 공백제거 
-            client_phone_list = list(filter(None, client_phone_list))
-            # print(client_phone_list)
-            kakaotalk_request_edit_end.send(client_phone_list)
+            client_phone = User.objects.get(username = client.user).phone
+
+            kakaotalk_request_edit_end.send(client_phone)
             #response = kakaotalk2.send(['010-4112-6637'], subject, subclass, category)
             Sendkakao.objects.create(
                 status_code=response.status_code,
