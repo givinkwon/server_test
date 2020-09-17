@@ -21,6 +21,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Count
 
 import enum
+import random
 
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -36,6 +37,7 @@ from .serializers import *
 from api.category.serializers import *
 
 from apps.utils import *
+
 
 class ResponseCode(enum.Enum):
 
@@ -54,11 +56,244 @@ class RequestViewSet(viewsets.ModelViewSet):
     filterset_fields = ['client__id', 'project__id', 'product__id']
 
     def perform_create(self, serializer):
-        project = Project.objects.create()
-        serializer.save(project=project)
-        
 
-   # search_fields = []
+        list_design = {
+            "design_design": [754, 703, 32, 775, 479, 35, 304, 800, 633, 737, 228, 717, 331, 698, 736, 300],
+            "design_device": [760, 775, 32, 186, 698, 331, 717, 703, 228, 77, 229, 286, 242, 691, 629, 737, 30, 300],
+            "design_circuit": [186, 713, 46, 730, 228, 229, 193, 35, 307, 109, 782, 30, 29, 32],
+            "design_machine": [186, 242, 760, 228, 717, 789, 629],
+            "design_total": [186, 242, 32, 760, 228, 717, 789, 629],
+            "design_device_circuit": [636, 30, 194, 35, 32, 229, 286, 476, 186, 307],
+            "design_design_device": [228, 761, 717, 703, 775, 304, 300, 331, 671, 479, 77, 32, 701, 194, 242, 629, 690, 737, 799],
+            "design_design_device_circuit": [476, 35, 636, 194, 32, 186, 31, 701, 167]
+        }
+
+        list_mockup = {
+            "mockup_mold": [31, 226, 760, 737, 703, 775, 300, 754, 295],
+            "mockup_3d": [703, 629, 737, 229, 228, 761, 295, 255],
+            "mockup_cnc": [31, 226, 760, 228, 229, 717, 754, 629],
+            "mockup_total": [31, 226, 760, 737, 703, 775, 300, 754]
+        }
+
+        list_production = {
+            "production_mold": [629, 752, 32, 676, 110, 721, 742, 688, 712, 680, 701, 332],
+            "production_metal": [748, 698, 754, 729, 32, 39, 226, 676, 680],
+            "production_total": [629, 752, 676, 110, 721, 742, 688, 32, 712, 748, 698, 754, 729, 39, 226, 680, 701, 332],
+        }
+
+        project = Project.objects.create()
+        serializer.save(project=project)  # Request
+
+        # 분야받아오고.. seriazlier.category
+        main_category = Develop.objects.get(id=int(serializer.data['category'][0])).maincategory.maincategory
+        middle_category = Develop.objects.filter(id__in=serializer.data['category']).values_list('category')
+
+        middle_category_list = [category[0] for category in list(middle_category)]
+
+        design_keys = list(list_design.keys())
+        mockup_keys = list(list_mockup.keys())
+        production_keys = list(list_production.keys())
+
+        for key in design_keys:
+            random.shuffle(list_design[key])
+        for key in mockup_keys:
+            random.shuffle(list_mockup[key])
+        for key in production_keys:
+            random.shuffle(list_production[key])
+
+        if main_category == "목업":
+            if len(middle_category_list) > 1:
+                #for partner in list_mockup['mockup_total'][0:2]:
+                #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                #                          partner_id=partner, active=True)
+
+                for partner in list_mockup['mockup_total'][0:]:
+                    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                          partner_id=partner)
+
+                print("목업, 카테고리 1개이상")
+
+            if len(middle_category_list) == 1:
+                if middle_category_list[0] == "3D 프린팅":
+                    #for partner in list_mockup['mockup_3d'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+                    for partner in list_mockup['mockup_3d'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("3d 프린팅")
+                if middle_category_list[0] == "플라스틱":
+                    #for partner in list_mockup['mockup_cnc'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+                    for partner in list_mockup['mockup_cnc'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("CNC")
+                if middle_category_list[0] == "실리콘/나무":
+                    #for partner in list_mockup['mockup_mold'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+                    for partner in list_mockup['mockup_mold'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("실리콘")
+
+        if main_category == "설계":
+            if len(middle_category_list) > 1:
+                if middle_category_list == ['디자인', '기구설계']:
+                    #for partner in list_design['design_design_device'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_design['design_design_device'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("디자인 and 기구설계")
+
+                elif middle_category_list == ['회로(펌웨어)', '기구설계']:
+                    #for partner in list_design['design_device_circuit'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_design['design_device_circuit'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("기구설계, 회로설계")
+
+                elif middle_category_list == ['회로(하드웨어)', '기구설계']:
+                    #for partner in list_design['design_device_circuit'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_design['design_device_circuit'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("기구설계, 회로설계2")
+
+                elif middle_category_list == ['회로(하드웨어)', '회로(펌웨어)']:
+                    #for partner in list_design['design_circuit'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_design['design_circuit'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("회로설계 total")
+
+                elif middle_category_list == ['디자인', '회로(하드웨어)', '기구설계']:
+                    #for partner in list_design['design_design_device_circuit'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_design['design_design_device_circuit'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("디자인-기구설계-회로설계(하드웨어)")
+
+                elif middle_category_list == ['디자인', '회로(펌웨어)', '기구설계']:
+                    #for partner in list_design['design_design_device_circuit'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_design['design_design_device_circuit'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("디자인-기구설계-회로설계(펌웨어)")
+
+                else:
+                    #for partner in list_design['design_total'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_design['design_total'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("그 외 설계 2개이상 조합")
+
+            if len(middle_category_list) == 1:
+                if middle_category_list[0] == "디자인":
+                    #for partner in list_design['design_design'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_design['design_design'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("디자인")
+
+                if middle_category_list[0] == "기구설계":
+                    #for partner in list_design['design_device'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_design['design_device'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("기구설계")
+
+                if middle_category_list[0] == "회로(펌웨어)":
+                    #for partner in list_design['design_circuit'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_design['design_circuit'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("회로 펌웨어 or 하드웨어")
+
+                if middle_category_list[0] == "회로(하드웨어)":
+                    #for partner in list_design['design_circuit'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_design['design_circuit'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("회로 펌웨어 or 하드웨어2")
+
+                if middle_category_list[0] == "기계설계":
+                    #for partner in list_design['design_machine'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_design['design_machine'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("기계설계")
+
+        if main_category == "양산":
+            if len(middle_category_list) > 1:
+                #for partner in list_production['production_total'][0:2]:
+                #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                #                          partner_id=partner, active=True)
+
+                for partner in list_production['production_total'][0:]:
+                    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                          partner_id=partner)
+                print("양산 2개이상")
+
+            if len(middle_category_list) == 1:
+                if middle_category_list[0] == "금형/사출":
+                    #for partner in list_production['production_mold'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_production['production_mold'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("금형/사출")
+
+                if middle_category_list[0] == "금속가공/프레스":
+                    #for partner in list_production['production_metal'][0:2]:
+                    #    Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                    #                          partner_id=partner, active=True)
+
+                    for partner in list_production['production_metal'][0:]:
+                        Answer.objects.create(client=Client.objects.get(id=serializer.data['client']), project=project,
+                                              partner_id=partner)
+                    print("금속가공/프레스")
+    # search_fields = []
 # 장고 필터로 대체
 #    @swagger_auto_schema(request_body=RequestSerializer)
 #    @action(detail=False, methods=('POST',), http_method_names=('post',))
@@ -158,8 +393,8 @@ class AnswerViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    orderbyList = ['-partner__avg_score', '-partner__meeting','id']
-    queryset = Answer.objects.all().order_by(*orderbyList)
+    #orderbyList = ['-partner__avg_score', '-partner__meeting','id']
+    queryset = Answer.objects.all()#.order_by(*orderbyList)
     serializer_class = AnswerSerializer
     pagination_class = AnswerPageNumberPagination
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
@@ -202,6 +437,36 @@ class AnswerViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_400_BAD_REQUEST,
                             data={'message': "프로젝트에 들어온 제안서가 없습니다"
                             })
+
+    @action(detail=False, methods=('PATCH',), url_path='answer_check', http_method_names=('patch',))
+    def answer_check(self, request, *args, **kwargs):
+        answer_click = request.data.get('answer_click')
+        answer_id = request.data.get('answer_id')
+        answer = Answer.objects.get(id=answer_id)
+
+        if answer_click == 1:
+            answer.info_check = 1
+            answer.save()
+
+            return Response(data={'code': ResponseCode.SUCCESS.value,
+                                  'message': 'answer 상태 바꿔드렸음',
+                                  'data': AnswerSerializer(answer).data
+                                  }
+                            )
+
+        elif answer_click == 2:
+            answer.info_check = 2
+            answer.save()
+
+            return Response(data={'code': ResponseCode.SUCCESS.value,
+                                  'message': 'answer 상태 바꿔드렸음',
+                                  'data': AnswerSerializer(answer).data
+                                  }
+                            )
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST,
+                            data={'message': "Error 404"
+                                  })
     # search_fields = []
 #장고 필터로 대체
 #    @swagger_auto_schema(request_body=AnswerSerializer)
