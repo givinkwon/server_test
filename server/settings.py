@@ -72,11 +72,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'django.middleware.common.CommonMiddleware',
-<<<<<<< HEAD
-    # debug_tool
-=======
     #'debug_tool',
->>>>>>> e401ef953dd5d09873825fdcc4fa9facbcc1d3ff
     #'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
