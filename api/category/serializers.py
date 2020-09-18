@@ -2,7 +2,7 @@ from django.contrib.auth.models import Group
 from rest_framework import serializers
 from apps.category.models import *
 from apps.project.models import *
-from api.project.serializers import * # 카테고리가 프로젝트를 가져오는 구조 / 상호 참조 주의하기
+from api.project.serializers import * # 카테고리가 ?�로?�트�?가?�오??구조 / ?�호 참조 주의?�기
 
 class SubclassSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,3 +44,13 @@ class DevelopbigSerializer(serializers.ModelSerializer):
     class Meta:
         model = Developbig
         fields = ['id','maincategory', 'maincategory_img', 'develop_set']
+        
+class justDevelopSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Develop
+        fields = ['category']
+        
+class justSubclassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subclass
+        fields = ['subclass']
