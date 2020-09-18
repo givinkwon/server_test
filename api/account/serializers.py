@@ -199,42 +199,30 @@ class PartnerSerializer(serializers.ModelSerializer):
         return 0                     
 
 class JustPartnerSerializer(serializers.ModelSerializer):
-    avg_score = serializers.SerializerMethodField()
-    product_history = serializers.SerializerMethodField()
-    category = serializers.SerializerMethodField()
-    count_loginlog = serializers.SerializerMethodField()
-    portfolio_set = PortfolioSerializer(many=True)
-    structure_set = StructureSerializer(many=True)
-    machine_set = MachineSerializer(many=True)
-    certification_set = CertificationSerializer(many=True)
-    process_set = ProcessSerializer(many=True)
+    # avg_score = serializers.SerializerMethodField()
+    product_history = serializers.SerializerMethodField() # !!
+    category = serializers.SerializerMethodField(source='category') # !!
+    # subclass = serializers.SerializerMethodField()
+    # count_loginlog = serializers.SerializerMethodField()
+    # portfolio_set = PortfolioSerializer(many=True)
+    # structure_set = StructureSerializer(many=True)
+    # machine_set = MachineSerializer(many=True)
+    # certification_set = CertificationSerializer(many=True)
+    # process_set = ProcessSerializer(many=True)
     class Meta:
         model = Partner
-        fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category_middle','category', 'history_set', 'product_history', 'coin','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set','avg_score','grade','count_loginlog','real_phone']
+        # fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category_middle','category', 'history_set', 'product_history', 'coin','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set','avg_score','grade','count_loginlog','real_phone']
+        fields = ['user','id', 'name', 'logo','city', 'info_company', 'category', 'product_history']
+        # , 'portfolio_set'
 
-    def get_avg_score(self,obj):
-        a = Review.objects.filter(partner=obj.id).aggregate(Avg('price_score'))
-        b = Review.objects.filter(partner=obj.id).aggregate(Avg('time_score'))
-        c = Review.objects.filter(partner=obj.id).aggregate(Avg('talk_score'))
-        d = Review.objects.filter(partner=obj.id).aggregate(Avg('expert_score'))
-        e = Review.objects.filter(partner=obj.id).aggregate(Avg('result_score'))
-        if not a['price_score__avg'] is None: # 리뷰가 있으면
-            avg_score = (a['price_score__avg'] + b['time_score__avg'] + c['talk_score__avg'] + d['expert_score__avg'] + e['result_score__avg']) / 5
-            obj.avg_score = avg_score
-            obj.save()
-            return avg_score
-        return 0
 
     def get_product_history(self, obj):
         a=obj.history_set # many to many는 양쪽에 FK로 작용 > obj.possible_set이 데이터베이스 테이블(모델) 및 Queryset
-        return SubclassSerializer(a,many=True).data
+        return justSubclassSerializer(a,many=True).data
 
     def get_category(self, obj):
         a=obj.category_middle # many to many는 양쪽에 FK로 작용 > obj.possible_set이 데이터베이스 테이블(모델) 및 Queryset
-        return DevelopSerializer(a,many=True).data
-
-    def get_count_loginlog(self, obj):
-        loginlog_qs = LoginLog.objects.filter(user=obj.user)
-        if loginlog_qs.exists():
-            return loginlog_qs.count()
-        return 0
+        # print(type(ReturnDict(DevelopSerializer(a,many=True).data))
+        # print(DevelopSerializer(a,many=True).validated_data)
+        
+        return justDevelopSerializer(a,many=True).data
