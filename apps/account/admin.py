@@ -64,8 +64,9 @@ class ExportCsvMixin:
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
-    list_display = ['id','username', 'date_joined','type', 'partner_name', 'phone','marketing']
+    list_display = ['id','username', 'date_joined','type', 'partner_name', 'phone','marketing','last_activity']
     actions = ['export_as_csv']
+    search_fields = ['phone']
 
     def partner_name(self, obj):
         if(obj.type == 1):
@@ -75,8 +76,8 @@ class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ['id','client_phone', 'client_email', 'name', 'title','path', 'marketing','client_signup_date',
-                        'request_count', 'latest_request', 'answer_count', 'meeting_count']
+    list_display = ['id','client_phone', 'client_email', 'name', 'title','business', 'path', 'marketing','client_signup_date',
+                        'request_count', 'latest_request', 'answer_count', 'answer_check_count']
     actions = ['export_as_csv']
     def client_phone(self, obj):
         phone = User.objects.get(username=obj.user).phone
@@ -118,12 +119,19 @@ class ClientAdmin(admin.ModelAdmin):
 
         answer_count.short_descrption = "제안서 수"
 
-    def meeting_count(self, obj):
-        answer = Answer.objects.filter(client=obj, state=1)
+    def answer_check_count(self, obj):
+        answer = Answer.objects.filter(client=obj, info_check=1)
         count = len(answer)
         return count
 
-        meeting_count.short_descrption = "미팅 한 횟수"
+        answer_check_count.short_descrption = "확인 제안서 수"
+
+    #def meeting_count(self, obj):
+    #    answer = Answer.objects.filter(client=obj, state=1)
+    #    count = len(answer)
+    #    return count
+
+    #    meeting_count.short_descrption = "미팅 한 횟수"
 
 @admin.register(Clientclass)
 class ClientAdmin(admin.ModelAdmin):
@@ -133,6 +141,7 @@ class ClientAdmin(admin.ModelAdmin):
 class PartnerAdmin(admin.ModelAdmin):
     inlines = [PortfolioInline, StructureInline, MachineInline, CertificationInline, ProcessInline]
     list_display = ['id', 'partner_phone', 'partner_email', 'name', 'city']
+    search_fields = ['name','user__phone']
 
     def partner_phone(self, obj):
         phone = User.objects.get(username=obj.user).phone
@@ -150,3 +159,7 @@ class LoginLogAdmin(admin.ModelAdmin):
 @admin.register(Path)
 class PathAdmin(admin.ModelAdmin):
     list_display = ['id','path']
+
+@admin.register(Business)
+class Business(admin.ModelAdmin):
+    list_display = ['id','business']

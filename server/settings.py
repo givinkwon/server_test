@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'storages',
+    # debug_tool
+    #'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -66,10 +68,22 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # django-cors-headers midleware
+    'apps.account.middleware.UpdateLastActivityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # debug_tool
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+#INTERNAL_IPS = ["0.0.0.0"]
+
+#def custom_show_toolbar(self):
+#    return True
+
+#DEBUG_TOOLBAR_CONFIG = {
+#'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
+#}
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -131,10 +145,10 @@ AUTHENTICATION_BACKENDS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'boltnnutplatform2',
-        'USER': 'boltnnutplatform',
-        'PASSWORD': 'ckddyd505',
-        'HOST': 'boltnnutplatform.crt62jbermqa.ap-northeast-2.rds.amazonaws.com',
+        'NAME': 'bnntest1',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -215,16 +229,16 @@ DEFAULT_TO_EMAIL = 'boltnnut@boltnnut.com'
 DEFAULT_ADMIN_EMAIL = 'boltnnut@boltnnut.com'
 
 #S3
-AWS_STORAGE_BUCKET_NAME = 'boltnnutplatform'
-AWS_ACCESS_KEY_ID = 'AKIATYAEQEY5RQM64SEC'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
+#AWS_STORAGE_BUCKET_NAME = 'boltnnutplatform'
+#AWS_ACCESS_KEY_ID = 'AKIATYAEQEY5RQM64SEC'
+#AWS_SECRET_ACCESS_KEY = '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'
+#AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+#AWS_S3_OBJECT_PARAMETERS = {
+#    'CacheControl': 'max-age=86400',
+#}
 
-DEFAULT_FILE_STORAGE = 'server.storages.MediaStorage'
-STATICFILES_STORAGE = 'server.storages.StaticStorage'
+#DEFAULT_FILE_STORAGE = 'server.storages.MediaStorage'
+#STATICFILES_STORAGE = 'server.storages.StaticStorage'
 MEDIAFILES_LOCATION = 'media'
 STATICFILES_LOCATION = 'static'
-AWS_DEFAULT_ACL = None
+#AWS_DEFAULT_ACL = None
