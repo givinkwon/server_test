@@ -65,7 +65,7 @@ class ExportCsvMixin:
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
 
-    list_display = ['id','username', 'date_joined','type', 'partner_name', 'phone','marketing']#,'last_activity']
+    list_display = ['id','username', 'date_joined','type', 'partner_name', 'phone']#,'marketing']#,'last_activity']
     actions = ['export_as_csv']
     search_fields = ['phone']
 
