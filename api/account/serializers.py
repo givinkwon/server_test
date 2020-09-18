@@ -76,6 +76,11 @@ class PathSerializer(serializers.ModelSerializer):
     class Meta:
         model = Path
         fields = ['id','path']
+
+class BusinessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Business
+        fields = ['id','business']
         
 class PartnerSerializer(serializers.ModelSerializer):
     avg_price_score = serializers.SerializerMethodField()
@@ -87,8 +92,8 @@ class PartnerSerializer(serializers.ModelSerializer):
   #  product_possible = serializers.SerializerMethodField()
     product_history = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
-    meeting_count = serializers.SerializerMethodField()
-    meeting = serializers.SerializerMethodField()
+    #meeting_count = serializers.SerializerMethodField()
+    #meeting = serializers.SerializerMethodField()
     count_loginlog = serializers.SerializerMethodField()
     user = PatchUserSerializer()
     answer_set = AnswerSerializer(many=True)
@@ -101,7 +106,7 @@ class PartnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Partner
         fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category_middle','category', 'history_set', 'product_history', 'coin','avg_score',
-                  'avg_price_score','avg_time_score','avg_talk_score','avg_expert_score','avg_result_score', 'answer_set','review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set', 'success', 'fail', 'meeting_count', 'meeting','is_partner','count_loginlog']
+                  'avg_price_score','avg_time_score','avg_talk_score','avg_expert_score','avg_result_score', 'answer_set','review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set','grade','count_loginlog','real_phone']
 
     def get_avg_price_score(self,obj):
         a = Review.objects.filter(partner=obj.id).aggregate(Avg('price_score'))
@@ -158,37 +163,78 @@ class PartnerSerializer(serializers.ModelSerializer):
         a=obj.category_middle # many to many는 양쪽에 FK로 작용 > obj.possible_set이 데이터베이스 테이블(모델) 및 Queryset
         return DevelopSerializer(a,many=True).data
 
-    def get_meeting_count(self, obj):
-        meeting_count=0
-        answer_qs = Answer.objects.filter(partner=obj.id, state=1)
-        if answer_qs.exists():
-           return len(answer_qs)
-        return 0
+    #def get_meeting_count(self, obj):
+    #    meeting_count=0
+    #    answer_qs = Answer.objects.filter(partner=obj.id, state=1)
+    #    if answer_qs.exists():
+    #       return len(answer_qs)
+    #    return 0
     #    print(list(answer_state))
     #    for state in list(answer_state):
     #        if state == '1':
     #            meeting_count += 1
     #    return meeting_count
 
-    def get_meeting(self, obj):
-        meeting_count = (obj.success + obj.fail)
+    #def get_meeting(self, obj):
+    #    meeting_count = (obj.success + obj.fail)
         # Serializer의 처음 파라미터에는 model(row)이 와야함.
-        if meeting_count == 0:
-            if not obj.success == 0:  # 미팅 성공이 1회 이상인 경우
-                obj.meeting = 100
-            else:  # 미팅 성공이 0회인 경우
-                obj.meeting = 0
-        else:
-            obj.meeting = obj.success / meeting_count
+    #    if meeting_count == 0:
+    #        if not obj.success == 0:  # 미팅 성공이 1회 이상인 경우
+    #            obj.meeting = 100
+    #        else:  # 미팅 성공이 0회인 경우
+    #            obj.meeting = 0
+    #    else:
+    #        obj.meeting = obj.success / meeting_count
 
-        meeting_percent = obj.meeting
-        print(obj.meeting)
-        obj.save()
+    #    meeting_percent = obj.meeting
+    #    print(obj.meeting)
+    #    obj.save()
 
-        return meeting_percent
+    #    return meeting_percent
         
     def get_count_loginlog(self, obj):
         loginlog_qs = LoginLog.objects.filter(user=obj.user)
         if loginlog_qs.exists():
             return loginlog_qs.count()
         return 0                     
+
+class JustPartnerSerializer(serializers.ModelSerializer):
+    avg_score = serializers.SerializerMethodField()
+    product_history = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
+    count_loginlog = serializers.SerializerMethodField()
+    portfolio_set = PortfolioSerializer(many=True)
+    structure_set = StructureSerializer(many=True)
+    machine_set = MachineSerializer(many=True)
+    certification_set = CertificationSerializer(many=True)
+    process_set = ProcessSerializer(many=True)
+    class Meta:
+        model = Partner
+        fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category_middle','category', 'history_set', 'product_history', 'coin','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set','avg_score','grade','count_loginlog','real_phone']
+
+    def get_avg_score(self,obj):
+        a = Review.objects.filter(partner=obj.id).aggregate(Avg('price_score'))
+        b = Review.objects.filter(partner=obj.id).aggregate(Avg('time_score'))
+        c = Review.objects.filter(partner=obj.id).aggregate(Avg('talk_score'))
+        d = Review.objects.filter(partner=obj.id).aggregate(Avg('expert_score'))
+        e = Review.objects.filter(partner=obj.id).aggregate(Avg('result_score'))
+        if not a['price_score__avg'] is None: # 리뷰가 있으면
+            avg_score = (a['price_score__avg'] + b['time_score__avg'] + c['talk_score__avg'] + d['expert_score__avg'] + e['result_score__avg']) / 5
+            obj.avg_score = avg_score
+            obj.save()
+            return avg_score
+        return 0
+
+    def get_product_history(self, obj):
+        a=obj.history_set # many to many는 양쪽에 FK로 작용 > obj.possible_set이 데이터베이스 테이블(모델) 및 Queryset
+        return SubclassSerializer(a,many=True).data
+
+    def get_category(self, obj):
+        a=obj.category_middle # many to many는 양쪽에 FK로 작용 > obj.possible_set이 데이터베이스 테이블(모델) 및 Queryset
+        return DevelopSerializer(a,many=True).data
+
+    def get_count_loginlog(self, obj):
+        loginlog_qs = LoginLog.objects.filter(user=obj.user)
+        if loginlog_qs.exists():
+            return loginlog_qs.count()
+        return 0

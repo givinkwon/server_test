@@ -159,3 +159,22 @@ class kakaotalk_request_edit_end(object):
              headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
              response = requests.post(url, data=json.dumps(data), headers=headers)
              return response
+
+class kakaotalk_send_information(object):
+# 빈 전화번호 / 이상한 전화번호는 에러뜹니다.
+        def send(phone_list, subject, content, price, period, file):
+            print(subject)
+            print(phone_list)
+            for phone in phone_list:
+             print(phone)
+             url = 'https://api.bizppurio.com/v1/message'
+             data = {'account': 'boltnnut_korea', 'refkey': 'bolt123', 'type': 'at', 'from': '01028741248',
+                     'to': phone, 'content': {
+                     'at': {'senderkey': '44e4fdc989b12906c82fc46e428dd91dd99f0d98', 'templatecode': 'send_request_information3',
+                            'message': '다음 의뢰를 주신 클라이언트에게 파트너님을 추천하고자합니다.\n클라이언트와 소통의사가 있으시면 ‘O’를, 없으시다면 ‘X’를 남겨주시길 바랍니다.\n\n해당 프로젝트를 진행할 의사가 있는 업체만 추천될 예정입니다.\n추천 후 클라이언트분께서 파트너님의 정보를 확인한 후 전화드릴 수 있습니다.\n\n의뢰제품 : ' + subject + '\n\n상담내용 : ' + content + '\n\n희망예산 : ' + price + '\n\n희망기간 : ' + period +  '\n\n의뢰파일 : ' + file
+                            }
+                        }
+                     }
+             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+             response = requests.post(url, data=json.dumps(data), headers=headers)
+            return response
