@@ -42,6 +42,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_init, post_save
 from django.dispatch import receiver
 
+from django.db.models import F
+
 class ResponseCode(enum.Enum):
 
     SUCCESS = 0
@@ -243,6 +245,7 @@ class ClientViewSet(viewsets.ModelViewSet):
         name = request.data.get('name')
         title = request.data.get('title')
         path = request.data.get('path')
+        business = request.data.get('business')
         phone = request.data.get('phone')
         type = request.data.get('type')
         marketing = request.data.get('marketing')
@@ -275,6 +278,7 @@ class ClientViewSet(viewsets.ModelViewSet):
             name=name,
             title=title,
             path=path,
+            business=business,
         )
         token, _ = Token.objects.get_or_create(user=user)
 
@@ -287,98 +291,168 @@ class ClientViewSet(viewsets.ModelViewSet):
                                      # password가 없는 데이터를 보내줘야함
                                 }})
 
-    @swagger_auto_schema(request_body=ClientSerializer)
-    @action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
-    def kakao_client(self, request, *args, **kwargs):  # 클라이언트한테 제안서 등록될 때 카카오톡 보내기
-        client = request.data.get('client')
-        client_qs = Client.objects.filter(id=client)
-        client_phone_list = client_qs.values_list('user__phone', flat=True)
+    #@swagger_auto_schema(request_body=ClientSerializer)
+    #@action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
+    #def kakao_client(self, request, *args, **kwargs):  # 클라이언트한테 제안서 등록될 때 카카오톡 보내기
+    #    client = request.data.get('client')
+    #    client_qs = Client.objects.filter(id=client)
+    #    client_phone_list = client_qs.values_list('user__phone', flat=True)
         # print(client_qs)
         # print(client_phone_list)
         # 리스트화
-        client_phone_list = list(client_phone_list)
+    #    client_phone_list = list(client_phone_list)
         # 공백제거
-        client_phone_list = list(filter(None, client_phone_list))
+    #    client_phone_list = list(filter(None, client_phone_list))
         #print(client_phone_list)
-        response = kakaotalk_request.send(client_phone_list)
-        print(response)
-        Sendkakao.objects.create(
-            status_code=response.status_code,
-            description=response.json()['description'],
-            refkey=response.json()['refkey'],
-            messagekey=response.json()['messagekey'],
-        )
+        #response = kakaotalk_request.send(client_phone_list)
+        #print(response)
+        #Sendkakao.objects.create(
+        #    status_code=response.status_code,
+        #    description=response.json()['description'],
+        #    refkey=response.json()['refkey'],
+        #    messagekey=response.json()['messagekey'],
+        #)
+    #    return True
+        #return Response(data={
+        #    'code': ResponseCode.SUCCESS.value,
+        #    'message': '발송에 성공하였습니다.',
+        #    'data': {
+        #        'status_code': response.status_code,
+        #        'response': response.json(),
+        #    }})
 
-        return Response(data={
-            'code': ResponseCode.SUCCESS.value,
-            'message': '발송에 성공하였습니다.',
-            'data': {
-                'status_code': response.status_code,
-                'response': response.json(),
-            }})
+
+    #@action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
+    #@receiver(post_init, sender=Request)
+    #def request_init(sender, instance, **kwargs):
+    #    instance._previous_active_save = instance.active_save
 
 
-    @action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
+    #@receiver(post_save, sender=Request)
+    #def kakao_answer_end(sender, instance, **kwargs):
+    #    client = instance.client.id
+    #    client_qs = Client.objects.filter(id=client)
+    #    client_phone_list = client_qs.values_list('user__phone', flat=True)
+    #    # 리스트화
+    #    client_phone_list = list(client_phone_list)
+    #    # 공백제거
+    #    client_phone_list = list(filter(None, client_phone_list))
+    #    # print(client_phone_list)
+
+    #    if instance.active_save is False and instance._previous_active_save is True:
+    #        response = kakaotalk_request.send(client_phone_list)
+    #        print(response)
+    #        Sendkakao.objects.create(
+    #            status_code=response.status_code,
+    #            description=response.json()['description'],
+    #            refkey=response.json()['refkey'],
+    #            messagekey=response.json()['messagekey'],
+    #        )
+
+    #        return Response(data={
+    #            'code': ResponseCode.SUCCESS.value,
+    #            'message': '발송에 성공하였습니다.',
+    #            'data': {
+    #                'status_code': response.status_code,
+    #                'response': response.json(),
+    #            }})
+
+    #@action(detail=False, methods=('POST',), url_path='kakaotalk_meeting', http_method_names=('post',), )
+    #@receiver(post_init, sender=Answer)
+    #def answer_init(sender, instance, **kwargs):
+    #    instance._previous_send_meeting = instance.send_meeting
+
+    #@receiver(post_save, sender=Answer)
+    #def kakao_answer_meeting(sender, instance, **kwargs):
+    #    client = instance.client.id
+    #    partner = instance.partner.id
+    #    client_qs = Client.objects.filter(id=client)
+    #    partner_qs = Partner.objects.filter(id=partner)
+
+    #    client_phone_list = client_qs.values_list('user__phone', flat=True)
+    #    partner_phone_list = partner_qs.values_list('user__phone', flat=True)
+    #    # 리스트화
+    #    client_phone_list = list(client_phone_list)
+    #    partner_phone_list = list(partner_phone_list)
+    #    # 공백제거
+    #    client_phone_list = list(filter(None, client_phone_list))
+    #    partner_phone_list = list(filter(None, partner_phone_list))
+    #    # print(client_phone_list)
+
+    #    if instance.send_meeting is True and instance._previous_send_meeting is False:
+    #        #response1 = kakaotalk_request.send(client_phone_list)
+    #        #response2 = kakaotalk_request.send(partner_phone_list)
+
+
+    #        #Sendkakao.objects.create(
+    #        #    status_code=response1.status_code,
+    #        #    description=response1.json()['description'],
+    #        #    refkey=response1.json()['refkey'],
+    #        #    messagekey=response1.json()['messagekey'],
+    #        #)
+    #        #Sendkakao.objects.create(
+    #        #    status_code=response2.status_code,
+    #        #    description=response2.json()['description'],
+    #        #    refkey=response2.json()['refkey'],
+    #        #    messagekey=response2.json()['messagekey'],
+    #        #)
+
+    #        return Response(data={
+    #            'code': ResponseCode.SUCCESS.value,
+    #            'message': '발송에 성공하였습니다.',
+    #        #    'data': {
+    #        #        'status_code': response1.status_code,
+    #        #        'response': response1.json(),
+    #        #    }
+    #        })
+
+    @action(detail=False, methods=('POST',), url_path='kakaotalk_send_information', http_method_names=('post',), )
     @receiver(post_init, sender=Request)
     def request_init(sender, instance, **kwargs):
-        instance._previous_active_save = instance.active_save
-
+        instance._previous_send_information = instance.send_information
 
     @receiver(post_save, sender=Request)
-    def kakao_answer_end(sender, instance, **kwargs):
-        client = instance.client.id
-        client_qs = Client.objects.filter(id=client)
-        client_phone_list = client_qs.values_list('user__phone', flat=True)
+    def kakao_send_information(sender, instance, **kwargs):
+        #client = instance.client.id
+        project = instance.project.id
+        #client_qs = Client.objects.filter(id=client)
+
+        # answer information
+        answer_qs = Answer.objects.filter(project=project)
+        answer_list = answer_qs.values_list('partner',flat=True)
+        answer_list = list(answer_list)
+
+        partner_qs = Partner.objects.filter(id__in=answer_list)
+
+        #client_phone_list = client_qs.values_list('user__phone', flat=True)
+        partner_phone_list = partner_qs.values_list('real_phone', flat=True)
         # 리스트화
-        client_phone_list = list(client_phone_list)
-        # 공백제거
-        client_phone_list = list(filter(None, client_phone_list))
-        # print(client_phone_list)
-
-        if instance.active_save is False and instance._previous_active_save is True:
-            response = kakaotalk_request.send(client_phone_list)
-            print(response)
-            Sendkakao.objects.create(
-                status_code=response.status_code,
-                description=response.json()['description'],
-                refkey=response.json()['refkey'],
-                messagekey=response.json()['messagekey'],
-            )
-
-            return Response(data={
-                'code': ResponseCode.SUCCESS.value,
-                'message': '발송에 성공하였습니다.',
-                'data': {
-                    'status_code': response.status_code,
-                    'response': response.json(),
-                }})
-
-    @action(detail=False, methods=('POST',), url_path='kakaotalk_meeting', http_method_names=('post',), )
-    @receiver(post_init, sender=Answer)
-    def answer_init(sender, instance, **kwargs):
-        instance._previous_send_meeting = instance.send_meeting
-
-    @receiver(post_save, sender=Answer)
-    def kakao_answer_meeting(sender, instance, **kwargs):
-        client = instance.client.id
-        partner = instance.partner.id
-        client_qs = Client.objects.filter(id=client)
-        partner_qs = Partner.objects.filter(id=partner)
-
-        client_phone_list = client_qs.values_list('user__phone', flat=True)
-        partner_phone_list = partner_qs.values_list('user__phone', flat=True)
-        # 리스트화
-        client_phone_list = list(client_phone_list)
+        #client_phone_list = list(client_phone_list)
         partner_phone_list = list(partner_phone_list)
         # 공백제거
-        client_phone_list = list(filter(None, client_phone_list))
+        #client_phone_list = list(filter(None, client_phone_list))
         partner_phone_list = list(filter(None, partner_phone_list))
-        # print(client_phone_list)
 
-        if instance.send_meeting is True and instance._previous_send_meeting is False:
-            #response1 = kakaotalk_request.send(client_phone_list)
-            #response2 = kakaotalk_request.send(partner_phone_list)
+        # data
+        subject = instance.name
+        #print(subject)
+        content = instance.content.replace("<p>","").replace("</p>","").replace("<br />","").replace("</br>","").replace("<br>","").replace("&nbsp;","")
+        #if len(instance.content) != 0:
+        #    content = instance.content.replace("<p>","").replace("</p>","")
 
+        #print(content)
+        price = instance.price
+        #print(price)
+        period = instance.day
+        #print(period)
+        file = "https://boltnnutplatform.s3.amazonaws.com/media/" + str(instance.file)
+        #print(file)
+
+        if instance.send_information is True and instance._previous_send_information is False:
+            #print(client_phone_list)
+            #print(partner_phone_list)
+        #    response1 = kakaotalk_send_information.send(client_phone_list,subject, content, price, period, file)
+            response2 = kakaotalk_send_information.send(partner_phone_list,subject, content, price, period, file)
 
             #Sendkakao.objects.create(
             #    status_code=response1.status_code,
@@ -386,28 +460,28 @@ class ClientViewSet(viewsets.ModelViewSet):
             #    refkey=response1.json()['refkey'],
             #    messagekey=response1.json()['messagekey'],
             #)
-            #Sendkakao.objects.create(
-            #    status_code=response2.status_code,
-            #    description=response2.json()['description'],
-            #    refkey=response2.json()['refkey'],
-            #    messagekey=response2.json()['messagekey'],
-            #)
+            Sendkakao.objects.create(
+                status_code=response2.status_code,
+                description=response2.json()['description'],
+                refkey=response2.json()['refkey'],
+                messagekey=response2.json()['messagekey'],
+            )
 
             return Response(data={
                 'code': ResponseCode.SUCCESS.value,
                 'message': '발송에 성공하였습니다.',
-            #    'data': {
-            #        'status_code': response1.status_code,
-            #        'response': response1.json(),
-            #    }
+                'data': {
+                    'status_code': response2.status_code,
+                    'response': response2.json(),
+                }
             })
 
 class PartnerViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    orderbyList = ['-avg_score','-login_count', 'id']
-    queryset = Partner.objects.filter(user__is_active=True).annotate(login_count = Count('user__loginlog')).order_by(*orderbyList)
+    #orderbyList = ['-avg_score', '-id']
+    queryset = Partner.objects.filter(user__is_active=True).order_by(F('grade').desc(nulls_last=True), F('avg_score').desc(nulls_last=True), F('id') , F('user__last_activity').desc(nulls_last=True))
     serializer_class = PartnerSerializer
     pagination_class = PartnerPageNumberPagination
     filter_backends = [filters.SearchFilter,PartnerFilter, filters.OrderingFilter]
@@ -669,7 +743,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
 
         return Response(data={'code': ResponseCode.SUCCESS.value,
                               'message': '해당 의뢰서에 적합한 파트너 리스트입니다.',
-                              'data': PartnerSerializer(partner2_qs[:5], many=True).data
+                              'data': PartnerSerializer(partner2_qs, many=True).data
                               }
                         )
 
@@ -713,63 +787,64 @@ class PartnerViewSet(viewsets.ModelViewSet):
                               }
                         )
 
-    @swagger_auto_schema(request_body=PartnerSerializer)
-    @action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
-    @receiver(post_init, sender=Request)
-    def request_init(sender, instance, **kwargs):
-        instance._previous_examine = instance.examine
+    #@swagger_auto_schema(request_body=PartnerSerializer)
+    #@action(detail=False, methods=('POST',), url_path='kakaotalk', http_method_names=('post',), )
+    #@receiver(post_init, sender=Request)
+    #def request_init(sender, instance, **kwargs):
+    #    instance._previous_examine = instance.examine
 
-    @receiver(post_save, sender=Request)
-    def request_kakaotalk(sender, instance, *args, **kwargs):  # 검수 시 적합한 파트너에게 카카오톡 알림
-        client = instance.client
-        subject = instance.name
-        subclass = instance.product
-        category = instance.category.values_list('category')
-        category_list = list(category)
-        # 리스트화
-        for i in range(len(category_list)):
-            category_list[i] = category_list[i][0]
-        # print(category_list)
-        # str 화
-        category = "/".join(category_list)
-        # print(category)
-        if instance.examine == True and instance._previous_examine == False:
-            list_partner = []
-            for i in category_list:
-                result = Partner.objects.filter(category_middle__category__contains=i)
-                list_partner.append(result)
-            partner_qs1 = list_partner[0]
-            print(list_partner)
-            for partner in list_partner:
-                partner_qs_all = partner_qs1.union(partner)
-            # query_set value 가져오기
-            partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
-            # 리스트화
-            partner_phone_list = list(partner_phone_list)
-            # 공백제거
-            partner_phone_list = list(filter(None, partner_phone_list))
-            print(partner_phone_list)
-            response = kakaotalk2.send(partner_phone_list,subject, subclass, category)
+    #@receiver(post_save, sender=Request)
+    #def request_kakaotalk(sender, instance, *args, **kwargs):  # 검수 시 적합한 파트너에게 카카오톡 알림
+    #    client = instance.client
+    #    subject = instance.name
+    #    subclass = instance.product
+    #    category = instance.category.values_list('category')
+    #    category_list = list(category)
+    #    # 리스트화
+    #    for i in range(len(category_list)):
+    #        category_list[i] = category_list[i][0]
+    #    # print(category_list)
+    #    # str 화
+    #    category = "/".join(category_list)
+    #    # print(category)
+    #    if instance.examine == True and instance._previous_examine == False:
+    #        list_partner = []
+    #        for i in category_list:
+    #            result = Partner.objects.filter(category_middle__category__contains=i)
+    #            list_partner.append(result)
+    #        partner_qs1 = list_partner[0]
+    #        print(list_partner)
+    #        for partner in list_partner:
+    #            partner_qs_all = partner_qs1.union(partner)
+    #        # query_set value 가져오기
+    #        partner_phone_list = partner_qs_all.values_list('user__phone', flat=True)
+    #        # 리스트화
+    #        partner_phone_list = list(partner_phone_list)
+    #        # 공백제거
+    #        partner_phone_list = list(filter(None, partner_phone_list))
+    #        print(partner_phone_list)
+    #        ##response = kakaotalk2.send(partner_phone_list,subject, subclass, category)
 
-            client_phone = User.objects.get(username = client.user).phone
+    #        client_phone = User.objects.get(username = client.user).phone
 
-            kakaotalk_request_edit_end.send(client_phone)
+            ##kakaotalk_request_edit_end.send(client_phone)
             #response = kakaotalk2.send(['010-4112-6637'], subject, subclass, category)
-            Sendkakao.objects.create(
-                status_code=response.status_code,
-                description=response.json()['description'],
-                refkey=response.json()['refkey'],
-                messagekey=response.json()['messagekey'],
-            )
+            ##Sendkakao.objects.create(
+            ##    status_code=response.status_code,
+            ##    description=response.json()['description'],
+            ##    refkey=response.json()['refkey'],
+            ##    messagekey=response.json()['messagekey'],
+            ##)
 
-            return Response(data={
-                'code': ResponseCode.SUCCESS.value,
-                'message': '발송에 성공하였습니다.',
-                'data': {
-                    'status_code': response.status_code,
-                    'response': response.json(),
-                }})
-        return False
+            ##return Response(data={
+            ##    'code': ResponseCode.SUCCESS.value,
+            ##    'message': '발송에 성공하였습니다.',
+            ##    'data': {
+            ##        'status_code': response.status_code,
+            ##        'response': response.json(),
+            ##    }})
+    #        return True
+    #    return False
 
     @swagger_auto_schema(request_body=PartnerSerializer)
     @action(detail=False, methods=('PATCH',), url_path='success', http_method_names=('patch',))
@@ -824,6 +899,19 @@ class PartnerViewSet(viewsets.ModelViewSet):
                               }
                         )
 
+class JustPartnerViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    #orderbyList = ['-avg_score', '-id']
+    queryset = Partner.objects.filter(user__is_active=True).order_by(F('grade').desc(nulls_last=True), F('avg_score').desc(nulls_last=True), F('id') , F('user__last_activity').desc(nulls_last=True))
+    serializer_class = JustPartnerSerializer
+    pagination_class = PartnerPageNumberPagination
+    filter_backends = [filters.SearchFilter,PartnerFilter, filters.OrderingFilter]
+    filterset_fields = ['history_set', 'city', 'region', 'category_middle__id', 'history_set__id']
+    search_fields = ['name', 'info_company', 'info_biz', 'deal', 'history_set__subclass','category_middle__category']
+    ordering_fields = '__all__'
+
 class PortfolioViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
@@ -877,5 +965,14 @@ class PathViewSet(viewsets.ModelViewSet):
     serializer_class = PathSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['id', 'path']
+
+class BusinessViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Business.objects.all()
+    serializer_class = BusinessSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'business']
 
 

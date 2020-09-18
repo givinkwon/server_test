@@ -129,14 +129,14 @@ class Request(models.Model):
     name = models.CharField('의뢰제품명', max_length=256, blank=True, null=True)
     price = models.CharField('희망비용', max_length=256, blank=True, null=True)
     day = models.CharField('희망프로젝트기간(일)', max_length=256, blank=True, null=True)
-    content = RichTextUploadingField('의뢰내용', null=True)
+    content = RichTextUploadingField('의뢰내용', blank=True, null=True)
     file = models.FileField('의뢰파일', upload_to=request_update_filename, blank=True, null=True)
     #등록일자 기록용
     created_at = models.DateTimeField('등록일자', default=time)
     #의뢰서 완성되었는 지
-    add_meeting = models.BooleanField('추가로 미팅하기 여부', default=False, null=True)
+    #add_meeting = models.BooleanField('추가로 미팅하기 여부', default=False, null=True)
     #의뢰서 검토 되었는 지
-    examine = models.BooleanField('검토하기 여부', default=False, null=True)
+    send_information = models.BooleanField('의뢰서 정보 카카오톡 발송 여부', default=False, null=True)
     active_save = models.BooleanField('활성 변화 저장', default=True, null=True)
 
     @property
@@ -261,6 +261,12 @@ class Common(models.Model):
 # Description : 제안서 모델
 # ------------------------------------------------------------------
 
+INFO = [
+(0, "정보 미확인"),
+(1, "파트너사 정보 확인"),
+(2, "파트너사 연락"),
+]
+
 MEETING_STATE = [
     (0, "NOTSUBMIT"), # 선택되지 않음
     (1, "YES"),
@@ -286,8 +292,9 @@ class Answer(models.Model):
     state = models.IntegerField('미팅 상태', default=0, choices=MEETING_STATE)
     active = models.BooleanField('활성화여부', default=False)
 
-    open_time = models.DateTimeField('제안서 오픈 시간', default = None, null = True)
+    open_time = models.DateTimeField('제안서 오픈 시간', default = None, blank=True, null = True)
     send_meeting = models.BooleanField('미팅 안내 카톡 전송 여부', default=False)
+    info_check = models.IntegerField('정보확인여부', default=0, null=True, blank=True, choices=INFO)
 
     @property # 오픈 이후 시간 체크
     def time_out(self):

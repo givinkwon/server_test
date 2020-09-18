@@ -5,4 +5,4 @@ class RequestPageNumberPagination(PageNumberPagination):
     page_size = 10
 
 class AnswerPageNumberPagination(PageNumberPagination):
-    page_size = 5
+    page_size = 20

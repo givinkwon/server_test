@@ -127,6 +127,7 @@ class User(AbstractUser):
     password = models.CharField(max_length=256)
     phone = models.CharField('휴대폰 번호', max_length=32, blank=True)
     marketing = models.BooleanField('마케팅동의여부', default=True, null=True)
+    last_activity = models.DateTimeField('최근 활동', default = None, blank = True, null = True)
 
     class Meta:
         verbose_name = '가입자'
@@ -149,6 +150,7 @@ class Client(models.Model):
     name = models.CharField('업체명', max_length=256, null=True)
     title = models.CharField('직급', max_length=256, null=True)
     path = models.CharField('방문경로', max_length=256, null=True)
+    business = models.CharField('업종', max_length=256, null=True)
     class Meta:
         verbose_name = '클라이언트'
         verbose_name_plural = '클라이언트'
@@ -179,7 +181,11 @@ class Clientclass(models.Model):
 # Model   : Partner
 # Description : 파트너 모델
 # ------------------------------------------------------------------
-
+PARTNER_GRADE = [
+    (0, "파트너 X"),
+    (1, "일반 파트너"),
+    (2, "프리미엄 파트너")
+]
 class Partner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='유저')
     name = models.CharField('업체명', max_length=256, null=True)
@@ -202,12 +208,12 @@ class Partner(models.Model):
     #회원가입 시 파일
     file = models.FileField('회사소개 및 포토폴리오파일', upload_to=partner_update_filename, blank=True, null=True)
     avg_score = models.DecimalField('평균점수', default=0, max_digits=5, decimal_places=2, null=True)
-    # 미팅 전환율 - 매칭 알고리즘
-    success = models.IntegerField('미팅 성공', default=0, null=True)
-    fail = models.IntegerField('미팅 실패', default=0, null=True)
-    meeting = models.FloatField('미팅 전환율', default=0, null=True)
     # 파트너 여부
-    is_partner = models.BooleanField('파트너여부', default=True, null=True)
+    #is_partner = models.BooleanField('파트너여부', default=True, null=True)
+    # 파트너 등급
+    grade = models.IntegerField('파트너 등급', default=0, choices=PARTNER_GRADE, null=True)
+    # 안심번호가 아닌 실제 전화번호
+    real_phone = models.CharField('실제 휴대폰 번호', max_length=32, blank=True, null=True)
 
     class Meta:
         verbose_name = '파트너'
@@ -325,3 +331,14 @@ class Path(models.Model):
 
     def __str__(self):
         return str(self.path)
+
+class Business(models.Model):
+    business = models.CharField('업종', max_length=256, null=True)
+
+
+    class Meta:
+        verbose_name = '업종'
+        verbose_name_plural = '업종'
+
+    def __str__(self):
+        return str(self.business)
