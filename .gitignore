@@ -11,6 +11,7 @@ local_settings.py
 #media
 venvs
 pgenv2
+server/settings.py
 
 ### ElasticBeanstalk ###
 .elasticbeanstalk/*

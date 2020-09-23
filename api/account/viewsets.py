@@ -508,27 +508,27 @@ class PartnerViewSet(viewsets.ModelViewSet):
         career = request.data.get('career')
         employee = request.data.get('employee')
         revenue = request.data.get('revenue')
-        info_company = request.data.get('info_company')
-        info_biz = request.data.get('info_biz')
-       # history = request.data.get('history')
+        info_company = request.data.get('info_company') # 0923 수정
+        info_biz = request.data.get('info_biz') # 0923 수정
+        history = request.data.get('history') # text형태로 진행한제품 받아옴. 0923
         deal = request.data.get('deal')
         category_middle = request.data.get('category_middle')
         #possible_set = request.data.get('possible_set')
-        history_set = request.data.get('history_set')
+        #history_set = request.data.get('history_set')
 
         # 리스트 형태로 받기 위해서
         category_middle = category_middle.split(',')
         #possible_set = possible_set.split(',')
-        history_set = history_set.split(',')
+        #history_set = history_set.split(',')
 
 
         file = request.data.get('file')
         coin = 2000
         # type에 따라서 def(partner / client)를 api를 따로 설계
-        if not name:
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST,
-                data={'message': '상호명 값이 없습니다.'})
+     #   if not name:
+     #       return Response(
+     #           status=status.HTTP_400_BAD_REQUEST,
+     #           data={'message': '상호명 값이 없습니다.'})
 
         if not phone:
             return Response(
@@ -540,30 +540,30 @@ class PartnerViewSet(viewsets.ModelViewSet):
                  status=status.HTTP_400_BAD_REQUEST,
                  data={'message': '로고 파일이 없습니다.'})
 
-        if not career:
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST,
-                data={'message': '경력 년수가 없습니다.'})
+     #   if not career:
+     #       return Response(
+     #           status=status.HTTP_400_BAD_REQUEST,
+     #           data={'message': '경력 년수가 없습니다.'})
 
-        if not employee:
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST,
-                data={'message': '종업원 값이 없습니다.'})
+     #   if not employee:
+     #       return Response(
+     #           status=status.HTTP_400_BAD_REQUEST,
+     #           data={'message': '종업원 값이 없습니다.'})
 
-        if not revenue:
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST,
-                data={'message': '매출 값이 없습니다.'})
+     #   if not revenue:
+     #      return Response(
+     #           status=status.HTTP_400_BAD_REQUEST,
+     #           data={'message': '매출 값이 없습니다.'})
 
-        if not info_company:
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST,
-                data={'message': '회사소개 값이 없습니다.'})
+     #   if not info_company:
+     #       return Response(
+     #           status=status.HTTP_400_BAD_REQUEST,
+     #           data={'message': '회사소개 값이 없습니다.'})
 
-        if not info_biz:
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST,
-                data={'message': '주요사업 값이 없습니다.'})
+     #   if not info_biz:
+     #       return Response(
+     #           status=status.HTTP_400_BAD_REQUEST,
+     #           data={'message': '주요사업 값이 없습니다.'})
 
      #   if not history:
      #       return Response(
@@ -596,7 +596,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
             revenue=revenue,
             info_company=info_company,
             info_biz=info_biz,
-       #     history=history,
+            history=history,
             deal=deal,
             coin=coin,
             logo=logo,
@@ -608,10 +608,10 @@ class PartnerViewSet(viewsets.ModelViewSet):
         partner.region = region.first()
 
         category_elements = Develop.objects.filter(id__in=category_middle)
-        history_elements = Subclass.objects.filter(id__in=history_set)
+        #history_elements = Subclass.objects.filter(id__in=history_set) 0923 
         #possible_elements = Subclass.objects.filter(id__in=possible_set)
         partner.category_middle.add(*category_elements)
-        partner.history_set.add(*history_elements)
+        #partner.history_set.add(*history_elements) 0923
         #partner.possible_set.add(*possible_elements)
         partner.save()
         #form-data는 자동으로 주석 코드를 실행 시켜줌
