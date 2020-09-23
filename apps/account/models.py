@@ -202,11 +202,12 @@ class Partner(models.Model):
     deal = models.TextField('주요거래처', blank=True, null=True)
     category_middle = models.ManyToManyField(Develop, verbose_name='의뢰가능분야', related_name='category_middle')
     #possible_set = models.ManyToManyField(Subclass, verbose_name='개발가능제품분야', related_name='possible_product')
-    history_set = models.ManyToManyField(Subclass, verbose_name='진행한제품들', related_name='history_product', null= True)
+    history_set = models.ManyToManyField(Subclass, verbose_name='진행한제품들', related_name='history_product')
     #결제
     coin = models.IntegerField('코인', default=2000, null=True)
     #회원가입 시 파일
     file = models.FileField('회사소개 및 포토폴리오파일', upload_to=partner_update_filename, blank=True, null=True)
+    resume = models.FileField('이력서', upload_to=partner_update_filename, blank=True, null=True) # 0923 added
     avg_score = models.DecimalField('평균점수', default=0, max_digits=5, decimal_places=2, null=True)
     # 파트너 여부
     #is_partner = models.BooleanField('파트너여부', default=True, null=True)

@@ -521,8 +521,8 @@ class PartnerViewSet(viewsets.ModelViewSet):
         #possible_set = possible_set.split(',')
         #history_set = history_set.split(',')
 
-
         file = request.data.get('file')
+        resume = request.data.get('resume')
         coin = 2000
         # type에 따라서 def(partner / client)를 api를 따로 설계
      #   if not name:
@@ -574,6 +574,11 @@ class PartnerViewSet(viewsets.ModelViewSet):
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
                 data={'message': '주요거래처 값이 없습니다.'})
+                
+        if not resume:
+             return Response(
+                 status=status.HTTP_400_BAD_REQUEST,
+                 data={'message': '이력서  파일이 없습니다.'})
 
         if User.objects.filter(username=username).exists():
             return Response(
@@ -601,6 +606,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
             coin=coin,
             logo=logo,
             file=file,
+            resume = resume,
         )
         city = City.objects.filter(id=city)
         region=Region.objects.filter(id=region)

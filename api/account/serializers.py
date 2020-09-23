@@ -105,8 +105,8 @@ class PartnerSerializer(serializers.ModelSerializer):
     process_set = ProcessSerializer(many=True)
     class Meta:
         model = Partner
-        fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal' ,'category_middle','category', 'history_set', 'product_history', 'coin','avg_score',
-                  'avg_price_score','avg_time_score','avg_talk_score','avg_expert_score','avg_result_score', 'answer_set','review_set','file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set','grade','count_loginlog','real_phone']
+        fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal', 'history' ,'category_middle','category', 'history_set', 'product_history', 'coin','avg_score',
+                  'avg_price_score','avg_time_score','avg_talk_score','avg_expert_score','avg_result_score', 'answer_set','review_set','file','resume','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set','grade','count_loginlog','real_phone']
 
     def get_avg_price_score(self,obj):
         a = Review.objects.filter(partner=obj.id).aggregate(Avg('price_score'))
