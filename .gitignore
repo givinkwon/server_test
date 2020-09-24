@@ -7,11 +7,14 @@
 *.pyc
 __pycache__/
 local_settings.py
-#db.sqlite3
-#media
+db.sqlite3
+media
 venvs
 pgenv2
-server/settings.py
+server
+ubuntu
+boltnnut_platform.ppk
+
 
 ### ElasticBeanstalk ###
 .elasticbeanstalk/*
