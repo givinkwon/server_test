@@ -66,6 +66,11 @@ class ProcessSerializer(serializers.ModelSerializer):
     class Meta:
         model = Process
         fields = ['id','partner','img_process','is_main']
+        
+class ResumeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Resume
+        fields = ['id','partner','img_resume','is_main']
 
 class LoginLogSerializer(serializers.ModelSerializer):
     class Meta:
@@ -103,10 +108,12 @@ class PartnerSerializer(serializers.ModelSerializer):
     machine_set = MachineSerializer(many=True)
     certification_set = CertificationSerializer(many=True)
     process_set = ProcessSerializer(many=True)
+    resume_set = ResumeSerializer(many=True)
+    
     class Meta:
         model = Partner
         fields = ['user','id', 'name', 'logo','city', 'region', 'career', 'employee', 'revenue', 'info_company', 'info_biz', 'deal', 'history' ,'category_middle','category', 'history_set', 'product_history', 'coin','avg_score',
-                  'avg_price_score','avg_time_score','avg_talk_score','avg_expert_score','avg_result_score', 'answer_set','review_set','file','resume','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set','grade','count_loginlog','real_phone']
+                  'avg_price_score','avg_time_score','avg_talk_score','avg_expert_score','avg_result_score', 'answer_set','review_set','file','resume_file','portfolio_set','structure_set', 'machine_set', 'certification_set', 'process_set', 'resume_set','grade','count_loginlog','real_phone']
 
     def get_avg_price_score(self,obj):
         a = Review.objects.filter(partner=obj.id).aggregate(Avg('price_score'))

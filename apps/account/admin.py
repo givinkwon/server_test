@@ -43,6 +43,12 @@ class ProcessInline(admin.StackedInline):
     can_delete = True
     extra = 0
     max_num = 15
+    
+class ResumeInline(admin.StackedInline):
+    model = Resume
+    can_delete = True
+    extra = 0
+    max_num = 15
 
 class ExportCsvMixin:
     def export_as_csv(self, request, queryset):
@@ -140,7 +146,7 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(Partner)
 class PartnerAdmin(admin.ModelAdmin):
-    inlines = [PortfolioInline, StructureInline, MachineInline, CertificationInline, ProcessInline]
+    inlines = [PortfolioInline, StructureInline, MachineInline, CertificationInline, ProcessInline, ResumeInline]
     list_display = ['id', 'partner_phone', 'partner_email', 'name', 'city']
     search_fields = ['name','user__phone']
 

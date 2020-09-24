@@ -69,6 +69,13 @@ def process_update_filename(instance, filename):
     path = "process/" + str(now.year) + "/" + str(now.month) + "/" + str(now.day)
     format = uuid.uuid4().hex + "_process" + "." + ext
     return os.path.join(path, format)
+    
+def resume_update_filename(instance, filename):
+    ext = filename.split('.')[-1]
+    now = datetime.datetime.now()
+    path = "process/" + str(now.year) + "/" + str(now.month) + "/" + str(now.day)
+    format = uuid.uuid4().hex + "_resume" + "." + ext
+    return os.path.join(path, format)
 
 
 def user_portfolio_update_filename(instance, filename):
@@ -207,7 +214,7 @@ class Partner(models.Model):
     coin = models.IntegerField('코인', default=2000, null=True)
     #회원가입 시 파일
     file = models.FileField('회사소개 및 포토폴리오파일', upload_to=partner_update_filename, blank=True, null=True)
-    resume = models.FileField('이력서', upload_to=partner_update_filename, blank=True, null=True) # 0923 added
+    resume_file = models.FileField('이력서', upload_to=partner_update_filename, blank=True, null=True) # 0923 added
     avg_score = models.DecimalField('평균점수', default=0, max_digits=5, decimal_places=2, null=True)
     # 파트너 여부
     #is_partner = models.BooleanField('파트너여부', default=True, null=True)
@@ -302,6 +309,22 @@ class Process(models.Model):
 
     def __str__(self):
         return str(self.partner.name) + " 진행공정"
+        
+# ------------------------------------------------------------------
+# Model   : Resume
+# Description : 이력서 모델
+# ------------------------------------------------------------------
+class Resume(models.Model):
+    partner = models.ForeignKey(Partner, on_delete=models.CASCADE, verbose_name="파트너", null=True)
+    img_resume = models.ImageField('이력서 이미지', upload_to=resume_update_filename, null=True)
+    is_main = models.BooleanField('메인 여부', default=False)
+
+    class Meta:
+        verbose_name = '     이력서'
+        verbose_name_plural = '     이력서'
+
+    def __str__(self):
+        return str(self.partner.name) + " 이력서"
         
 # ------------------------------------------------------------------
 # Model   : LoginLog

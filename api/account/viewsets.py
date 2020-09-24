@@ -522,7 +522,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
         #history_set = history_set.split(',')
 
         file = request.data.get('file')
-        resume = request.data.get('resume')
+        resume_file = request.data.get('resume_file')
         coin = 2000
         # type에 따라서 def(partner / client)를 api를 따로 설계
      #   if not name:
@@ -575,7 +575,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
                 data={'message': '주요거래처 값이 없습니다.'})
                 
-        if not resume:
+        if not resume_file:
              return Response(
                  status=status.HTTP_400_BAD_REQUEST,
                  data={'message': '이력서  파일이 없습니다.'})
@@ -606,7 +606,7 @@ class PartnerViewSet(viewsets.ModelViewSet):
             coin=coin,
             logo=logo,
             file=file,
-            resume = resume,
+            resume_file = resume_file,
         )
         city = City.objects.filter(id=city)
         region=Region.objects.filter(id=region)
@@ -960,6 +960,15 @@ class ProcessViewSet(viewsets.ModelViewSet):
     """
     queryset = Process.objects.all()
     serializer_class = ProcessSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id', 'is_main', 'partner']
+    
+class ResumeViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Resume.objects.all()
+    serializer_class = ResumeSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['id', 'is_main', 'partner']
 

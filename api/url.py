@@ -21,6 +21,7 @@ router.register('structure', view_account.StructureViewSet)
 router.register('machine', view_account.MachineViewSet)
 router.register('certification', view_account.CertificationViewSet)
 router.register('process', view_account.ProcessViewSet)
+router.register('resume', view_account.ResumeViewSet)
 router.register('path', view_account.PathViewSet)
 router.register('business', view_account.BusinessViewSet)
 #board
